@@ -1,0 +1,13 @@
+{
+  "name": "projet_aie",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "backend": "npm run dev --prefix backend",
+    "frontend": "npm run dev --prefix frontend",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
