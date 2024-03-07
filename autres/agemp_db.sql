@@ -7,22 +7,18 @@ create type jour as enum('Dimanche', 'Lundi', 'Mardi', 'Merecredi', 'Jeudi', 'Ve
 
 -- Creation des Tables
 create table section(
-	id_section serial,
-	code_section varchar(4), 
-	constraint pk_section primary key(id_section),
-	constraint nn_code_section check(code_section is not null),
-	constraint un_code_section unique(code_section)
+	code_section varchar(10), 
+	constraint pk_section primary key(code_section)
 );
 
 create table groupe(
 	id_groupe serial,
 	code_groupe varchar(4),
-	id_section integer,
+	code_section varchar(10),
 	constraint pk_groupe primary key(id_groupe),
-	constraint fk_section foreign key(id_section) references section(id_section),
-	constraint nn_section check(id_section is not null),
-	constraint nn_code_groupe check(code_groupe is not null),
-	constraint un_code_groupe unique(code_groupe)
+	constraint fk_section foreign key(code_section) references section(code_section),
+	constraint nn_section check(code_section is not null),
+	constraint nn_code_groupe check(code_groupe is not null)
 );
 
 create table personne(
