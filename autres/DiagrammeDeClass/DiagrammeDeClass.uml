@@ -166,6 +166,9 @@
       <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_zKhFsdxtEe6c3_EZZbm1kg" key="nature" value="UML_Nature"/>
     </eAnnotations>
     <ownedAttribute xmi:type="uml:Property" xmi:id="_B0pX0NxuEe6c3_EZZbm1kg" name="type" visibility="private" type="__rkaMNxnEe6c3_EZZbm1kg" isUnique="false"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_D5fRgOFdEe68RdYxJZrRTQ" name="id_seance" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+    </ownedAttribute>
     <ownedEnd xmi:type="uml:Property" xmi:id="_zKiT0NxtEe6c3_EZZbm1kg" name="modules" type="_Oh65ANssEe6c3_EZZbm1kg" association="_zKf3kNxtEe6c3_EZZbm1kg">
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5wQjQNxwEe6c3_EZZbm1kg"/>
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_5iTm0NxwEe6c3_EZZbm1kg" value="*"/>
@@ -229,7 +232,6 @@
       <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_-Uy6IN5MEe63c8UZnM6ApA" key="nature" value="UML_Nature"/>
     </eAnnotations>
     <ownedEnd xmi:type="uml:Property" xmi:id="_-U0IQd5MEe63c8UZnM6ApA" name="enseignants  " type="_WsQdMNssEe6c3_EZZbm1kg" association="_-UrlYN5MEe63c8UZnM6ApA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Gv43IN5NEe63c8UZnM6ApA"/>
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_GwIuwN5NEe63c8UZnM6ApA" value="*"/>
     </ownedEnd>
     <ownedEnd xmi:type="uml:Property" xmi:id="_-UzhMN5MEe63c8UZnM6ApA" name="occupations " type="_LDvHMNu2Ee6c3_EZZbm1kg" association="_-UrlYN5MEe63c8UZnM6ApA">
