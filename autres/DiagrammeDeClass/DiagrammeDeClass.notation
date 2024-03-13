@@ -553,6 +553,10 @@
         <element xmi:type="uml:Property" href="DiagrammeDeClass.uml#_B0pX0NxuEe6c3_EZZbm1kg"/>
         <layoutConstraint xmi:type="notation:Location" xmi:id="_B0_9IdxuEe6c3_EZZbm1kg"/>
       </children>
+      <children xmi:type="notation:Shape" xmi:id="_D8gwUOFdEe68RdYxJZrRTQ" type="Property_ComponentAttributeLabel">
+        <element xmi:type="uml:Property" href="DiagrammeDeClass.uml#_D5fRgOFdEe68RdYxJZrRTQ"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_D8gwUeFdEe68RdYxJZrRTQ"/>
+      </children>
       <styles xmi:type="notation:TitleStyle" xmi:id="_zLxp9NxtEe6c3_EZZbm1kg"/>
       <styles xmi:type="notation:SortingStyle" xmi:id="_zLxp9dxtEe6c3_EZZbm1kg"/>
       <styles xmi:type="notation:FilteringStyle" xmi:id="_zLxp9txtEe6c3_EZZbm1kg"/>
