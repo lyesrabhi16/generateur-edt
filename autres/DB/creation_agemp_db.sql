@@ -47,6 +47,7 @@ create table personne(
 	constraint pk_personne Primary Key(matricule),
 	constraint fk_groupe Foreign Key(id_groupe) references groupe(id_groupe),
 	constraint fk_specialite Foreign Key(code_specialite) references specialite(code_specialite),
+	constraint un_email unique(email),
 	constraint nn_nom check(nom is not null),
 	constraint nn_prenom check(prenom is not null),
 	constraint nn_email check(email is not null),

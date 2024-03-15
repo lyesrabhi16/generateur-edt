@@ -2,6 +2,7 @@
   "name": "projet_aie",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "scripts": {
     "backend": "npm run dev --prefix backend",
     "frontend": "npm run dev --prefix frontend",

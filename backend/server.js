@@ -11,7 +11,7 @@ const port = process.env.ServerPort || 2999;
 
 export const db = DB();
 
-
+app.use(Express.urlencoded({ extended: true }));
 app.use(Express.json());
 app.use(cors());
 
