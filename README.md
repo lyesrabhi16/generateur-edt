@@ -48,7 +48,7 @@ download and install [PgAdmin](https://www.pgadmin.org/) if you want
 
 configure your local Postgresql db with:
 
-1. [create a user](https://phoenixnap.com/kb/postgres-create-user) named: **admin** with the password: **admin**
+1. [create a user](https://phoenixnap.com/kb/postgres-create-user) named: **admin** with the password: **admin** with superuser privilege
 2. [create a database](https://phoenixnap.com/kb/postgres-create-database) with the name **agemp_db_local**
 3. run the scripts in the [DB Folder](autres/DB/)
 
