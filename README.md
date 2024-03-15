@@ -1,4 +1,4 @@
-# Initialisation
+# Initialization
 
 ## download
 
@@ -10,7 +10,7 @@ git clone git@github.com:lyesrabhi16/Projet_AIE.git
 
 ## install the dependencies
 
-execute these from root folder, meaning:
+execute these from the root folder, meaning:
 
 ```bash
 cd Projet_AIE
@@ -32,8 +32,38 @@ npm run backend
 
 ## start the frontend website
 
-in a different terminal/shell window, start the frontend developement server with:
+in a different terminal/shell window, start the frontend development server with:
 
 ```bash
 npm run frontend
+```
+
+## DB configuration
+
+### locally
+
+download and install [PostgreSQL](https://www.postgresql.org/) if you don't have it
+
+download and install [PgAdmin](https://www.pgadmin.org/) if you want
+
+configure your local Postgresql db with:
+
+1. [create a user](https://phoenixnap.com/kb/postgres-create-user) named: **admin** with the password: **admin**
+2. [create a database](https://phoenixnap.com/kb/postgres-create-database) with the name **agemp_db_local**
+3. run the scripts in the [DB Folder](autres/DB/)
+
+you will find the DB environment variables in the [env file](backend/.env)
+
+### remote
+
+URL:
+
+```txt
+    postgres://admin:EuununkXWDDJZ33W7cQLLBi8pagZ4qzH@dpg-cnir53ed3nmc73fm5eqg-a.frankfurt-postgres.render.com/agemp_db
+```
+
+PSQL Command:
+
+```txt
+    PGPASSWORD=EuununkXWDDJZ33W7cQLLBi8pagZ4qzH psql -h dpg-cnir53ed3nmc73fm5eqg-a.frankfurt-postgres.render.com -U admin agemp_db
 ```
