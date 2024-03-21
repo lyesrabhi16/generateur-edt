@@ -13,7 +13,7 @@ export const getSpecialites = (req, res) => {
       const response = {
         status: "success",
         message: "Retrieved all specialites",
-        data: data,
+        specialite: data,
       };
       res.status(200).json(response);
     })
@@ -36,14 +36,14 @@ export const getSpecialite = (req, res) => {
         const response = {
           status: "success",
           message: "Retrieved specialite",
-          data: data,
+          specialite: data,
         };
         res.status(200).json(response);
       } else {
         const response = {
           status: "error",
           message: "Specialite not found",
-          data: null,
+          specialite: null,
         };
         res.status(404).json(response);
       }
@@ -66,7 +66,7 @@ export const addSpecialite = (req, res) => {
       const response = {
         status: "success",
         message: "Inserted specialite",
-        data: data,
+        specialite: data,
       };
       res.status(200).json(response);
     })
@@ -90,7 +90,7 @@ export const updateSpecialite = (req, res) => {
       const response = {
         status: "success",
         message: "Updated specialite",
-        data: data,
+        specialite: data,
       };
       res.status(200).json(response);
     })
@@ -112,7 +112,6 @@ export const deleteSpecialite = (req, res) => {
       const response = {
         status: "success",
         message: "Deleted specialite",
-        data: data,
       };
       res.status(200).json(response);
     })

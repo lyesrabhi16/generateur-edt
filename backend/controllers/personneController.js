@@ -20,7 +20,12 @@ export const getPersonnes = (req, res) => {
       res.status(200).json(response);
     })
     .catch((err) => {
-      res.status(500).json(err);
+      const response = {
+        status: 500,
+        message: "Error while retrieving all persons",
+        error: err,
+      };
+      res.status(500).json(response);
     });
 };
 
@@ -33,10 +38,22 @@ export const getPersonne = (req, res) => {
         message: "Retrieved one person",
         personne: data,
       };
+
+      if (data === null) {
+        response.status = 404;
+        response.message = "Person not found";
+        response.personne = null;
+      }
+
       res.status(200).json(response);
     })
     .catch((err) => {
-      res.status(500).json(err);
+      const response = {
+        status: 500,
+        message: "Error while retrieving one person",
+        error: err,
+      };
+      res.status(500).json(response);
     });
 };
 
@@ -101,7 +118,12 @@ export const addPersonne = (req, res) => {
       res.status(201).json(response);
     })
     .catch((err) => {
-      res.status(500).json(err);
+      const response = {
+        status: 500,
+        message: "Error while adding person",
+        error: err,
+      };
+      res.status(500).json(response);
     });
 };
 
@@ -115,7 +137,12 @@ export const deletePersonne = (req, res) => {
       });
     })
     .catch((err) => {
-      res.status(500).json(err);
+      const response = {
+        status: 500,
+        message: "Error while deleting person",
+        error: err,
+      };
+      res.status(500).json(response);
     });
 };
 
@@ -161,6 +188,11 @@ export const updatePersonne = (req, res) => {
       res.status(200).json(response);
     })
     .catch((err) => {
-      res.status(500).json(err);
+      const response = {
+        status: 500,
+        message: "Error while updating personne",
+        error: err,
+      };
+      res.status(500).json(response);
     });
 };
