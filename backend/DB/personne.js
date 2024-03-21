@@ -1,10 +1,17 @@
 import { db } from "../server.js";
+import { typePersonneValidator } from "../validators/TypeValidators.js";
 
-export const getPersonnes = () => {
-  return db.query("SELECT * FROM personne");
+export const getPersonnes = (typePersonne = null) => {
+  let sql = "SELECT * FROM personne";
+  if (typePersonneValidator(typePersonne)) {
+    sql = `SELECT * FROM personne WHERE type = {PersonneType}`;
+  }
+  return db.query(sql);
 };
 export const getPersonne = (matricule) => {
-  return db.oneOrNone("SELECT * FROM personne WHERE matricule = $1", [matricule]);
+  return db.oneOrNone("SELECT * FROM personne WHERE matricule = $1", [
+    matricule,
+  ]);
 };
 
 export const addPersonneWithMatricule = (
