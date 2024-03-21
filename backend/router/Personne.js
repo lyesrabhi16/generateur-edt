@@ -1,5 +1,4 @@
-import { Router, response } from "express";
-import { db } from "../server.js";
+import { Router } from "express";
 import { addPersonneValidator } from "../validators/personneValidators.js";
 import { addPersonneWithMatricule, addPersonneWithoutMatricule, deletePersonne, getPersonne, getPersonnes, updatePersonne } from "../DB/personne.js";
 import bcrypt from "bcrypt";
