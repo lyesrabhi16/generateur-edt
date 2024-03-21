@@ -3,6 +3,7 @@ import dotEnv from "dotenv";
 import cors from "cors";
 import DB from "./DB/DB.js";
 import PersonneRouter from "./router/Personne.js";
+import SpecialiteRouter from "./router/Specialite.js";
 
 dotEnv.config();
 
@@ -20,7 +21,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/personne", PersonneRouter);
-
+app.use("/specialite", SpecialiteRouter);
 
 app.listen(port, () => {
   console.log("Server running on http://localhost:" + port);
