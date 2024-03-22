@@ -13,7 +13,7 @@ export const selectPersonnes = (typePersonne = null) => {
   if (typePersonneValidator(typePersonne)) {
     sql = `SELECT * FROM personne WHERE type = $1`;
   }
-  return db.query(sql, [typePersonne]);
+  return db.manyOrNone(sql, [typePersonne]);
 };
 
 /**
