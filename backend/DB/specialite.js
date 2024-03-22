@@ -7,7 +7,7 @@ import { db } from "../server.js";
  */
 export const selectSpecialites = () => {
   const sql = "SELECT * FROM specialite";
-  return db.query(sql);
+  return db.manyOrNone(sql);
 };
 
 
@@ -19,11 +19,11 @@ export const selectSpecialites = () => {
  */
 export const selectSpecialite = (code_specialite) => {
   const sql = "SELECT * FROM specialite WHERE code_specialite = $1";
-  return db.query(sql, [code_specialite]);
+  return db.one(sql, [code_specialite]);
 };
 
 export const insertSpecialite = (code_specialite, nom_specialite) => {
-  return db.query(
+  return db.one(
     "INSERT INTO specialite (code_specialite, nom_specialite) VALUES ($1, $2) returning *",
     [code_specialite, nom_specialite]
   );
@@ -38,7 +38,7 @@ export const insertSpecialite = (code_specialite, nom_specialite) => {
  * @returns {Promise} A promise that resolves to the result of the database query.
  */
 export const updateSpecialite = (code_specialite_old, code_specialite_new = code_specialite_old, nom_specialite) => {
-  return db.query(
+  return db.one(
     "UPDATE specialite SET code_specialite = $2 ,nom_specialite = $3 WHERE code_specialite = $1 returning *",
     [code_specialite_old, code_specialite_new, nom_specialite]
   );
@@ -51,7 +51,7 @@ export const updateSpecialite = (code_specialite_old, code_specialite_new = code
  * @returns {Promise} - A promise that resolves to the result of the delete query.
  */
 export const deleteSpecialite = (code_specialite) => {
-  return db.query("DELETE FROM specialite WHERE code_specialite = $1 returning *", [
+  return db.none("DELETE FROM specialite WHERE code_specialite = $1 returning *", [
     code_specialite,
   ]);
 };
