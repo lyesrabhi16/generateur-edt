@@ -13,7 +13,7 @@ export const getPersonnes = (req, res) => {
   selectPersonnes()
     .then((data) => {
       const response = {
-        status: 200,
+        status: "success",
         message: "Retrieved all persons",
         personnes: data,
       };
@@ -21,7 +21,7 @@ export const getPersonnes = (req, res) => {
     })
     .catch((err) => {
       const response = {
-        status: 500,
+        status: "error",
         message: "Error while retrieving all persons",
         error: err,
       };
@@ -34,22 +34,23 @@ export const getPersonne = (req, res) => {
   selectPersonne(matricule)
     .then((data) => {
       const response = {
-        status: 200,
+        status: "success",
         message: "Retrieved one person",
         personne: data,
       };
 
       if (data === null) {
-        response.status = 404;
+        response.status = "error";
         response.message = "Person not found";
         response.personne = null;
+        res.status(404).json(response);
       }
 
       res.status(200).json(response);
     })
     .catch((err) => {
       const response = {
-        status: 500,
+        status: "error",
         message: "Error while retrieving one person",
         error: err,
       };
@@ -111,7 +112,7 @@ export const addPersonne = (req, res) => {
   insertPersonne()
     .then((personne) => {
       const response = {
-        status: 201,
+        status: "success",
         message: "Person added successfully",
         personne: personne,
       };
@@ -119,7 +120,7 @@ export const addPersonne = (req, res) => {
     })
     .catch((err) => {
       const response = {
-        status: 500,
+        status: "error",
         message: "Error while adding person",
         error: err,
       };
@@ -131,14 +132,15 @@ export const deletePersonne = (req, res) => {
   const { matricule } = req.params;
   deletePersonne_db(matricule)
     .then(() => {
-      res.status(200).json({
-        status: 200,
+      const response = {
+        status: "success",
         message: "Person deleted successfully",
-      });
+      };
+      res.status(200).json(response);
     })
     .catch((err) => {
       const response = {
-        status: 500,
+        status: "error",
         message: "Error while deleting person",
         error: err,
       };
@@ -181,7 +183,7 @@ export const updatePersonne = (req, res) => {
   )
     .then((personne) => {
       const response = {
-        status: 200,
+        status: "success",
         message: "Personne updated successfully",
         personne: personne,
       };
@@ -189,7 +191,7 @@ export const updatePersonne = (req, res) => {
     })
     .catch((err) => {
       const response = {
-        status: 500,
+        status: "error",
         message: "Error while updating personne",
         error: err,
       };

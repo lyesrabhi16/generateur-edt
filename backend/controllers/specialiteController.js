@@ -13,7 +13,7 @@ export const getSpecialites = (req, res) => {
       const response = {
         status: "success",
         message: "Retrieved all specialites",
-        specialite: data,
+        specialites: data,
       };
       res.status(200).json(response);
     })
@@ -35,7 +35,7 @@ export const getSpecialite = (req, res) => {
       if (data) {
         const response = {
           status: "success",
-          message: "Retrieved specialite",
+          message: "Retrieved one specialite",
           specialite: data,
         };
         res.status(200).json(response);
@@ -112,6 +112,7 @@ export const deleteSpecialite = (req, res) => {
       const response = {
         status: "success",
         message: "Deleted specialite",
+        specialite: data,
       };
       res.status(200).json(response);
     })
