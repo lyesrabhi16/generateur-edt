@@ -35,7 +35,7 @@ export const addPersonneValidator = (req, res, next) => {
 
   if (missingFields.length > 0) {
     res.status(400).json({
-      status: 400,
+      status: "error",
       message:
         "missing required fields: " +
         missingFields
@@ -50,7 +50,7 @@ export const addPersonneValidator = (req, res, next) => {
         type !== TypePersonne.Administrateur
     ) {
         res.status(400).json({
-        status: 400,
+        status: "error",
         message: `invalid value for type: ${type}`,
         });
         return;
@@ -64,7 +64,7 @@ export const addPersonneValidator = (req, res, next) => {
       code_specialite === undefined
     ) {
       res.status(400).json({
-        status: 400,
+        status: "error",
         message: `missing required fields for type ${TypePersonne.Etudiant}: anneeBac, niveau, id_groupe, code_specialite`,
       });
       return;
@@ -72,7 +72,7 @@ export const addPersonneValidator = (req, res, next) => {
   } else if (type === TypePersonne.Enseignant) {
     if (charges === undefined) {
       res.status(400).json({
-        status: 400,
+        status: "error",
         message: `missing required fields for type ${TypePersonne.Enseignant}: charges `,
       });
       return;
@@ -81,7 +81,7 @@ export const addPersonneValidator = (req, res, next) => {
   } else if (type === TypePersonne.Administrateur) {
     if (role === undefined) {
       res.status(400).json({
-        status: 400,
+        status: "error",
         message: `missing required fields for type ${TypePersonne.Administrateur} : role`,
       });
       return;
