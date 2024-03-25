@@ -16,7 +16,7 @@ export const TypeSeance = Object.freeze({
   TP: "TP",
 });
 
-export const jour = Object.freeze({
+export const jours = Object.freeze({
   Dimanche: "Dimanche",
   Lundi: "Lundi",
   Mardi: "Mardi",

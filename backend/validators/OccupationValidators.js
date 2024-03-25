@@ -1,4 +1,4 @@
-import { jour as type_jour } from "../../constants.js";
+import { jours  } from "../../constants.js";
 
 export const addOccupationValidator = (req,res,next)=>{
 
@@ -91,8 +91,4 @@ function validateTimeFormat(time) {
     const timeRegex = /^(0[0-9]|1[0-9]|2[0-3]|[0-9]):[0-5][0-9]$/;
 
     return timeRegex.test(time);
-}
-
-function validateJour(jour) {
-    return type_jour.includes(jour);
 }
