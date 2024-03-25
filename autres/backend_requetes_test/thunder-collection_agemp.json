@@ -1,0 +1,509 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "agemp",
+    "dateExported": "2024-03-25T13:24:00.535Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "8c73e23a-8837-4004-80e6-bf552a8c57c3",
+            "name": "personne",
+            "containerId": "",
+            "created": "2024-03-15T17:05:28.965Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "ef3e2647-ec0b-4164-9dec-52c7a13a0d32",
+            "name": "specialite",
+            "containerId": "",
+            "created": "2024-03-21T15:09:37.664Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "5e553881-8130-46e0-8265-d203be52130f",
+            "name": "section",
+            "containerId": "",
+            "created": "2024-03-22T10:31:29.649Z",
+            "sortNum": 30000
+        },
+        {
+            "_id": "068609af-66c7-40a0-8aae-c1d48318315b",
+            "name": "groupe",
+            "containerId": "",
+            "created": "2024-03-25T13:02:19.562Z",
+            "sortNum": 40000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "f065cc47-14b7-4b1e-88b7-b932bc9feb9c",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "8c73e23a-8837-4004-80e6-bf552a8c57c3",
+            "name": "getAll",
+            "url": "http://localhost:3000/personne",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2024-03-15T17:05:58.983Z",
+            "modified": "2024-03-15T17:06:27.982Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "f4ddfdfa-cb64-47ae-87a4-9cea32b1454b",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "8c73e23a-8837-4004-80e6-bf552a8c57c3",
+            "name": "getOne",
+            "url": "http://localhost:3000/personne/202033009415",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-03-15T17:34:15.856Z",
+            "modified": "2024-03-15T19:28:12.917Z",
+            "headers": [],
+            "params": [],
+            "reqType": "get",
+            "tests": []
+        },
+        {
+            "_id": "712ef90e-481a-460b-9577-f898eb61033e",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "8c73e23a-8837-4004-80e6-bf552a8c57c3",
+            "name": "addOne",
+            "url": "http://localhost:3000/personne/",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2024-03-15T18:57:16.916Z",
+            "modified": "2024-03-21T14:22:54.717Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "nom",
+                        "value": "Rabhi"
+                    },
+                    {
+                        "name": "prenom",
+                        "value": "Lyes"
+                    },
+                    {
+                        "name": "email",
+                        "value": "lyes.rabhi@se.univ-bejaia.dz"
+                    },
+                    {
+                        "name": "password",
+                        "value": "0000"
+                    },
+                    {
+                        "name": "type",
+                        "value": "Etudiant"
+                    },
+                    {
+                        "name": "anneeBac",
+                        "value": "2020"
+                    },
+                    {
+                        "name": "niveau",
+                        "value": "M1"
+                    },
+                    {
+                        "name": "id_groupe",
+                        "value": "1"
+                    },
+                    {
+                        "name": "code_specialite",
+                        "value": "GL"
+                    },
+                    {
+                        "name": "matricule",
+                        "value": "2020330094150"
+                    }
+                ]
+            },
+            "reqType": "post",
+            "tests": []
+        },
+        {
+            "_id": "7440f984-284e-47ec-be4f-da1e4c113fe2",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "8c73e23a-8837-4004-80e6-bf552a8c57c3",
+            "name": "updateOne",
+            "url": "http://localhost:3000/personne/110",
+            "method": "PUT",
+            "sortNum": 35000,
+            "created": "2024-03-15T19:32:02.420Z",
+            "modified": "2024-03-21T14:29:13.353Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "nom",
+                        "value": "Rabhi2"
+                    },
+                    {
+                        "name": "prenom",
+                        "value": "Lyes2"
+                    },
+                    {
+                        "name": "email",
+                        "value": "lyes.rabhi@se.univ-bejaia.dz"
+                    },
+                    {
+                        "name": "password",
+                        "value": "0000"
+                    },
+                    {
+                        "name": "type",
+                        "value": "Etudiant"
+                    },
+                    {
+                        "name": "anneeBac",
+                        "value": "2020"
+                    },
+                    {
+                        "name": "niveau",
+                        "value": "M1"
+                    },
+                    {
+                        "name": "id_groupe",
+                        "value": "1"
+                    },
+                    {
+                        "name": "code_specialite",
+                        "value": "GL"
+                    }
+                ]
+            },
+            "reqType": "put",
+            "tests": []
+        },
+        {
+            "_id": "8cee39b2-e581-4dd8-9700-2c54592d569b",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "8c73e23a-8837-4004-80e6-bf552a8c57c3",
+            "name": "deleteOne",
+            "url": "http://localhost:3000/personne/11",
+            "method": "DELETE",
+            "sortNum": 40000,
+            "created": "2024-03-15T18:57:21.252Z",
+            "modified": "2024-03-21T14:30:50.924Z",
+            "headers": [],
+            "params": [],
+            "reqType": "del",
+            "tests": []
+        },
+        {
+            "_id": "9a8b9191-40d2-44bc-be7f-1c8e476c42f9",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "ef3e2647-ec0b-4164-9dec-52c7a13a0d32",
+            "name": "getAll",
+            "url": "http://localhost:3000/specialite",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2024-03-21T15:09:53.405Z",
+            "modified": "2024-03-21T15:12:46.898Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "bbcff439-d749-43d8-a42d-d61170d62e2e",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "5e553881-8130-46e0-8265-d203be52130f",
+            "name": "getAll",
+            "url": "http://localhost:3000/section",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2024-03-22T10:31:29.649Z",
+            "modified": "2024-03-22T10:31:53.722Z",
+            "headers": [],
+            "params": [],
+            "reqType": "get",
+            "tests": []
+        },
+        {
+            "_id": "0e8b8777-f07a-4f8e-9bc8-7e435c75ac56",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "068609af-66c7-40a0-8aae-c1d48318315b",
+            "name": "getAll",
+            "url": "http://localhost:3000/groupe",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2024-03-25T13:02:19.562Z",
+            "modified": "2024-03-25T13:02:37.235Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "69a46278-6269-4801-8d61-549bcccd3cf7",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "ef3e2647-ec0b-4164-9dec-52c7a13a0d32",
+            "name": "getOne",
+            "url": "http://localhost:3000/specialite/GL",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2024-03-21T15:13:44.622Z",
+            "modified": "2024-03-21T15:13:50.406Z",
+            "headers": [],
+            "params": [],
+            "reqType": "get",
+            "tests": []
+        },
+        {
+            "_id": "344737c1-0232-4c0e-b191-59ed38941257",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "5e553881-8130-46e0-8265-d203be52130f",
+            "name": "getOne",
+            "url": "http://localhost:3000/section/M1GL",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2024-03-22T10:31:29.650Z",
+            "modified": "2024-03-22T10:33:26.344Z",
+            "headers": [],
+            "params": [],
+            "reqType": "get",
+            "tests": []
+        },
+        {
+            "_id": "2938a1b8-2ed7-448c-819c-b8875fa0ee0f",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "068609af-66c7-40a0-8aae-c1d48318315b",
+            "name": "getOne",
+            "url": "http://localhost:3000/groupe/1",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2024-03-25T13:02:19.563Z",
+            "modified": "2024-03-25T13:15:24.123Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "e35d82b9-90f3-4a87-bff6-ab79d0d7c532",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "ef3e2647-ec0b-4164-9dec-52c7a13a0d32",
+            "name": "addOne",
+            "url": "http://localhost:3000/specialite",
+            "method": "POST",
+            "sortNum": 70000,
+            "created": "2024-03-21T15:17:50.797Z",
+            "modified": "2024-03-21T15:29:19.067Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "nom_specialite",
+                        "value": "Science et Technologie1"
+                    },
+                    {
+                        "name": "code_specialite",
+                        "value": "ST1"
+                    }
+                ]
+            },
+            "reqType": "get",
+            "tests": []
+        },
+        {
+            "_id": "ded772f6-3ee5-4fc4-a0aa-b65f157bcf67",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "5e553881-8130-46e0-8265-d203be52130f",
+            "name": "addOne",
+            "url": "http://localhost:3000/section",
+            "method": "POST",
+            "sortNum": 70000,
+            "created": "2024-03-22T10:31:29.651Z",
+            "modified": "2024-03-22T10:42:32.692Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "code_section",
+                        "value": "L1STA0"
+                    }
+                ]
+            },
+            "reqType": "post",
+            "tests": []
+        },
+        {
+            "_id": "518c9a49-6ad9-407c-8751-6d84b0a44b09",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "068609af-66c7-40a0-8aae-c1d48318315b",
+            "name": "addOne",
+            "url": "http://localhost:3000/groupe",
+            "method": "POST",
+            "sortNum": 70000,
+            "created": "2024-03-25T13:02:19.564Z",
+            "modified": "2024-03-25T13:17:11.278Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "code_section",
+                        "value": "L1STA"
+                    },
+                    {
+                        "name": "code_groupe",
+                        "value": "G10"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
+            "_id": "92961154-614f-409c-b605-2e917e65c239",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "ef3e2647-ec0b-4164-9dec-52c7a13a0d32",
+            "name": "updateOne",
+            "url": "http://localhost:3000/specialite/ST1",
+            "method": "PUT",
+            "sortNum": 75000,
+            "created": "2024-03-21T15:32:18.847Z",
+            "modified": "2024-03-21T15:32:18.848Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "nom_specialite",
+                        "value": "Science et Technologie2"
+                    },
+                    {
+                        "name": "code_specialite_new",
+                        "value": "ST2"
+                    }
+                ]
+            },
+            "reqType": "post",
+            "tests": []
+        },
+        {
+            "_id": "a0e951be-67eb-4be5-a58f-7f50c1e17d3d",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "ef3e2647-ec0b-4164-9dec-52c7a13a0d32",
+            "name": "deleteOne",
+            "url": "http://localhost:3000/specialite/ST25",
+            "method": "DELETE",
+            "sortNum": 80000,
+            "created": "2024-03-21T15:29:35.638Z",
+            "modified": "2024-03-21T15:33:23.720Z",
+            "headers": [],
+            "params": [],
+            "reqType": "post",
+            "tests": []
+        },
+        {
+            "_id": "2a869d3b-5535-4e9e-be23-6e2c3a1267bd",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "5e553881-8130-46e0-8265-d203be52130f",
+            "name": "updateOne",
+            "url": "http://localhost:3000/section/L1STA0",
+            "method": "PUT",
+            "sortNum": 80000,
+            "created": "2024-03-22T10:31:29.653Z",
+            "modified": "2024-03-22T10:36:39.728Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "code_section_new",
+                    "value": "L1STA1",
+                    "isDisabled": true,
+                    "isPath": false
+                }
+            ],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "code_section_new",
+                        "value": "L1STA1"
+                    }
+                ]
+            },
+            "reqType": "del",
+            "tests": []
+        },
+        {
+            "_id": "43a5ce15-cca8-47bf-b869-68b83172e7b3",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "068609af-66c7-40a0-8aae-c1d48318315b",
+            "name": "updateOne",
+            "url": "http://localhost:3000/groupe/4",
+            "method": "PUT",
+            "sortNum": 80000,
+            "created": "2024-03-25T13:02:19.565Z",
+            "modified": "2024-03-25T13:21:16.610Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "code_section_new",
+                    "value": "L1STA1",
+                    "isDisabled": true,
+                    "isPath": false
+                }
+            ],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "code_section",
+                        "value": "M1GL"
+                    },
+                    {
+                        "name": "code_groupe",
+                        "value": "G1"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
+            "_id": "e81711cc-686e-413d-92f0-a8ff7712ae9c",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "5e553881-8130-46e0-8265-d203be52130f",
+            "name": "deleteOne",
+            "url": "http://localhost:3000/section/L1STA1",
+            "method": "DELETE",
+            "sortNum": 90000,
+            "created": "2024-03-22T10:31:29.654Z",
+            "modified": "2024-03-22T10:42:07.583Z",
+            "headers": [],
+            "params": [],
+            "reqType": "put",
+            "tests": []
+        },
+        {
+            "_id": "759c0dd0-0dc5-4589-a47d-44f954543480",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "068609af-66c7-40a0-8aae-c1d48318315b",
+            "name": "deleteOne",
+            "url": "http://localhost:3000/groupe/5",
+            "method": "DELETE",
+            "sortNum": 90000,
+            "created": "2024-03-25T13:02:19.566Z",
+            "modified": "2024-03-25T13:23:43.039Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        }
+    ]
+}
