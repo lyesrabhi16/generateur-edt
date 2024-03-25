@@ -1,4 +1,4 @@
-import { jours } from "../../constants.js";
+import { jour as type_jour } from "../../constants.js";
 
 export const addOccupationValidator = (req,res,next)=>{
 
@@ -15,6 +15,10 @@ const invalideFields = [];
 if ( jour==undefined) {
     missingFields.push("jour");
 }
+else if (!validateJour(jour)) {
+    invalideFields.push("attribut jour invalide !"); 
+}
+
 if ( heur_debut==undefined) {
     missingFields.push("heure début");
 }else if (!validateTimeFormat(heur_debut)) {
@@ -87,4 +91,8 @@ function validateTimeFormat(time) {
     const timeRegex = /^(0[0-9]|1[0-9]|2[0-3]|[0-9]):[0-5][0-9]$/;
 
     return timeRegex.test(time);
+}
+
+function validateJour(jour) {
+    return type_jour.includes(jour);
 }
