@@ -5,6 +5,7 @@ import DB from "./DB/DB.js";
 import PersonneRouter from "./router/Personne.js";
 import SpecialiteRouter from "./router/Specialite.js";
 import SectionRouter from './router/Section.js';
+import OccupationRouter from "./router/Occupation.js";
 
 dotEnv.config();
 
@@ -24,6 +25,7 @@ app.get("/", (req, res) => {
 app.use("/personne", PersonneRouter);
 app.use("/specialite", SpecialiteRouter);
 app.use("/section", SectionRouter);
+app.use('/Occupation',OccupationRouter);
 
 app.listen(port, () => {
   console.log("Server running on http://localhost:" + port);
