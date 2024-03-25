@@ -8,6 +8,7 @@ import PersonneRouter from "./router/Personne.js";
 import SpecialiteRouter from "./router/Specialite.js";
 import SectionRouter from './router/Section.js';
 import GroupeRouter from './router/Groupe.js';
+import OccupationRouter from "./router/Occupation.js";
 
 dotEnv.config();
 
@@ -27,6 +28,7 @@ app.get("/", (req, res) => {
 app.use("/personne", PersonneRouter);
 app.use("/specialite", SpecialiteRouter);
 app.use("/section", SectionRouter);
+app.use('/Occupation',OccupationRouter);
 app.use("/groupe", GroupeRouter);
 
 app.listen(port, () => {
