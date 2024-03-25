@@ -4,8 +4,8 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "backend": "npm run dev --prefix backend",
-    "frontend": "npm run dev --prefix frontend",
+    "backend": "npm i --prefix backend && npm run dev --prefix backend",
+    "frontend": "npm i --prefix frontend && npm run dev --prefix frontend",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
