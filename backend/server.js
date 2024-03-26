@@ -9,7 +9,7 @@ import SpecialiteRouter from "./router/Specialite.js";
 import SectionRouter from './router/Section.js';
 import GroupeRouter from './router/Groupe.js';
 import OccupationRouter from "./router/Occupation.js";
-
+import moduleRouter from "./router/Module.js";
 dotEnv.config();
 
 const app = new Express();
@@ -28,8 +28,9 @@ app.get("/", (req, res) => {
 app.use("/personne", PersonneRouter);
 app.use("/specialite", SpecialiteRouter);
 app.use("/section", SectionRouter);
-app.use('/Occupation',OccupationRouter);
+app.use('/occupation',OccupationRouter);
 app.use("/groupe", GroupeRouter);
+app.use("/module", moduleRouter )
 
 app.listen(port, () => {
   console.log("Server running on http://localhost:" + port);

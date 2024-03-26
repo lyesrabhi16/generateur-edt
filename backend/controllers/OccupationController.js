@@ -16,14 +16,6 @@ selectOccupationByDay(jour).then((data)=>{
         message: "occupation trouvé  pour  "+ jour ,
         Occupation: data,
       };
-     if(data==null) {
-        const response = {
-            status: "success",
-            message: "aucune occupation trouvé pour "+ jour,
-            Occupation: data,
-          };
-          res.status(404).json(response)
-     }
 
      res.status(200).json(response)
       
@@ -47,15 +39,6 @@ export const  getAllOccupation =(req,res)=>{
             Occupations: data,
           };
 
-          if(data==null) {
-             
-            response.status= "Error",
-            response.message= "aucune occupation trouvée ",
-            response.Occupations= null,
-        
-          res.status(404).json(response)
-        
-      }
       res.status(200).json(response);
 
     }).catch((err)=>{
