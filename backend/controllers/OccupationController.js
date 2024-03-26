@@ -16,16 +16,23 @@ selectOccupationByDay(jour).then((data)=>{
         message: "occupation trouvé  pour  "+ jour ,
         Occupation: data,
       };
-     if(data==null) {
-        const response = {
-            status: "success",
-            message: "aucune occupation trouvé pour "+ jour,
-            Occupation: data,
-          };
-          res.status(404).json(response)
-     }
+     
+    /*  @MassinS
+            ! removed null check
+            reason: 
+                * 1. if data = [] (let's say for jour = Dimanche), we still get this:
+                    {
+                        "status": "success",
+                        "message": "occupation trouvé  pour  Dimanche",
+                        "Occupation": []
+                    } 
+                * so there is no need to for this null check
+                
+                ? note please remove this comment after reading it, if you agree 
 
-     res.status(200).json(response)
+        --written by @lyesrabhi16  
+    */
+    res.status(200).json(response)
       
 }).catch((err)=>{
     const response = {
@@ -43,25 +50,32 @@ export const  getAllOccupation =(req,res)=>{
     selectAllOccupation().then((data)=>{
         const response = {
             status: "success",
-            message: "occupation trouvée ",
+            message: "occupations trouvée ",
             Occupations: data,
           };
 
-          if(data==null) {
-             
-            response.status= "Error",
-            response.message= "aucune occupation trouvée ",
-            response.Occupations= null,
-        
-          res.status(404).json(response)
-        
-      }
-      res.status(200).json(response);
+        /* @MassinS
+            ! removed null check
+            reason: 
+                * 1. if data = [] (if there is no occupation in the db), we still get this:
+                    {
+                        "status": "success",
+                        "message": "occupations trouvée",
+                        "Occupations": []
+                    } 
+                * so there is no need to for this null check,
+                * because db.manyOrNone() returns an empty array if there is no data
+                
+                ? note please remove this comment after reading it, if you agree
+                
+            --written by @lyesrabhi16
+         */
+        res.status(200).json(response);
 
     }).catch((err)=>{
         const response = {
             status: "error",
-            message: "Erreur pendant la recherche des occupation ",
+            message: "Erreur pendant la recherche des occupations ",
             error: err,
           };
           res.status(500).json(response);
@@ -90,7 +104,7 @@ export const getOccupationId =(req,res)=>{
                 response.Occupation= null,
             
               res.status(404).json(response)
-            
+              return;
           }
           res.status(200).json(response);
     }).catch((err)=>{
