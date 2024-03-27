@@ -1,5 +1,17 @@
 import { jours  } from "../../constants.js";
 
+/* @MassinS
+    * changes:
+        1. fixed some typos
+        2. removed validateJour function call because there is no validateJour function
+        3. changed field names in responses/messages to match the field names in 
+            the request body (heur_debut, heur_fin)
+
+    ? remove this comment after reading
+    
+    --written by @lyesrabhi16
+*/
+
 export const addOccupationValidator = (req,res,next)=>{
 
 const {
@@ -11,24 +23,22 @@ const {
 const missingFields = [];
 const invalideFields = [];
 
-f
+
 if ( jour==undefined) {
     missingFields.push("jour");
 }
-else if (!validateJour(jour)) {
-    invalideFields.push("attribut jour invalide !"); 
-}
+
 
 if ( heur_debut==undefined) {
-    missingFields.push("heure début");
+    missingFields.push("heur_debut");
 }else if (!validateTimeFormat(heur_debut)) {
-    invalideFields.push("attribut heure début invalide !");
+    invalideFields.push("attribut heur_debut invalide !");
 }
 
 if ( heur_fin==undefined) {
-    missingFields.push("heure fin");
+    missingFields.push("heur_fin");
 }else if (!validateTimeFormat(heur_fin)) {
-    invalideFields.push("attribut heure fin invalide !");
+    invalideFields.push("attribut heur_fin invalide !");
 }
 
 
@@ -53,7 +63,7 @@ if ( invalideFields.length>0) {
 }
 
 const heureDebut = parseInt(heur_debut.split(":")[0]); 
-const heureFin = parseInt(heur_fin.split(":")[0])
+const heureFin = parseInt(heur_fin.split(":")[0]);
 
 if ( heureDebut < 8 || heureDebut > 18 || heureFin < 8 ) {
     return res.status(400).json({
@@ -66,7 +76,7 @@ if ( heureDebut < 8 || heureDebut > 18 || heureFin < 8 ) {
 if (heureDebut>heureFin || heureDebut==heureFin) {
     return  res.status(400).json({
         status: "error",
-        message: " heure debut > heure fin  ",
+        message: " heur_debut > heur_fin  ",
     });
    
     
