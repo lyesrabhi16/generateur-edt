@@ -10,6 +10,7 @@ import SectionRouter from './router/Section.js';
 import GroupeRouter from './router/Groupe.js';
 import OccupationRouter from "./router/Occupation.js";
 import moduleRouter from "./router/Module.js";
+import LocalRouter from "./router/Local.js";
 dotEnv.config();
 
 const app = new Express();
@@ -30,7 +31,8 @@ app.use("/specialite", SpecialiteRouter);
 app.use("/section", SectionRouter);
 app.use('/occupation',OccupationRouter);
 app.use("/groupe", GroupeRouter);
-app.use("/module", moduleRouter )
+app.use("/module", moduleRouter );
+app.use("/Local",LocalRouter);
 
 app.listen(port, () => {
   console.log("Server running on http://localhost:" + port);

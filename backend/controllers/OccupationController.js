@@ -69,10 +69,10 @@ export const getOccupationId =(req,res)=>{
           if(data==null) {
              
                 response.status= "Error",
-                response.message= "aucune occupation trouvée ",
-                response.Occupation= null,
+                response.message= "aucune occupation trouvée "
+                response.Occupation= null
             
-              res.status(404).json(response)
+                return res.status(404).json(response);
             
           }
           res.status(200).json(response);
