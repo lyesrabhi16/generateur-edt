@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "agemp",
-    "dateExported": "2024-03-25T13:24:00.535Z",
+    "dateExported": "2024-03-27T13:41:12.148Z",
     "version": "1.1",
     "folders": [
         {
@@ -31,6 +31,13 @@
             "containerId": "",
             "created": "2024-03-25T13:02:19.562Z",
             "sortNum": 40000
+        },
+        {
+            "_id": "9f9a6da4-de80-4d7f-acd5-84f547a9fded",
+            "name": "occupation",
+            "containerId": "",
+            "created": "2024-03-26T14:42:30.053Z",
+            "sortNum": 50000
         }
     ],
     "requests": [
@@ -274,11 +281,11 @@
             "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
             "containerId": "068609af-66c7-40a0-8aae-c1d48318315b",
             "name": "getOne",
-            "url": "http://localhost:3000/groupe/1",
+            "url": "http://localhost:3000/groupe/10",
             "method": "GET",
             "sortNum": 60000,
             "created": "2024-03-25T13:02:19.563Z",
-            "modified": "2024-03-25T13:15:24.123Z",
+            "modified": "2024-03-26T15:14:14.048Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -501,6 +508,126 @@
             "sortNum": 90000,
             "created": "2024-03-25T13:02:19.566Z",
             "modified": "2024-03-25T13:23:43.039Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "8218d6a1-d1a6-4e55-b0b0-efc32e4ba997",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "9f9a6da4-de80-4d7f-acd5-84f547a9fded",
+            "name": "getOccupationId",
+            "url": "http://localhost:3000/occupation/1",
+            "method": "GET",
+            "sortNum": 100000,
+            "created": "2024-03-26T14:42:54.000Z",
+            "modified": "2024-03-27T13:29:20.523Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "ae1e8c1c-c68a-450a-b3a7-71e09756abcf",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "9f9a6da4-de80-4d7f-acd5-84f547a9fded",
+            "name": "getOccupationDay",
+            "url": "http://localhost:3000/occupation/jours/Lundi",
+            "method": "GET",
+            "sortNum": 105000,
+            "created": "2024-03-26T14:48:00.651Z",
+            "modified": "2024-03-27T13:29:26.201Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "dc56cbaf-8b3b-4c28-a9d1-daadf0e78129",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "9f9a6da4-de80-4d7f-acd5-84f547a9fded",
+            "name": "getAll",
+            "url": "http://localhost:3000/occupation",
+            "method": "GET",
+            "sortNum": 107500,
+            "created": "2024-03-26T16:15:09.333Z",
+            "modified": "2024-03-26T16:15:21.058Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "412bc7e6-979b-41a2-9490-e5fd5bb079dd",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "9f9a6da4-de80-4d7f-acd5-84f547a9fded",
+            "name": "insertOneOccupation",
+            "url": "http://localhost:3000/occupation",
+            "method": "POST",
+            "sortNum": 108750,
+            "created": "2024-03-26T15:56:52.293Z",
+            "modified": "2024-03-27T13:38:34.550Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "jour",
+                        "value": "Dimanche"
+                    },
+                    {
+                        "name": "heur_debut",
+                        "value": "10:30"
+                    },
+                    {
+                        "name": "heur_fin",
+                        "value": "11:30"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
+            "_id": "e6fcc34b-2376-48f2-89ea-c63acbb42f55",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "9f9a6da4-de80-4d7f-acd5-84f547a9fded",
+            "name": "updateOccupationById",
+            "url": "http://localhost:3000/occupation/5",
+            "method": "PUT",
+            "sortNum": 115000,
+            "created": "2024-03-26T16:11:19.188Z",
+            "modified": "2024-03-27T13:40:14.441Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "jour",
+                        "value": "Mardi"
+                    },
+                    {
+                        "name": "heur_debut",
+                        "value": "10:30"
+                    },
+                    {
+                        "name": "heur_fin",
+                        "value": "15:30"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
+            "_id": "762d881c-8b7e-40f6-94c9-205a56ff4a9e",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "9f9a6da4-de80-4d7f-acd5-84f547a9fded",
+            "name": "deleteOccupationById",
+            "url": "http://localhost:3000/occupation/5",
+            "method": "DELETE",
+            "sortNum": 125000,
+            "created": "2024-03-26T14:44:14.633Z",
+            "modified": "2024-03-27T13:40:22.978Z",
             "headers": [],
             "params": [],
             "tests": []
