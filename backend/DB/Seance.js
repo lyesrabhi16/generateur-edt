@@ -1,0 +1,82 @@
+import { db } from "../server.js";
+
+/** 
+@returns {Promise}
+*/
+
+export const getAllSeance =()=>{
+
+    return db.manyOrNone(`SELECT id_seance , type,nom_module , nom_specialite
+                          from Seance left join Module on Seance.code_module=Module.code_module
+                          left join Specialite on Seance.code_specialite=Specialite.code_specialite 
+                          `
+                        );
+}
+
+/**
+  @param {string} id_seance
+  @returns {Promise<object|null>} 
+ */
+export const getOneSeanceById =(id_seance)=>{
+return db.oneOrNone(`SELECT id_seance , type,nom_module , nom_specialite
+                    from Seance left join Module on Seance.code_module=Module.code_module
+                    left join Specialite on Seance.code_specialite=Specialite.code_specialite
+                    WHERE id_seance=$1 `,[id_seance]  
+                    );
+}
+
+/**
+    @param {string} type 
+   @returns {Promise<object|null>} 
+ */
+
+
+   export const getAllSeanceByType = (type) => {
+    return db.manyOrNone(`
+        SELECT id_seance, type, nom_module, nom_specialite
+        FROM Seance 
+        LEFT JOIN Module ON Seance.code_module = Module.code_module
+        LEFT JOIN Specialite ON Seance.code_specialite = Specialite.code_specialite
+        WHERE type = $1
+    `, [type]);
+}
+
+
+/**
+ 
+ * @param {string} type 
+ * @param {string} code_module 
+ * @param {string} code_specialite 
+ * @returns {Promise}
+ */
+export const createSeance =( type, code_module, code_specialite)=>{
+
+    return db.oneOrNone(`INSERT INTO Seance (type, code_module, code_specialite) 
+                        VALUES($1,$2,$3)`,[type,code_module,code_specialite]);
+}
+
+/**
+ * 
+ * @param {string} type 
+ * @param {string} code_module 
+ * @param {string} code_specialite 
+ * @param {string} id_seance 
+ * @returns {Promise}
+ */
+
+export const UpdateSeance=(type,code_module,code_specialite,id_seance)=>{
+      return db.oneOrNone(`UPDATE Seance SET type=$1,code_module=$2,code_specialite=$3 WHERE id_seance=$4 `
+      ,[type,code_module,code_specialite,id_seance]
+      );
+}
+
+
+/**
+  @param {string} id_seance
+ * @returns {Promise}
+ */
+
+export const deleteSeance =(id_seance)=>{
+  return db.oneOrNone(`DELETE FROM Seance WHERE id_seance=$1`,[id_seance])
+
+}

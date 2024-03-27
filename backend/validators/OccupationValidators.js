@@ -1,16 +1,5 @@
 import { jours  } from "../../constants.js";
 
-/* @MassinS
-    * changes:
-        1. fixed some typos
-        2. removed validateJour function call because there is no validateJour function
-        3. changed field names in responses/messages to match the field names in 
-            the request body (heur_debut, heur_fin)
-
-    ? remove this comment after reading
-    
-    --written by @lyesrabhi16
-*/
 
 export const addOccupationValidator = (req,res,next)=>{
 

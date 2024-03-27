@@ -45,6 +45,7 @@ export const putOneLocal =(req,res)=>{
      })
 
 }
+
 export const deleteOneLocal =(req,res)=>{
     const {code_local} = req.params;
 

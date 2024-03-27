@@ -29,6 +29,7 @@ export const getOneLocalById=(code_local)=>{
 
 }
 
+
 /**
  @param {string}  code_local
  @param {string} type
@@ -36,7 +37,7 @@ export const getOneLocalById=(code_local)=>{
  @param {Promise}
  */
 
-export const UpdateLocal =(code_local,capacite,type)=>{
+export const UpdateLocal = (code_local,capacite,type) =>{
 
 return db.oneOrNone("UPDATE Local SET capacite=$1,type=$2 WHERE code_local=$3",[capacite,type,code_local]);
 

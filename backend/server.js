@@ -11,6 +11,7 @@ import GroupeRouter from './router/Groupe.js';
 import OccupationRouter from "./router/Occupation.js";
 import moduleRouter from "./router/Module.js";
 import LocalRouter from "./router/Local.js";
+import SeanceRouter from "./router/Seance.js";
 dotEnv.config();
 
 const app = new Express();
@@ -33,6 +34,8 @@ app.use('/occupation',OccupationRouter);
 app.use("/groupe", GroupeRouter);
 app.use("/module", moduleRouter );
 app.use("/Local",LocalRouter);
+app.use("/Seance",SeanceRouter);
+
 
 app.listen(port, () => {
   console.log("Server running on http://localhost:" + port);
