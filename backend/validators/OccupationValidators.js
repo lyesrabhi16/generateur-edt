@@ -11,7 +11,7 @@ const {
 const missingFields = [];
 const invalideFields = [];
 
-
+f
 if ( jour==undefined) {
     missingFields.push("jour");
 }
@@ -33,53 +33,53 @@ if ( heur_fin==undefined) {
 
 
 if ( missingFields.length>0) {
-    res.status(400).json({
+    return res.status(400).json({
         status: "error",
         message:
           "missing required fields: " +
           missingFields 
       });
-      return;
+     
 }
 
 
 if ( invalideFields.length>0) {
-    res.status(400).json({
+    return res.status(400).json({
         status: "error",
         message:
           " invalide fields : " + invalideFields
       });
-      return;
+  
 }
 
 const heureDebut = parseInt(heur_debut.split(":")[0]); 
 const heureFin = parseInt(heur_fin.split(":")[0])
 
 if ( heureDebut < 8 || heureDebut > 18 || heureFin < 8 ) {
-    res.status(400).json({
+    return res.status(400).json({
         status: "error",
         message: " occupation inutile ",
     });
-    return;
+   
 }
 
 if (heureDebut>heureFin || heureDebut==heureFin) {
-    res.status(400).json({
+    return  res.status(400).json({
         status: "error",
         message: " heure debut > heure fin  ",
     });
-    return;
+   
     
 }
 //  Vendrei est exclus ==> occupation inutile  // 
 if (jour!== jours.Dimanche && jour!== jours.Lundi && jour!== jours.Mardi && jour!== jours.Mercredi && jour!== jours.Jeudi &&
     jour!== jours.Samedi
     ) {
-        res.status(400).json({
+        return  res.status(400).json({
             status: "error",
             message: " Erreur dans le jour  ou jour mal choisi  ",
         });
-        return;
+        
 
     }
 
