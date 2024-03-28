@@ -1,4 +1,4 @@
-import { UpdateModule, createModule, deleteModule, selectAllModule } from "../DB/Module.js";
+import { UpdateModule, createModule, deleteModule, selectAllModule, selectOneModule } from "../DB/Module.js";
 
 export const getAllModule=(req,res)=>{
 
@@ -19,11 +19,51 @@ export const getAllModule=(req,res)=>{
           res.status(500).json(response);
     })
 }
+
+export const getOneModule = (req, res) => {
+    const { code_module } = req.params;
+
+    selectOneModule(code_module).then((data)=>{
+
+        const response = {
+            status:'Success',
+            message:"Module trouvé",
+            Module:data
+        };
+        if (data === null){
+            response.status = "Error";
+            response.message = "Aucun Module trouvé";
+            response.Module = null;
+            res.status(404).json(response);
+            return false;
+        }
+        res.status(200).json(response);
+    }).catch((err)=>{
+        const response = {
+            status: "error",
+            message: "Erreur pendant la recherche du module ",
+            error: err,
+          };
+          res.status(500).json(response);
+    })
+}
+
+
 export const putOneModule=(req,res)=>{
-    const {nom_module}=req.body;
+
+    /* @MassinS
+        ! modified
+        * made code_module modifiable as well, like the updateSpecialite functionnality 
+
+        ? remove this comment after reading it
+
+        --written by @lyesrabhi16
+     */
+
+    const {code_module_new, nom_module}=req.body;
     const {code_module}=req.params;
     
-    UpdateModule(code_module,nom_module).then(()=>{
+    UpdateModule(code_module, code_module_new, nom_module).then(()=>{
         const response = {
             status: "success",
             message: "un module mis à jour "

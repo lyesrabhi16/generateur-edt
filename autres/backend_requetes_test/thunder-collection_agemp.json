@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "agemp",
-    "dateExported": "2024-03-27T13:41:12.148Z",
+    "dateExported": "2024-03-28T11:55:45.415Z",
     "version": "1.1",
     "folders": [
         {
@@ -38,6 +38,13 @@
             "containerId": "",
             "created": "2024-03-26T14:42:30.053Z",
             "sortNum": 50000
+        },
+        {
+            "_id": "fc63c090-441d-4c7b-b473-9deaff6d0b5f",
+            "name": "module",
+            "containerId": "",
+            "created": "2024-03-27T14:01:52.117Z",
+            "sortNum": 60000
         }
     ],
     "requests": [
@@ -527,6 +534,34 @@
             "tests": []
         },
         {
+            "_id": "c6f351ab-82de-4588-993b-fcf30ca1f647",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "fc63c090-441d-4c7b-b473-9deaff6d0b5f",
+            "name": "getAll",
+            "url": "http://localhost:3000/module",
+            "method": "GET",
+            "sortNum": 100000,
+            "created": "2024-03-27T14:01:52.117Z",
+            "modified": "2024-03-28T11:44:39.753Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "72d3d2e1-7693-4289-a734-d530c1ce3e88",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "fc63c090-441d-4c7b-b473-9deaff6d0b5f",
+            "name": "getOne",
+            "url": "http://localhost:3000/module/GL",
+            "method": "GET",
+            "sortNum": 104375,
+            "created": "2024-03-28T11:41:46.699Z",
+            "modified": "2024-03-28T11:42:45.740Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
             "_id": "ae1e8c1c-c68a-450a-b3a7-71e09756abcf",
             "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
             "containerId": "9f9a6da4-de80-4d7f-acd5-84f547a9fded",
@@ -587,6 +622,34 @@
             "tests": []
         },
         {
+            "_id": "c14e1092-c26e-4321-8ecf-dde799e7dfd8",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "fc63c090-441d-4c7b-b473-9deaff6d0b5f",
+            "name": "insertOneModule",
+            "url": "http://localhost:3000/module",
+            "method": "POST",
+            "sortNum": 108750,
+            "created": "2024-03-27T14:01:52.120Z",
+            "modified": "2024-03-28T11:18:42.306Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "code_module",
+                        "value": "GL0"
+                    },
+                    {
+                        "name": "nom_module",
+                        "value": "Genie Logiciel0"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
             "_id": "e6fcc34b-2376-48f2-89ea-c63acbb42f55",
             "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
             "containerId": "9f9a6da4-de80-4d7f-acd5-84f547a9fded",
@@ -619,6 +682,35 @@
             "tests": []
         },
         {
+            "_id": "43fad8a4-78c1-4c33-a98e-41bbef56fe82",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "fc63c090-441d-4c7b-b473-9deaff6d0b5f",
+            "name": "putOneModule",
+            "url": "http://localhost:3000/module/GL2",
+            "method": "PUT",
+            "sortNum": 115000,
+            "created": "2024-03-27T14:01:52.121Z",
+            "modified": "2024-03-28T11:55:11.321Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "nom_module",
+                        "value": "Genie Logiciel3"
+                    },
+                    {
+                        "name": "code_module_new",
+                        "value": "GL2",
+                        "isDisabled": true
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
             "_id": "762d881c-8b7e-40f6-94c9-205a56ff4a9e",
             "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
             "containerId": "9f9a6da4-de80-4d7f-acd5-84f547a9fded",
@@ -628,6 +720,20 @@
             "sortNum": 125000,
             "created": "2024-03-26T14:44:14.633Z",
             "modified": "2024-03-27T13:40:22.978Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "ca1be55e-d567-4b17-a1a7-f024934bce76",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "fc63c090-441d-4c7b-b473-9deaff6d0b5f",
+            "name": "deleteOneModule",
+            "url": "http://localhost:3000/module/GL2",
+            "method": "DELETE",
+            "sortNum": 125000,
+            "created": "2024-03-27T14:01:52.122Z",
+            "modified": "2024-03-28T11:55:30.660Z",
             "headers": [],
             "params": [],
             "tests": []
