@@ -27,8 +27,8 @@ export const selectAllLocal=(req,res)=>{
 export const putOneLocal =(req,res)=>{
 
     const {code_local}=req.params;
-    const {capacite, type }= req.body;
-     UpdateLocal(code_local,capacite,type).then(()=>{
+    const {code_local_new, capacite, type }= req.body;
+     UpdateLocal(code_local,code_local_new,capacite,type).then(()=>{
         const response = {
             status: "success",
             message: "Local mis à jour "
@@ -126,7 +126,7 @@ export const selectOneLocalById=(req,res)=>{
 
           if(data===null) {
             response.status='Error';
-            response.message='Aucun Local trouvé de ce type'
+            response.message='Aucun Local trouvé'
             return  res.status(404).json(response)  
           }
              res.status(200).json(response);  
