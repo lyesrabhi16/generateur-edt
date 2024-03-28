@@ -1,5 +1,5 @@
 import { db } from "../server.js";
-import { typePersonneValidator } from "../validators/TypeValidators.js";
+import { typePersonneValidator } from "../validators/OtherValidators.js";
 
 
 /**
