@@ -39,7 +39,7 @@ export const selectOneSeanceById=(req,res)=>{
        }
        if(data===null) {
         response.status='Error';
-        response.message='Aucune seance trouvé'
+        response.message='Aucune seance trouvée'
         return res.status(404).json(response)  
        }
           
