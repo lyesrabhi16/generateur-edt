@@ -1,18 +1,20 @@
 import { TypeLocal } from "../../constants.js";
-import { typeLocalValidator } from "./OtherValidators.js";
+import { LocalCapaciteValidator, typeLocalValidator } from "./OtherValidators.js";
 
-export const addLocalValidator = (req, res, next) => {
-    const { capacite, type } = req.body;
-
+export const insertOneLocalValidator = (req, res, next) => {
+    const { code_local, capacite, type } = req.body;
     const missingFields = [];
-    const VerificationCapacite = [];
 
-    if (!capacite) {
+    if (code_local === undefined) {
+        missingFields.push("code_local");
+    }
+
+    if (capacite === undefined) {
         missingFields.push("capacite");
     }
 
-    if (!type) {
-        missingFields.push("local");
+    if (type === undefined) {
+        missingFields.push("type");
     }
 
     if (missingFields.length > 0) {
@@ -21,28 +23,7 @@ export const addLocalValidator = (req, res, next) => {
             message: "Attributs manquants : " + missingFields.join(', ')
         });
     }
-
-    if (type === TypeLocal.Amphi) {
-        if (capacite < 100 || capacite > 300) {
-            VerificationCapacite.push("Capacite invalide pour amphi");
-        }
-    } else if (type === TypeLocal.SalleTD) {
-        if (capacite < 20 || capacite > 80) {
-            VerificationCapacite.push("Capacite invalide pour une Salle TD");
-        }
-    } else if (type === TypeLocal.SalleTP) {
-        if (capacite < 15 || capacite > 25) {
-            VerificationCapacite.push("Capacite invalide pour une salle TP");
-        }
-    }
-
-    if (VerificationCapacite.length > 0) {
-        return res.status(400).json({
-            status: 'error',
-            message: VerificationCapacite
-        });
-    }
-
+    
     if (!typeLocalValidator(type)) {
         return res.status(400).json({
             status: 'error',
@@ -50,5 +31,43 @@ export const addLocalValidator = (req, res, next) => {
         });
     }
 
+    const [VerificationCapacite, VC_messages] = LocalCapaciteValidator(type, capacite);
+    if (!VerificationCapacite) {
+        return res.status(400).json({
+            status: 'error',
+            message: VC_messages
+        });
+    }
+
+    
+
     next();
+};
+
+export const selectAllLocalByTypeValidator = (req, res, next) => {
+    const { type } = req.params;
+
+    if (!typeLocalValidator(type)) {
+        res.status(400).json({
+            status: 'error',
+            message: `type ${type} invalide. type must be one of [${Object.keys(TypeLocal).join(', ')}]`
+        });
+        return false;
+    }
+
+    next();
+};
+
+export const putOneLocalValidator = (req, res, next) => {
+    const { code_local } = req.params;
+    let { code_local_new } = req.body;
+    if (code_local_new === undefined) {
+        code_local_new = code_local;
+    }
+    req.body.code_local = code_local_new;
+    insertOneLocalValidator(req, res, () => {
+        delete req.body.code_local;
+        req.body.code_local_new = code_local_new;
+        next()
+    });
 };
