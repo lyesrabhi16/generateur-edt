@@ -70,7 +70,7 @@ if (heureDebut>heureFin || heureDebut==heureFin) {
    
     
 }
-//  Vendrei est exclus ==> occupation inutile  // 
+//  Vendredi est exclus ==> occupation inutile  // 
 if (jour!== jours.Dimanche && jour!== jours.Lundi && jour!== jours.Mardi && jour!== jours.Mercredi && jour!== jours.Jeudi &&
     jour!== jours.Samedi
     ) {
