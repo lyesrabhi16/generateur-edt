@@ -1,4 +1,5 @@
 import { TypeLocal } from "../../constants.js";
+import { typeLocalValidator } from "./OtherValidators.js";
 
 export const addLocalValidator = (req, res, next) => {
     const { capacite, type } = req.body;
@@ -42,7 +43,7 @@ export const addLocalValidator = (req, res, next) => {
         });
     }
 
-    if (!validiteTypeLocal(type)) {
+    if (!typeLocalValidator(type)) {
         return res.status(400).json({
             status: 'error',
             message: 'Attribut type invalide'
@@ -51,11 +52,3 @@ export const addLocalValidator = (req, res, next) => {
 
     next();
 };
-
-function validiteTypeLocal(type) {
-    if (Object.values(TypeLocal).includes(type)) {
-        return true;
-    } else {
-        return false;
-    }
-}

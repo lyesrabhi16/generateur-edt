@@ -1,4 +1,5 @@
 import { jours  } from "../../constants.js";
+import { TimeFormatValidator } from "./OtherValidators.js";
 
 
 export const addOccupationValidator = (req,res,next)=>{
@@ -20,13 +21,13 @@ if ( jour==undefined) {
 
 if ( heur_debut==undefined) {
     missingFields.push("heur_debut");
-}else if (!validateTimeFormat(heur_debut)) {
+}else if (!TimeFormatValidator(heur_debut)) {
     invalideFields.push("attribut heur_debut invalide !");
 }
 
 if ( heur_fin==undefined) {
     missingFields.push("heur_fin");
-}else if (!validateTimeFormat(heur_fin)) {
+}else if (!TimeFormatValidator(heur_fin)) {
     invalideFields.push("attribut heur_fin invalide !");
 }
 
@@ -85,9 +86,3 @@ if (jour!== jours.Dimanche && jour!== jours.Lundi && jour!== jours.Mardi && jour
 next();
 };
 
-function validateTimeFormat(time) {
-    
-    const timeRegex = /^(0[0-9]|1[0-9]|2[0-3]|[0-9]):[0-5][0-9]$/;
-
-    return timeRegex.test(time);
-}
