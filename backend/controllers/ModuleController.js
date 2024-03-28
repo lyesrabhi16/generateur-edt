@@ -51,14 +51,7 @@ export const getOneModule = (req, res) => {
 
 export const putOneModule=(req,res)=>{
 
-    /* @MassinS
-        ! modified
-        * made code_module modifiable as well, like the updateSpecialite functionnality 
-
-        ? remove this comment after reading it
-
-        --written by @lyesrabhi16
-     */
+   
 
     const {code_module_new, nom_module}=req.body;
     const {code_module}=req.params;
