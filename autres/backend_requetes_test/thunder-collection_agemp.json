@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "agemp",
-    "dateExported": "2024-03-28T11:55:45.415Z",
+    "dateExported": "2024-03-28T14:34:44.047Z",
     "version": "1.1",
     "folders": [
         {
@@ -45,6 +45,13 @@
             "containerId": "",
             "created": "2024-03-27T14:01:52.117Z",
             "sortNum": 60000
+        },
+        {
+            "_id": "cae19bfd-dcc2-4dd8-a022-e1c1a149b801",
+            "name": "local",
+            "containerId": "",
+            "created": "2024-03-28T13:11:44.464Z",
+            "sortNum": 70000
         }
     ],
     "requests": [
@@ -548,6 +555,34 @@
             "tests": []
         },
         {
+            "_id": "245755a3-8a1f-4186-bf9e-ad3b4826bfa0",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "cae19bfd-dcc2-4dd8-a022-e1c1a149b801",
+            "name": "getAll",
+            "url": "http://localhost:3000/local",
+            "method": "GET",
+            "sortNum": 100000,
+            "created": "2024-03-28T13:11:44.464Z",
+            "modified": "2024-03-28T13:15:54.744Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "b19483fd-d5f7-4df9-96e6-1eebf3ebd948",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "cae19bfd-dcc2-4dd8-a022-e1c1a149b801",
+            "name": "getAllByType",
+            "url": "http://localhost:3000/local/types/SalleTP",
+            "method": "GET",
+            "sortNum": 102187.5,
+            "created": "2024-03-28T13:16:49.066Z",
+            "modified": "2024-03-28T13:46:38.914Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
             "_id": "72d3d2e1-7693-4289-a734-d530c1ce3e88",
             "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
             "containerId": "fc63c090-441d-4c7b-b473-9deaff6d0b5f",
@@ -557,6 +592,20 @@
             "sortNum": 104375,
             "created": "2024-03-28T11:41:46.699Z",
             "modified": "2024-03-28T11:42:45.740Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "6453cc7d-e21f-4bd1-ab8a-0e889833f2ef",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "cae19bfd-dcc2-4dd8-a022-e1c1a149b801",
+            "name": "getOne",
+            "url": "http://localhost:3000/local/b5s120",
+            "method": "GET",
+            "sortNum": 104375,
+            "created": "2024-03-28T13:11:44.465Z",
+            "modified": "2024-03-28T13:48:42.261Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -650,6 +699,38 @@
             "tests": []
         },
         {
+            "_id": "df258fb6-b821-437f-826c-579f2ebda561",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "cae19bfd-dcc2-4dd8-a022-e1c1a149b801",
+            "name": "insertOneLocal",
+            "url": "http://localhost:3000/local",
+            "method": "POST",
+            "sortNum": 108750,
+            "created": "2024-03-28T13:11:44.466Z",
+            "modified": "2024-03-28T14:13:42.570Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "code_local",
+                        "value": "b8s8"
+                    },
+                    {
+                        "name": "capacite",
+                        "value": "30"
+                    },
+                    {
+                        "name": "type",
+                        "value": "SalleTD"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
             "_id": "e6fcc34b-2376-48f2-89ea-c63acbb42f55",
             "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
             "containerId": "9f9a6da4-de80-4d7f-acd5-84f547a9fded",
@@ -711,6 +792,38 @@
             "tests": []
         },
         {
+            "_id": "fe9f2868-9d9a-4760-8376-84811bc01109",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "cae19bfd-dcc2-4dd8-a022-e1c1a149b801",
+            "name": "putOneModule",
+            "url": "http://localhost:3000/local/b8s6",
+            "method": "PUT",
+            "sortNum": 115000,
+            "created": "2024-03-28T13:11:44.467Z",
+            "modified": "2024-03-28T14:31:15.076Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "code_local_new",
+                        "value": "b8s60"
+                    },
+                    {
+                        "name": "capacite",
+                        "value": "40"
+                    },
+                    {
+                        "name": "type",
+                        "value": "SalleTD"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
             "_id": "762d881c-8b7e-40f6-94c9-205a56ff4a9e",
             "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
             "containerId": "9f9a6da4-de80-4d7f-acd5-84f547a9fded",
@@ -734,6 +847,20 @@
             "sortNum": 125000,
             "created": "2024-03-27T14:01:52.122Z",
             "modified": "2024-03-28T11:55:30.660Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "d019b8dc-8ad1-4a28-90a4-0f2145488363",
+            "colId": "82fb2e65-b42b-43dc-9abb-147edf184c63",
+            "containerId": "cae19bfd-dcc2-4dd8-a022-e1c1a149b801",
+            "name": "deleteOneModule",
+            "url": "http://localhost:3000/local/b8s6",
+            "method": "DELETE",
+            "sortNum": 125000,
+            "created": "2024-03-28T13:11:44.468Z",
+            "modified": "2024-03-28T14:31:29.701Z",
             "headers": [],
             "params": [],
             "tests": []
