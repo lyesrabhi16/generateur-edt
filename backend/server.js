@@ -13,6 +13,7 @@ import moduleRouter from "./router/Module.js";
 import LocalRouter from "./router/Local.js";
 import SeanceRouter from "./router/Seance.js";
 import CreneauRouter from "./router/Creneau.js";
+import EmploisRouter from "./router/EmploisDuTemps.js";
 dotEnv.config();
 
 const app = new Express();
@@ -37,6 +38,7 @@ app.use("/module", moduleRouter );
 app.use("/Local",LocalRouter);
 app.use("/Seance",SeanceRouter);
 app.use('/Creneau',CreneauRouter);
+app.use('/EmploisTemps',EmploisRouter);
 
 app.listen(port, () => {
   console.log("Server running on http://localhost:" + port);
