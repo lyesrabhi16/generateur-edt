@@ -13,7 +13,7 @@ export const selectAllEnsetOccup =(req,res)=>{
         const response={
             status:"Success",
             message:"Tout l'ensemble des enseignants et leur occupation  sont trouvés",
-            Emplois_temps : data
+            EnsEtOccup : data
            }
            res.status(200).json(response);
           
@@ -37,7 +37,7 @@ export const selectAllEnsetOccupById = (req,res) =>{
         const response={
             status:"Success",
             message:"enseignant et leurs occupations sont trouvés",
-            Emplois_temps : data
+            EnsEtOccup : data
            }
            if( data===null) {
 
