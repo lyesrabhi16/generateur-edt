@@ -14,6 +14,7 @@ import LocalRouter from "./router/Local.js";
 import SeanceRouter from "./router/Seance.js";
 import CreneauRouter from "./router/Creneau.js";
 import EmploisRouter from "./router/EmploisDuTemps.js";
+import EnsEtOccupRouter from "./router/EnsEtOccup.js";
 dotEnv.config();
 
 const app = new Express();
@@ -29,16 +30,17 @@ app.get("/", (req, res) => {
     res.send("AGEMP Server");// for testing purposes
 });
 
-app.use("/personne", PersonneRouter);
-app.use("/specialite", SpecialiteRouter);
-app.use("/section", SectionRouter);
-app.use('/occupation',OccupationRouter);
-app.use("/groupe", GroupeRouter);
-app.use("/module", moduleRouter );
+app.use("/Personne", PersonneRouter);
+app.use("/Specialite", SpecialiteRouter);
+app.use("/Section", SectionRouter);
+app.use('/Occupation',OccupationRouter);
+app.use("/Groupe", GroupeRouter);
+app.use("/Module", moduleRouter );
 app.use("/Local",LocalRouter);
 app.use("/Seance",SeanceRouter);
 app.use('/Creneau',CreneauRouter);
 app.use('/EmploisTemps',EmploisRouter);
+app.use('/EnsEtOccup',EnsEtOccupRouter);
 
 app.listen(port, () => {
   console.log("Server running on http://localhost:" + port);
