@@ -24,32 +24,6 @@ export const getAllCreneau =()=>{
 }
 
 
-
-/**SELECT 
-    c.id_creneau, 
-    c.debut, 
-    c.fin, 
-    c.jour, 
-    g.code_groupe, 
-    s.type, 
-    m.nom_module, 
-    s.code_specialite, 
-    l.code_local  
-FROM 
-    Creneau c
-LEFT JOIN 
-    Seance s ON c.id_seance = s.id_seance 
-LEFT JOIN  
-    Module m ON s.code_module = m.code_module
-LEFT JOIN  
-    EmploisDuTemps edt ON c.id_Emp = edt.id_Emp
-LEFT JOIN  
-    Groupe g ON edt.id_groupe = g.id_groupe
-LEFT JOIN  
-    Local l ON c.code_local = l.code_local;
-
- */
-
 /**
  * 
  * @param {string} id_creneau 
