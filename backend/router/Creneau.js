@@ -14,7 +14,16 @@ const CreneauRouter = Router();
 
 CreneauRouter.get('/',selectAllCreneau);
 CreneauRouter.get('/:id_creneau', selectOneCreneauById  );
-CreneauRouter.get('/groupes/:code_groupe',selectAllCreneauByGroupe);
+/* @MassinS
+    !modified
+    * changed code_groupe to id_groupe because code_groupe is not unique
+    * meaning we can have G5 in GL and G5 in MI
+    
+    ? remove after reading
+    
+    --written by @lyesrabhi16
+ */
+CreneauRouter.get('/groupes/:id_groupe',selectAllCreneauByGroupe);
 CreneauRouter.put('/:id_creneau',addCreneauValidators,putOneCreneau);
 CreneauRouter.post('/',addCreneauValidators,insertOneCreneau);
 CreneauRouter.delete('/:id_creneau',deleteOneCreneau);
