@@ -16,6 +16,7 @@ import CreneauRouter from "./router/Creneau.js";
 import EmploisRouter from "./router/EmploisDuTemps.js";
 import EnsEtOccupRouter from "./router/EnsEtOccup.js";
 import ModuleEnsRouter from "./router/ModuleEns.js";
+import EnsEtCreneauxRouter from "./router/EnsEtCreneaux.js";
 dotEnv.config();
 
 const app = new Express();
@@ -43,6 +44,7 @@ app.use('/Creneau',CreneauRouter);
 app.use('/EmploisTemps',EmploisRouter);
 app.use('/EnsEtOccup',EnsEtOccupRouter);
 app.use('/ModuleEns',ModuleEnsRouter);
+app.use('/EnsCreneaux',EnsEtCreneauxRouter);
 
 app.listen(port, () => {
   console.log("Server running on http://localhost:" + port);

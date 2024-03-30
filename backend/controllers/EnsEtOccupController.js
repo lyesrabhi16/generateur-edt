@@ -42,8 +42,8 @@ export const selectAllEnsetOccupById = (req,res) =>{
            if( data===null) {
 
             response.status='Error';
-            response.message='Aucun occupation  trouvé'
-            return res.status(404).json(response)
+            response.message='Aucun occupation  trouvé';
+            return res.status(404).json(response);
 
             
            }
