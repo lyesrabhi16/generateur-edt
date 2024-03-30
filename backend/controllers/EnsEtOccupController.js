@@ -1,5 +1,5 @@
 import { getAllEnsetOccup,
-         getAllEnsetOccupById,
+         getAllEnsetOccupByMatricule,
          createEnsetOccup,
          updateEnsEtOccup,
          deleteEnsEtOccup
@@ -29,11 +29,16 @@ export const selectAllEnsetOccup =(req,res)=>{
       })
 
 }
-
-export const selectAllEnsetOccupById = (req,res) =>{
+/* @MassinS
+    ! modified
+    * changed name from ...Id to ...Matricule
+    ? remove after reading
+    --written by @lyesrabhi16
+*/
+export const selectAllEnsetOccupByMatricule = (req,res) =>{
  
      const { matricule } = req.params;
-     getAllEnsetOccupById(matricule).then((data)=>{
+     getAllEnsetOccupByMatricule(matricule).then((data)=>{
         const response={
             status:"Success",
             message:"enseignant et leurs occupations sont trouvés",
@@ -85,8 +90,9 @@ export const insertOneEnsetOccup = (req,res)=>{
 } 
 
 export const putOneEnsEtOccup=(req,res)=>{
-    const {matricule,id_occup} = req.body;
-    updateEnsEtOccup(matricule,id_occup).then(()=>{
+    const {matricule,id_occup} = req.params;
+    const {matricule_new, id_occup_new} = req.body;
+    updateEnsEtOccup(matricule,id_occup, matricule_new, id_occup_new).then(()=>{
         const response={
             status:"Success",
             message:"EnsEtOccup mis à jour"
