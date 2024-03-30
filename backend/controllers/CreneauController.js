@@ -26,12 +26,7 @@ export const selectAllCreneau = (req,res) =>{
     })
 }
 export const selectOneCreneauById=(req,res) =>{
-    /* @MassinS
-        !modified
-        * modified to return only one creneau
-        ? remove after reading
-        --written by @lyesrabhi16
-     */
+ 
     const {id_creneau} = req.params;
   getOneCreneauById(id_creneau).then((data)=>{
     const response={
@@ -69,15 +64,6 @@ export const selectAllCreneauByGroupe =(req,res)=>{
             Creneaux: data
            }
     
-           /* @MassinS
-                ! removed
-                * removed the condition to check if data is null
-                * because db.manyOrNone Does not return null 
-                * when there are no results but an empty array
-            
-                ? remove after reading
-                --written by @lyesrabhi16
-            */
     
            res.status(200).json(response);
      }).catch((err)=>{
