@@ -14,3 +14,26 @@ export const TimeFormatValidator = (time) => {
 
     return timeRegex.test(time);
 };
+
+export const LocalCapaciteValidator = (typeLocal, capaciteLocal) =>{
+    const VerificationCapacite = [];
+    if (typeLocal === TypeLocal.Amphi) {
+        if (capaciteLocal < 100 || capaciteLocal > 300) {
+            VerificationCapacite.push("Capacite invalide pour amphi");
+        }
+    } else if (typeLocal === TypeLocal.SalleTD) {
+        if (capaciteLocal < 20 || capaciteLocal > 80) {
+            VerificationCapacite.push("Capacite invalide pour une Salle TD");
+        }
+// sourcery skip: merge-nested-ifs
+    } else if (typeLocal === TypeLocal.SalleTP) {
+        if (capaciteLocal < 15 || capaciteLocal > 25) {
+            VerificationCapacite.push("Capacite invalide pour une salle TP");
+        }
+    }
+    if (VerificationCapacite.length > 0) {
+        return [false, VerificationCapacite];
+    }
+
+    return [true, VerificationCapacite];
+};
