@@ -32,7 +32,6 @@ export const updateEnsEtCreneau=(matricule_new,id_creneau_new,matricule,id_crene
 }
 
 export const deleteEnsEtCreneau=(matricule,id_creneau)=>{
-
     return db.oneOrNone("DELETE FROM EnsEtCreneaux WHERE matricule=$1 AND id_creneau=$2",[matricule,id_creneau]);
     
 }
