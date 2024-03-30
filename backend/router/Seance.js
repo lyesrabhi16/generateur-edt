@@ -17,14 +17,6 @@ const SeanceRouter=Router();
 SeanceRouter.get('/',selectAllSeance);
 SeanceRouter.get('/:id_seance',selectOneSeanceById);
 
-/* @MassinS
-    ! modified
-    * added type validator for the route /types/:type
-
-    ? remove after reading
-
-   --written by @lyesrabhi16
-*/
 
 SeanceRouter.get('/types/:type', selectAllSeanceByTypeValidator,selectAllSeanceByType);
 SeanceRouter.post('/',addSeanceValidator,insertOneSeance);

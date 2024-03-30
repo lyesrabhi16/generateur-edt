@@ -69,15 +69,6 @@ export const selectAllCreneauByGroupe =(req,res)=>{
             Creneaux: data
            }
     
-           /* @MassinS
-                ! removed
-                * removed the condition to check if data is null
-                * because db.manyOrNone Does not return null 
-                * when there are no results but an empty array
-            
-                ? remove after reading
-                --written by @lyesrabhi16
-            */
     
            res.status(200).json(response);
      }).catch((err)=>{
