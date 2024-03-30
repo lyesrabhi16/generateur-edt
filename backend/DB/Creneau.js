@@ -56,7 +56,7 @@ LEFT JOIN
  *  @returns {Promise<object|null>} 
  */
 export const getOneCreneauById = (id_creneau) => {
-   return db.manyOrNone(`SELECT c.id_creneau,c.debut,c.fin,c.jour,g.code_groupe,s.type,m.nom_module,s.code_specialite,l.code_local  
+   return db.oneOrNone(`SELECT c.id_creneau,c.debut,c.fin,c.jour,g.code_groupe,s.type,m.nom_module,s.code_specialite,l.code_local  
                          FROM 
                          Creneau c
                          LEFT JOIN 
@@ -76,9 +76,9 @@ export const getOneCreneauById = (id_creneau) => {
  * @param {string} code_groupe 
  * @returns {Promise<object|null>} 
  */
-export const getAllCreneauByGroupe = (code_groupe) =>{
-
-   return db.manyOrNone(`SELECT c.id_creneau,c.debut,c.fin,c.jour,g.code_groupe,s.type,m.nom_module,s.code_specialite,l.code_local  
+export const getAllCreneauByGroupe = (id_groupe) =>{
+    console.log(id_groupe);
+    return db.manyOrNone(`SELECT c.id_creneau,c.debut,c.fin,c.jour,g.code_groupe, g.code_section,s.type,m.nom_module,s.code_specialite,l.code_local  
                          FROM 
                          Creneau c
                          LEFT JOIN 
@@ -91,7 +91,8 @@ export const getAllCreneauByGroupe = (code_groupe) =>{
                          Groupe g ON edt.id_groupe = g.id_groupe
                          LEFT JOIN  
                          Local l ON c.code_local = l.code_local
-                         WHERE g.code_groupe=$1 `, [code_groupe] )
+                         WHERE g.id_groupe=$1 `, [id_groupe] );
+    
 }
 /**
  * 
