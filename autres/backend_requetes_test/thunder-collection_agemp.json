@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "agemp",
-    "dateExported": "2024-03-30T13:06:57.836Z",
+    "dateExported": "2024-03-30T14:09:17.494Z",
     "version": "1.1",
     "folders": [
         {
@@ -59,6 +59,13 @@
             "containerId": "",
             "created": "2024-03-30T12:49:01.766Z",
             "sortNum": 80000
+        },
+        {
+            "_id": "41d20393-d1f7-4333-ae2d-5a515df6f09c",
+            "name": "creneau",
+            "containerId": "",
+            "created": "2024-03-30T13:14:21.034Z",
+            "sortNum": 90000
         }
     ],
     "requests": [
@@ -577,6 +584,20 @@
             "tests": []
         },
         {
+            "_id": "44e86f7b-e6e1-4401-b8fb-672b7413a930",
+            "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
+            "containerId": "41d20393-d1f7-4333-ae2d-5a515df6f09c",
+            "name": "getAll",
+            "url": "http://localhost:3000/creneau",
+            "method": "GET",
+            "sortNum": 100000,
+            "created": "2024-03-30T13:14:21.035Z",
+            "modified": "2024-03-30T13:14:51.246Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
             "_id": "a973d858-d96f-4914-a8e4-227927b7ab48",
             "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
             "containerId": "e0f60cfc-768c-4592-ac3b-e118ba483a56",
@@ -586,6 +607,20 @@
             "sortNum": 101093.8,
             "created": "2024-03-30T12:49:01.768Z",
             "modified": "2024-03-30T12:50:33.081Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "9983bca0-4204-4417-aa0f-c3b23283a4e6",
+            "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
+            "containerId": "41d20393-d1f7-4333-ae2d-5a515df6f09c",
+            "name": "getOneById",
+            "url": "http://localhost:3000/creneau/1",
+            "method": "GET",
+            "sortNum": 101093.8,
+            "created": "2024-03-30T13:14:21.036Z",
+            "modified": "2024-03-30T13:18:09.002Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -614,6 +649,20 @@
             "sortNum": 102187.5,
             "created": "2024-03-30T12:49:01.767Z",
             "modified": "2024-03-30T12:54:54.901Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "a7b218da-cc43-4405-896d-489c2e39b067",
+            "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
+            "containerId": "41d20393-d1f7-4333-ae2d-5a515df6f09c",
+            "name": "getAllByGroupe",
+            "url": "http://localhost:3000/creneau/groupes/100",
+            "method": "GET",
+            "sortNum": 102187.5,
+            "created": "2024-03-30T13:14:21.037Z",
+            "modified": "2024-03-30T13:48:50.055Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -799,6 +848,50 @@
             "tests": []
         },
         {
+            "_id": "272e150a-54e9-45b1-b77d-95e950e4f557",
+            "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
+            "containerId": "41d20393-d1f7-4333-ae2d-5a515df6f09c",
+            "name": "insertOne",
+            "url": "http://localhost:3000/creneau",
+            "method": "POST",
+            "sortNum": 108750,
+            "created": "2024-03-30T13:14:21.038Z",
+            "modified": "2024-03-30T14:05:23.920Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "debut",
+                        "value": "08:00"
+                    },
+                    {
+                        "name": "fin",
+                        "value": "09:30"
+                    },
+                    {
+                        "name": "jour",
+                        "value": "Dimanche"
+                    },
+                    {
+                        "name": "id_Emp",
+                        "value": "1"
+                    },
+                    {
+                        "name": "id_seance",
+                        "value": "3"
+                    },
+                    {
+                        "name": "code_local",
+                        "value": "b8s8"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
             "_id": "e6cd1488-50cf-4add-ad89-44b02c8c04d0",
             "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
             "containerId": "cefe1c25-40b9-465c-b3f5-c858cbc4d27d",
@@ -863,7 +956,7 @@
             "_id": "ac4dd5af-3ed8-4acb-89bc-b4514d3d5aaf",
             "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
             "containerId": "845ed803-03f5-40a5-9405-a5a42a8e8b17",
-            "name": "putOneModule",
+            "name": "putOneLocal",
             "url": "http://localhost:3000/local/b8s80",
             "method": "PUT",
             "sortNum": 115000,
@@ -895,7 +988,7 @@
             "_id": "0fccd963-2793-43fa-a13f-1fff3c28d2d5",
             "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
             "containerId": "e0f60cfc-768c-4592-ac3b-e118ba483a56",
-            "name": "putOneModule",
+            "name": "putOneSeance",
             "url": "http://localhost:3000/seance/13",
             "method": "PUT",
             "sortNum": 115000,
@@ -918,6 +1011,50 @@
                     {
                         "name": "code_specialite",
                         "value": "GL"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
+            "_id": "5123037a-2281-498c-8a3b-1417244329f4",
+            "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
+            "containerId": "41d20393-d1f7-4333-ae2d-5a515df6f09c",
+            "name": "putOne",
+            "url": "http://localhost:3000/creneau/4",
+            "method": "PUT",
+            "sortNum": 115000,
+            "created": "2024-03-30T13:14:21.039Z",
+            "modified": "2024-03-30T14:08:26.154Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "debut",
+                        "value": "10:00"
+                    },
+                    {
+                        "name": "fin",
+                        "value": "11:30"
+                    },
+                    {
+                        "name": "jour",
+                        "value": "Lundi"
+                    },
+                    {
+                        "name": "id_Emp",
+                        "value": "1"
+                    },
+                    {
+                        "name": "id_seance",
+                        "value": "3"
+                    },
+                    {
+                        "name": "code_local",
+                        "value": "Amphi16"
                     }
                 ]
             },
@@ -955,7 +1092,7 @@
             "_id": "66c92a17-b828-4780-af07-1f35141fce9e",
             "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
             "containerId": "845ed803-03f5-40a5-9405-a5a42a8e8b17",
-            "name": "deleteOneModule",
+            "name": "deleteOneLocal",
             "url": "http://localhost:3000/local/b8s9",
             "method": "DELETE",
             "sortNum": 125000,
@@ -969,12 +1106,26 @@
             "_id": "20b68dd2-f35c-494c-a1d1-9688da35a8d9",
             "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
             "containerId": "e0f60cfc-768c-4592-ac3b-e118ba483a56",
-            "name": "deleteOneModule",
+            "name": "deleteOneSeance",
             "url": "http://localhost:3000/seance/13",
             "method": "DELETE",
             "sortNum": 125000,
             "created": "2024-03-30T12:49:01.771Z",
             "modified": "2024-03-30T13:03:59.007Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "42e5fbf2-72e0-4bdb-96d4-8ed60b2bbcdd",
+            "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
+            "containerId": "41d20393-d1f7-4333-ae2d-5a515df6f09c",
+            "name": "deleteOne",
+            "url": "http://localhost:3000/creneau/5",
+            "method": "DELETE",
+            "sortNum": 125000,
+            "created": "2024-03-30T13:14:21.040Z",
+            "modified": "2024-03-30T14:08:55.535Z",
             "headers": [],
             "params": [],
             "tests": []
