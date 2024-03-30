@@ -96,7 +96,6 @@ export const selectAllSeanceByType=(req,res)=>{
 
 export const insertOneSeance= (req,res)=>{
   const {type, code_module, code_specialite}=req.body;
-  console.log(req.body);
   createSeance(type, code_module, code_specialite).then((data)=>{
     
     const response={
