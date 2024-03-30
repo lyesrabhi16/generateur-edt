@@ -1,4 +1,4 @@
-import { TypeLocal, TypePersonne } from "../../constants.js";
+import { TypeLocal, TypePersonne, TypeSeance } from "../../constants.js";
 
 export const typePersonneValidator = (type) => {
     return type in TypePersonne;
@@ -6,6 +6,10 @@ export const typePersonneValidator = (type) => {
 
 export const typeLocalValidator = (type) => {
     return type in TypeLocal;
+};
+
+export const TypeSeanceValidator = (type) => {
+    return type in TypeSeance;
 };
 
 export const TimeFormatValidator = (time) => {
@@ -37,3 +41,4 @@ export const LocalCapaciteValidator = (typeLocal, capaciteLocal) =>{
 
     return [true, VerificationCapacite];
 };
+
