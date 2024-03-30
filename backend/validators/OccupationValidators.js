@@ -1,5 +1,5 @@
 import { jours  } from "../../constants.js";
-import { TimeFormatValidator } from "./OtherValidators.js";
+import { TimeFormatValidator, typeJourValidator } from "./OtherValidators.js";
 
 
 export const addOccupationValidator = (req,res,next)=>{
@@ -71,10 +71,7 @@ if (heureDebut>heureFin || heureDebut==heureFin) {
    
     
 }
-//  Vendredi est exclus ==> occupation inutile  // 
-if (jour!== jours.Dimanche && jour!== jours.Lundi && jour!== jours.Mardi && jour!== jours.Mercredi && jour!== jours.Jeudi &&
-    jour!== jours.Samedi
-    ) {
+if (!typeJourValidator(jour)) {
         return  res.status(400).json({
             status: "error",
             message: " Erreur dans le jour  ou jour mal choisi  ",

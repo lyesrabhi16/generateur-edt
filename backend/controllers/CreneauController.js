@@ -26,12 +26,18 @@ export const selectAllCreneau = (req,res) =>{
     })
 }
 export const selectOneCreneauById=(req,res) =>{
+    /* @MassinS
+        !modified
+        * modified to return only one creneau
+        ? remove after reading
+        --written by @lyesrabhi16
+     */
     const {id_creneau} = req.params;
   getOneCreneauById(id_creneau).then((data)=>{
     const response={
         status:"Success",
-        message:"Tout les creneaux sont trouvés",
-        Creneaux: data
+        message:"creneau trouvé",
+        Creneau: data
        }
 
        if(data===null) {
@@ -54,19 +60,24 @@ export const selectOneCreneauById=(req,res) =>{
 }
 
 export const selectAllCreneauByGroupe =(req,res)=>{
-    const { code_groupe } = req.params;
-     getAllCreneauByGroupe(code_groupe).then((data)=>{
+    const { id_groupe } = req.params;
+    console.log(id_groupe);
+     getAllCreneauByGroupe(id_groupe).then((data)=>{
         const response={
             status:"Success",
-            message:"Tout les creneaux sont trouvés de ce groupe "+ code_groupe ,
+            message:"Tout les creneaux sont trouvés du groupe: "+ id_groupe ,
             Creneaux: data
            }
     
-           if(data===null) {
-            response.status='Error';
-            response.message='Aucune creneau trouvé'
-            return res.status(404).json(response)  
-           }
+           /* @MassinS
+                ! removed
+                * removed the condition to check if data is null
+                * because db.manyOrNone Does not return null 
+                * when there are no results but an empty array
+            
+                ? remove after reading
+                --written by @lyesrabhi16
+            */
     
            res.status(200).json(response);
      }).catch((err)=>{
