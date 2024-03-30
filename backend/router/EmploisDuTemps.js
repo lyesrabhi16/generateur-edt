@@ -8,6 +8,7 @@ import { selectAllEmplois,
          updateOneEmplois
 
 } from "../controllers/EmploisController.js";
+import { insertOneEmploisValidator } from "../validators/emploisDuTempsValidators.js";
 
 const EmploisRouter = Router();
 
@@ -16,8 +17,8 @@ EmploisRouter.get('/:id_Emp',selectOneEmploisById);
 
 EmploisRouter.get('/groupes/:id_groupe',selectOneEmploisByGroupe);
 
-EmploisRouter.post('/', insertOneEmplois);
+EmploisRouter.post('/', insertOneEmploisValidator,insertOneEmplois);
 EmploisRouter.delete('/:id_emp',deleteOneEmplois);
-EmploisRouter.put('/:id_emp', updateOneEmplois);
+EmploisRouter.put('/:id_emp', insertOneEmploisValidator, updateOneEmplois);
 
 export default EmploisRouter;
