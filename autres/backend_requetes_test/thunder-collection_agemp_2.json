@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "agemp_2",
-    "dateExported": "2024-03-30T14:31:02.798Z",
+    "dateExported": "2024-03-30T15:09:57.824Z",
     "version": "1.1",
     "folders": [
         {
@@ -10,6 +10,13 @@
             "containerId": "",
             "created": "2024-03-30T14:16:44.453Z",
             "sortNum": 10000
+        },
+        {
+            "_id": "87eca01e-8b12-46d3-9d11-076f8642f157",
+            "name": "ensEtoccup",
+            "containerId": "",
+            "created": "2024-03-30T14:36:05.016Z",
+            "sortNum": 20000
         }
     ],
     "requests": [
@@ -28,6 +35,20 @@
             "tests": []
         },
         {
+            "_id": "a1d3af61-b219-4cab-b97e-b1e6b6683807",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "87eca01e-8b12-46d3-9d11-076f8642f157",
+            "name": "getAll",
+            "url": "http://localhost:3000/ensEtoccup",
+            "method": "GET",
+            "sortNum": 100000,
+            "created": "2024-03-30T14:36:05.016Z",
+            "modified": "2024-03-30T14:49:11.218Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
             "_id": "53c65254-8e3c-4fe8-9ac3-6f13f4a90a7b",
             "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
             "containerId": "6dbcace6-d888-4fe6-9ce2-5ff4b3bdcd73",
@@ -37,6 +58,20 @@
             "sortNum": 101093.8,
             "created": "2024-03-30T14:16:44.454Z",
             "modified": "2024-03-30T14:17:42.416Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "8ada3d5b-f2e3-430f-9eef-e1100f198a72",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "87eca01e-8b12-46d3-9d11-076f8642f157",
+            "name": "getAllById",
+            "url": "http://localhost:3000/ensEtoccup/7",
+            "method": "GET",
+            "sortNum": 101093.8,
+            "created": "2024-03-30T14:36:05.017Z",
+            "modified": "2024-03-30T14:38:42.185Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -80,6 +115,34 @@
             "tests": []
         },
         {
+            "_id": "fedbd8c3-9b42-4f7b-a3c9-5987603cd175",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "87eca01e-8b12-46d3-9d11-076f8642f157",
+            "name": "insertOne",
+            "url": "http://localhost:3000/ensEtoccup",
+            "method": "POST",
+            "sortNum": 108750,
+            "created": "2024-03-30T14:36:05.019Z",
+            "modified": "2024-03-30T14:54:06.941Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "matricule",
+                        "value": "7"
+                    },
+                    {
+                        "name": "id_occup",
+                        "value": "6"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
             "_id": "23a12738-b811-4271-8910-e81d2f875cfa",
             "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
             "containerId": "6dbcace6-d888-4fe6-9ce2-5ff4b3bdcd73",
@@ -104,6 +167,35 @@
             "tests": []
         },
         {
+            "_id": "b3872d99-553e-4b0d-a1d4-abfb78a0b957",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "87eca01e-8b12-46d3-9d11-076f8642f157",
+            "name": "putOne",
+            "url": "http://localhost:3000/ensEtoccup/8/occupations/6",
+            "method": "PUT",
+            "sortNum": 115000,
+            "created": "2024-03-30T14:36:05.020Z",
+            "modified": "2024-03-30T15:09:06.721Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "matricule_new",
+                        "value": "8",
+                        "isDisabled": true
+                    },
+                    {
+                        "name": "id_occup_new",
+                        "value": "1"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
             "_id": "236f3455-ac8f-4180-8c49-b79849821d73",
             "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
             "containerId": "6dbcace6-d888-4fe6-9ce2-5ff4b3bdcd73",
@@ -113,6 +205,20 @@
             "sortNum": 125000,
             "created": "2024-03-30T14:16:44.454Z",
             "modified": "2024-03-30T14:29:15.730Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "f11069bd-95ef-45f0-9b4a-6f45b492a44e",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "87eca01e-8b12-46d3-9d11-076f8642f157",
+            "name": "deleteOne",
+            "url": "http://localhost:3000/ensEtoccup/8/occupations/1",
+            "method": "DELETE",
+            "sortNum": 125000,
+            "created": "2024-03-30T14:36:05.021Z",
+            "modified": "2024-03-30T15:09:28.753Z",
             "headers": [],
             "params": [],
             "tests": []
