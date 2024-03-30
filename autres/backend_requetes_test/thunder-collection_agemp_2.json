@@ -1,0 +1,121 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "agemp_2",
+    "dateExported": "2024-03-30T14:31:02.798Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "6dbcace6-d888-4fe6-9ce2-5ff4b3bdcd73",
+            "name": "emploistemps",
+            "containerId": "",
+            "created": "2024-03-30T14:16:44.453Z",
+            "sortNum": 10000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "fddb76eb-c34c-49dd-9d45-9f2b7dae813a",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "6dbcace6-d888-4fe6-9ce2-5ff4b3bdcd73",
+            "name": "getAll",
+            "url": "http://localhost:3000/emploistemps",
+            "method": "GET",
+            "sortNum": 100000,
+            "created": "2024-03-30T14:16:44.454Z",
+            "modified": "2024-03-30T14:17:09.887Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "53c65254-8e3c-4fe8-9ac3-6f13f4a90a7b",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "6dbcace6-d888-4fe6-9ce2-5ff4b3bdcd73",
+            "name": "getOneById",
+            "url": "http://localhost:3000/emploistemps/1",
+            "method": "GET",
+            "sortNum": 101093.8,
+            "created": "2024-03-30T14:16:44.454Z",
+            "modified": "2024-03-30T14:17:42.416Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "3e52848b-1f5d-4eb7-8105-19f5eb545f0f",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "6dbcace6-d888-4fe6-9ce2-5ff4b3bdcd73",
+            "name": "getOneByGroupe",
+            "url": "http://localhost:3000/emploistemps/groupes/1",
+            "method": "GET",
+            "sortNum": 102187.5,
+            "created": "2024-03-30T14:16:44.454Z",
+            "modified": "2024-03-30T14:20:23.443Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "610ce6e0-9f73-4fb8-817e-8b1e5867a9c3",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "6dbcace6-d888-4fe6-9ce2-5ff4b3bdcd73",
+            "name": "insertOne",
+            "url": "http://localhost:3000/emploistemps",
+            "method": "POST",
+            "sortNum": 108750,
+            "created": "2024-03-30T14:16:44.454Z",
+            "modified": "2024-03-30T14:27:46.735Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "id_groupe",
+                        "value": "4"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
+            "_id": "23a12738-b811-4271-8910-e81d2f875cfa",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "6dbcace6-d888-4fe6-9ce2-5ff4b3bdcd73",
+            "name": "putOne",
+            "url": "http://localhost:3000/emploistemps/3",
+            "method": "PUT",
+            "sortNum": 115000,
+            "created": "2024-03-30T14:16:44.454Z",
+            "modified": "2024-03-30T14:28:58.868Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "id_groupe",
+                        "value": "2"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
+            "_id": "236f3455-ac8f-4180-8c49-b79849821d73",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "6dbcace6-d888-4fe6-9ce2-5ff4b3bdcd73",
+            "name": "deleteOne",
+            "url": "http://localhost:3000/emploistemps/3",
+            "method": "DELETE",
+            "sortNum": 125000,
+            "created": "2024-03-30T14:16:44.454Z",
+            "modified": "2024-03-30T14:29:15.730Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        }
+    ]
+}

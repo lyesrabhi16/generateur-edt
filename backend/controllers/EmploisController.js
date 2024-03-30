@@ -63,8 +63,8 @@ export const selectOneEmploisById = (req,res) =>{
 }
 
 export const selectOneEmploisByGroupe = (req,res) =>{
-    const {code_groupe} = req.params;
-    getOneEmploisByGroupe(code_groupe).then((data)=>{
+    const {id_groupe} = req.params;
+    getOneEmploisByGroupe(id_groupe).then((data)=>{
         const response={
             status:"Success",
             message:"Emplois de temps trouvé ",
@@ -74,7 +74,7 @@ export const selectOneEmploisByGroupe = (req,res) =>{
            if(data===null ) {
     
             response.status='Error';
-            response.message='Aucun Emplois de temps trouvé pour ce groupe  '+ code_groupe 
+            response.message='Aucun Emplois de temps trouvé pour ce groupe  '+ id_groupe 
             return res.status(404).json(response)
     
            }
