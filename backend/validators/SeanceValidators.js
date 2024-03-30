@@ -1,4 +1,5 @@
 import { TypeSeance } from "../../constants.js";
+import { TypeSeanceValidator } from "./OtherValidators.js";
 
 export const addSeanceValidator =(req,res,next)=>{
     const {type,code_module,code_specialite} =req.body;
@@ -24,7 +25,7 @@ export const addSeanceValidator =(req,res,next)=>{
     })
     }
      
-    if ( type!== TypeSeance.Cours && type !== TypeSeance.TD && type!==TypeSeance.TP) {
+    if (!TypeSeanceValidator(type)) {
         return res.status(400).json({
             status:"Error",
             message: " Type de séance est invalide "
@@ -33,3 +34,17 @@ export const addSeanceValidator =(req,res,next)=>{
 
 next();
 }
+
+export const selectAllSeanceByTypeValidator = (req, res, next) => {
+    const { type } = req.params;
+
+    if (!TypeSeanceValidator(type)) {
+        res.status(400).json({
+            status: 'error',
+            message: `type ${type} invalide. type must be one of [${Object.keys(TypeSeance).join(', ')}]`
+        });
+        return false;
+    }
+
+    next();
+};

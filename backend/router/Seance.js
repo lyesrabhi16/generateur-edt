@@ -9,14 +9,24 @@ import { selectAllSeance ,
 
 } from "../controllers/SeanceController.js";
 
-import { addSeanceValidator } from "../validators/SeanceValidators.js";
+import { addSeanceValidator, selectAllSeanceByTypeValidator } from "../validators/SeanceValidators.js";
 
 
 const SeanceRouter=Router();
 
 SeanceRouter.get('/',selectAllSeance);
 SeanceRouter.get('/:id_seance',selectOneSeanceById);
-SeanceRouter.get('/types/:type',selectAllSeanceByType);
+
+/* @MassinS
+    ! modified
+    * added type validator for the route /types/:type
+
+    ? remove after reading
+
+   --written by @lyesrabhi16
+*/
+
+SeanceRouter.get('/types/:type', selectAllSeanceByTypeValidator,selectAllSeanceByType);
 SeanceRouter.post('/',addSeanceValidator,insertOneSeance);
 SeanceRouter.put('/:id_seance',addSeanceValidator,putOneSeance);
 SeanceRouter.delete('/:id_seance',deleteOneSeance);
