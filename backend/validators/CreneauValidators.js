@@ -1,9 +1,8 @@
 import { jours  } from "../../constants.js";
-import { TimeFormatValidator } from "./OtherValidators.js";
+import { TimeFormatValidator, typeJourValidator } from "./OtherValidators.js";
 
 export const addCreneauValidators=(req,res,next)=>{
 const {
-
     debut, 
     fin,
      jour,
@@ -11,9 +10,6 @@ const {
     id_seance,
     code_local,
 }=req.body;
-
-const heureDebut = parseInt(debut.split(":")[0]); 
-const heureFin = parseInt(fin.split(":")[0]);
 
 
 const missingFields = [];
@@ -53,8 +49,12 @@ if(missingFields.length>0) {
   
 }
 
-if ( jour !==jours.Samedi && jour!==jours.Dimanche && jour!==jours.Lundi && jour !==jours.Mardi && jour !== jours.Mercredi &&
-     jour !==jours.Jeudi) {
+const heureDebut = parseInt(debut.split(":")[0]); 
+const heureFin = parseInt(fin.split(":")[0]);
+
+
+
+if ( !typeJourValidator(jour) ) {
         invalideFields.push("jour");
      }
 
