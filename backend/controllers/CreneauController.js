@@ -26,12 +26,7 @@ export const selectAllCreneau = (req,res) =>{
     })
 }
 export const selectOneCreneauById=(req,res) =>{
-    /* @MassinS
-        !modified
-        * modified to return only one creneau
-        ? remove after reading
-        --written by @lyesrabhi16
-     */
+ 
     const {id_creneau} = req.params;
   getOneCreneauById(id_creneau).then((data)=>{
     const response={
