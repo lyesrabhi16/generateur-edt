@@ -8,12 +8,12 @@ export const getAllEmplois = () => {
 
 export const getOneEmploisById = (id_Emp) => {
 
-    return db.manyOrNone("SELECT * FROM emploisdutemps E left join groupe G on E.id_groupe=G.id_groupe         WHERE E.id_Emp=$1 " , [id_Emp]);
+    return db.oneOrNone("SELECT * FROM emploisdutemps E left join groupe G on E.id_groupe=G.id_groupe         WHERE E.id_Emp=$1 " , [id_Emp]);
 }
 
-export const getOneEmploisByGroupe = (code_groupe) =>{
+export const getOneEmploisByGroupe = (id_groupe) =>{
    
-   return db.oneOrNone("SELECT * FROM emploisdutemps  E left join groupe G on E.id_groupe=G.id_groupe   WHERE G.code_groupe=$1",[code_groupe]);
+   return db.oneOrNone("SELECT * FROM emploisdutemps  E left join groupe G on E.id_groupe=G.id_groupe   WHERE G.id_groupe=$1",[id_groupe]);
    
 }
 
