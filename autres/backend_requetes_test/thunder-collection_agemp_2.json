@@ -147,6 +147,20 @@
             "tests": []
         },
         {
+            "_id": "8ada3d5b-f2e3-430f-9eef-e1100f198a72",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "87eca01e-8b12-46d3-9d11-076f8642f157",
+            "name": "getAllById",
+            "url": "http://localhost:3000/ensEtoccup/7",
+            "method": "GET",
+            "sortNum": 101093.8,
+            "created": "2024-03-30T14:36:05.017Z",
+            "modified": "2024-03-30T14:38:42.185Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
             "_id": "3e52848b-1f5d-4eb7-8105-19f5eb545f0f",
             "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
             "containerId": "6dbcace6-d888-4fe6-9ce2-5ff4b3bdcd73",
@@ -435,6 +449,20 @@
             "sortNum": 125000,
             "created": "2024-03-30T21:11:15.205Z",
             "modified": "2024-03-30T21:29:52.671Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "f11069bd-95ef-45f0-9b4a-6f45b492a44e",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "87eca01e-8b12-46d3-9d11-076f8642f157",
+            "name": "deleteOne",
+            "url": "http://localhost:3000/ensEtoccup/8/occupations/1",
+            "method": "DELETE",
+            "sortNum": 125000,
+            "created": "2024-03-30T14:36:05.021Z",
+            "modified": "2024-03-30T15:09:28.753Z",
             "headers": [],
             "params": [],
             "tests": []
