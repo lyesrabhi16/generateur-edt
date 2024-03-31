@@ -99,7 +99,13 @@ export const putOneEnsEtCreneaux=(req,res)=>{
   
 } 
 export const deleteOneEnsEtCreneaux=(req,res)=>{
-    const {matricule,id_creneau}=req.body;
+    /* @MassinS
+        ! modified
+        * changed from req.body to req.params
+        ? remove after reading
+        --written by @lyesrabhi16
+     */
+    const {matricule,id_creneau}=req.params;
     deleteEnsEtCreneau(matricule,id_creneau).then(()=>{
         const response={
             status:"Success",
