@@ -34,6 +34,7 @@ INSERT INTO public.section (code_section) VALUES ('M1GL');
 --
 
 INSERT INTO public.groupe (id_groupe, code_groupe, code_section) VALUES (1, 'G5', 'M1GL');
+INSERT INTO public.groupe (id_groupe, code_groupe, code_section) VALUES (2, 'G4', 'M1GL');
 
 
 --
