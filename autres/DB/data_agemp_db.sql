@@ -107,11 +107,37 @@ INSERT INTO public.creneau (id_creneau, debut, fin, jour, id_emp, id_seance, cod
 -- Dependencies: 220
 -- Data for Name: personne; Type: TABLE DATA; Schema: public; Owner: postgres
 --
+;
 
-INSERT INTO public.personne (matricule, nom, prenom, email, password, type, role) VALUES (1, 'admin', 'admin', 'admin@admin.admin', 'admin', 'Administrateur');
-INSERT into public.administrateur (matricule, role) VALUES(1,'admin de jsp quoi');
-INSERT INTO public.personne (matricule, nom, prenom, email, password, type, role) VALUES (4, 'ens', 'ens', 'ens@ens.ens', 'ens', 'Enseignant');
-insert into public.enseignant(matricule, role, charges) values(4,'jsp', 0);
+INSERT INTO public.personne (matricule, nom, prenom, email, password, type, role, anneeBac, niveau, charges, id_groupe, code_specialite) VALUES
+    (1, 'admin', 'admin', 'admin@admin.admin', 'admin', 'Administrateur','Admin technicien ',NULL, NULL, NULL, NULL, NULL),
+    (2, 'Doe','Speed', 'admin22@admin.com' ,'adminadmin','Administrateur', 'Admin assistant ',NULL, NULL, NULL, NULL, NULL),
+    (3, 'Garcia', 'Carlos', 'carlos.garcia@example.com', 'password789', 'Etudiant', NULL, 2018, 'Licence', NULL, 1, 'GL'),
+    (5, 'Martin', 'Pierre', 'pierre.martin@example.com', 'passworddef', 'Etudiant', NULL, 2019, 'Master', NULL, 2, 'MI'),
+    (6, 'Dubois', 'Marie', 'marie.dubois@example.com', 'passwordghi', 'Enseignant', 'Maitre C', NULL, NULL, 6, null, null),
+    (7, 'Johnson', 'Michael', 'michael.johnson@example.com', 'passwordjkl', 'Etudiant', NULL, 2020, 'Licence', NULL, 2, 'MI'),
+    (8, 'Chen', 'Ling', 'ling.chen@example.com', 'passwordmno', 'Enseignant', 'Maitre D', NULL, NULL, 7, null, null),
+    (9, 'Kumar', 'Raj', 'raj.kumar@example.com', 'passwordpqr', 'Etudiant', NULL, 2017, 'Master', NULL, 1, 'GL'),
+    (10, 'Gonzalez', 'Maria', 'maria.gonzalez@example.com', 'passwordstu', 'Enseignant', 'matire A', NULL, NULL, 4, null, null),
+    (11, 'Li', 'Wei', 'wei.li@example.com', 'password123', 'Enseignant', 'Maitre E', NULL, NULL, 3, null, null),
+    (12, 'Kim', 'Yuna', 'yuna.kim@example.com', 'password456', 'Etudiant', NULL, 2021, 'Licence', NULL, 1, 'GL'),
+    (13, 'Martinez', 'Antonio', 'antonio.martinez@example.com', 'password789', 'Enseignant', 'maitre A', NULL, NULL, 9, null, null),
+    (14, 'Nguyen', 'Linh', 'linh.nguyen@example.com', 'passwordabc', 'Etudiant', NULL, 2020, 'Master', NULL, 1, 'MI'),
+    (15, 'Gomez', 'Ana', 'ana.gomez@example.com', 'passworddef', 'Enseignant', 'maitre C', NULL, NULL, 4, null, null),
+    (16, 'Wilson', 'David', 'david.wilson@example.com', 'passwordghi', 'Etudiant', NULL, 2019, 'Licence', NULL, 1, 'MI'),
+    (17, 'Roy', 'Sophie', 'sophie.roy@example.com', 'passwordjkl', 'Enseignant', 'maitre Z', NULL, NULL, 6, null, null),
+    (18, 'Singh', 'Amit', 'amit.singh@example.com', 'passwordmno', 'Etudiant', NULL, 2018, 'Master', NULL, 2, 'MI'),
+    (19, 'Fernandez', 'Laura', 'laura.fernandez@example.com', 'passwordpqr', 'Enseignant', 'maitre F', NULL, NULL, 8, null, null),
+    (20, 'Wang', 'Xiao', 'xiao.wang@example.com', 'passwordstu', 'Etudiant', NULL, 2021, 'Licence', NULL, 1, 'GL'),
+    (21, 'Doe', 'John', 'john.doe@example.com', 'password123', 'Administrateur', 'Admin Principal', NULL, NULL, NULL, NULL, NULL),
+    (22, 'Smith', 'Jane', 'jane.smith@example.com', 'password456', 'Enseignant', 'vacataire', NULL, NULL, 5, null, null),
+    (23, 'Dupont', 'Sophie', 'sophie.dupont@example.com', 'passwordabc', 'Enseignant', 'Maitre B', NULL, NULL, 8, null, null);
+    
+
+INSERT INTO public.personne (matricule, nom, prenom, email, password, type, role,charges) VALUES (4, 'ens', 'ens', 'ens@ens.ens', 'ens', 'Enseignant','Doctorant',15);
+
+insert into public.personne(matricule, role, charges) values(4,'jsp', 0);
+
 INSERT INTO public.personne (matricule, nom, prenom, email, password, type, role) VALUES (7, 'ens1', 'ens1', 'ens@ens.ens', 'ens', 'Enseignant');
 insert into public.enseignant(matricule, role, charges) values(7,'jsp', 0);
 INSERT INTO public.personne (matricule, nom, prenom, email, password, type, role) VALUES (8, 'ens2', 'ens2', 'ens@ens.ens', 'ens', 'Enseignant');
