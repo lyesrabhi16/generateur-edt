@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "agemp_2",
-    "dateExported": "2024-03-30T14:31:02.798Z",
+    "dateExported": "2024-03-30T21:34:33.586Z",
     "version": "1.1",
     "folders": [
         {
@@ -10,6 +10,27 @@
             "containerId": "",
             "created": "2024-03-30T14:16:44.453Z",
             "sortNum": 10000
+        },
+        {
+            "_id": "87eca01e-8b12-46d3-9d11-076f8642f157",
+            "name": "ensEtoccup",
+            "containerId": "",
+            "created": "2024-03-30T14:36:05.016Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "fb1bbc00-ee53-4a89-9d1a-3f62b1ba1edd",
+            "name": "moduleEns",
+            "containerId": "",
+            "created": "2024-03-30T20:44:33.895Z",
+            "sortNum": 30000
+        },
+        {
+            "_id": "563d2d0f-8914-4a87-a9f8-9a501087fdc3",
+            "name": "ensCreneaux",
+            "containerId": "",
+            "created": "2024-03-30T21:11:15.201Z",
+            "sortNum": 40000
         }
     ],
     "requests": [
@@ -28,6 +49,48 @@
             "tests": []
         },
         {
+            "_id": "a1d3af61-b219-4cab-b97e-b1e6b6683807",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "87eca01e-8b12-46d3-9d11-076f8642f157",
+            "name": "getAll",
+            "url": "http://localhost:3000/ensEtoccup",
+            "method": "GET",
+            "sortNum": 100000,
+            "created": "2024-03-30T14:36:05.016Z",
+            "modified": "2024-03-30T14:49:11.218Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "6bfba591-0b96-4351-9233-8323005191ae",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "fb1bbc00-ee53-4a89-9d1a-3f62b1ba1edd",
+            "name": "getAll",
+            "url": "http://localhost:3000/moduleEns",
+            "method": "GET",
+            "sortNum": 100000,
+            "created": "2024-03-30T20:44:33.895Z",
+            "modified": "2024-03-30T20:45:59.409Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "a891729e-a020-4e58-88cf-177522b49585",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "563d2d0f-8914-4a87-a9f8-9a501087fdc3",
+            "name": "getAll",
+            "url": "http://localhost:3000/ensCreneaux",
+            "method": "GET",
+            "sortNum": 100000,
+            "created": "2024-03-30T21:11:15.201Z",
+            "modified": "2024-03-30T21:11:49.439Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
             "_id": "53c65254-8e3c-4fe8-9ac3-6f13f4a90a7b",
             "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
             "containerId": "6dbcace6-d888-4fe6-9ce2-5ff4b3bdcd73",
@@ -36,7 +99,49 @@
             "method": "GET",
             "sortNum": 101093.8,
             "created": "2024-03-30T14:16:44.454Z",
-            "modified": "2024-03-30T14:17:42.416Z",
+            "modified": "2024-03-30T16:08:22.704Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "8ada3d5b-f2e3-430f-9eef-e1100f198a72",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "87eca01e-8b12-46d3-9d11-076f8642f157",
+            "name": "getAllById",
+            "url": "http://localhost:3000/ensEtoccup/7",
+            "method": "GET",
+            "sortNum": 101093.8,
+            "created": "2024-03-30T14:36:05.017Z",
+            "modified": "2024-03-30T14:38:42.185Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "d8927333-cf2e-45f6-93c2-500d1ec19bde",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "fb1bbc00-ee53-4a89-9d1a-3f62b1ba1edd",
+            "name": "getAllById",
+            "url": "http://localhost:3000/moduleEns/7",
+            "method": "GET",
+            "sortNum": 101093.8,
+            "created": "2024-03-30T20:44:33.896Z",
+            "modified": "2024-03-30T20:49:35.967Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "b2c86bfd-654b-4e1d-9afa-44dfb296ea80",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "563d2d0f-8914-4a87-a9f8-9a501087fdc3",
+            "name": "getAllById",
+            "url": "http://localhost:3000/ensCreneaux/7",
+            "method": "GET",
+            "sortNum": 101093.8,
+            "created": "2024-03-30T21:11:15.202Z",
+            "modified": "2024-03-30T21:12:23.597Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -50,7 +155,7 @@
             "method": "GET",
             "sortNum": 102187.5,
             "created": "2024-03-30T14:16:44.454Z",
-            "modified": "2024-03-30T14:20:23.443Z",
+            "modified": "2024-03-30T16:08:32.251Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -64,7 +169,7 @@
             "method": "POST",
             "sortNum": 108750,
             "created": "2024-03-30T14:16:44.454Z",
-            "modified": "2024-03-30T14:27:46.735Z",
+            "modified": "2024-03-30T16:22:16.629Z",
             "headers": [],
             "params": [],
             "body": {
@@ -80,15 +185,103 @@
             "tests": []
         },
         {
+            "_id": "fedbd8c3-9b42-4f7b-a3c9-5987603cd175",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "87eca01e-8b12-46d3-9d11-076f8642f157",
+            "name": "insertOne",
+            "url": "http://localhost:3000/ensEtoccup",
+            "method": "POST",
+            "sortNum": 108750,
+            "created": "2024-03-30T14:36:05.019Z",
+            "modified": "2024-03-30T14:54:06.941Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "matricule",
+                        "value": "7"
+                    },
+                    {
+                        "name": "id_occup",
+                        "value": "6"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
+            "_id": "31924224-415c-417a-a8cb-dc5a0ce70b8b",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "fb1bbc00-ee53-4a89-9d1a-3f62b1ba1edd",
+            "name": "insertOne",
+            "url": "http://localhost:3000/moduleEns",
+            "method": "POST",
+            "sortNum": 108750,
+            "created": "2024-03-30T20:44:33.898Z",
+            "modified": "2024-03-30T20:57:53.485Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "matricule",
+                        "value": "8"
+                    },
+                    {
+                        "name": "code_module",
+                        "value": "BDD"
+                    },
+                    {
+                        "name": "priorite",
+                        "value": "1"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
+            "_id": "8d09bbae-07c9-4be9-8764-f5150799b13d",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "563d2d0f-8914-4a87-a9f8-9a501087fdc3",
+            "name": "insertOne",
+            "url": "http://localhost:3000/ensCreneaux",
+            "method": "POST",
+            "sortNum": 108750,
+            "created": "2024-03-30T21:11:15.203Z",
+            "modified": "2024-03-30T21:20:42.880Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "matricule",
+                        "value": "8"
+                    },
+                    {
+                        "name": "id_creneau",
+                        "value": "3"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
             "_id": "23a12738-b811-4271-8910-e81d2f875cfa",
             "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
             "containerId": "6dbcace6-d888-4fe6-9ce2-5ff4b3bdcd73",
             "name": "putOne",
-            "url": "http://localhost:3000/emploistemps/3",
+            "url": "http://localhost:3000/emploistemps/4",
             "method": "PUT",
             "sortNum": 115000,
             "created": "2024-03-30T14:16:44.454Z",
-            "modified": "2024-03-30T14:28:58.868Z",
+            "modified": "2024-03-30T16:22:23.620Z",
             "headers": [],
             "params": [],
             "body": {
@@ -104,15 +297,144 @@
             "tests": []
         },
         {
+            "_id": "b3872d99-553e-4b0d-a1d4-abfb78a0b957",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "87eca01e-8b12-46d3-9d11-076f8642f157",
+            "name": "putOne",
+            "url": "http://localhost:3000/ensEtoccup/8/occupations/6",
+            "method": "PUT",
+            "sortNum": 115000,
+            "created": "2024-03-30T14:36:05.020Z",
+            "modified": "2024-03-30T15:09:06.721Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "matricule_new",
+                        "value": "8",
+                        "isDisabled": true
+                    },
+                    {
+                        "name": "id_occup_new",
+                        "value": "1"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
+            "_id": "bb59ee15-aa9f-4261-854f-bfa7586d2d2f",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "fb1bbc00-ee53-4a89-9d1a-3f62b1ba1edd",
+            "name": "putOne",
+            "url": "http://localhost:3000/moduleEns/8/modules/BDD",
+            "method": "PUT",
+            "sortNum": 115000,
+            "created": "2024-03-30T20:44:33.899Z",
+            "modified": "2024-03-30T21:03:05.612Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "matricule_new",
+                        "value": "8",
+                        "isDisabled": true
+                    },
+                    {
+                        "name": "code_module",
+                        "value": "BDDA",
+                        "isDisabled": true
+                    },
+                    {
+                        "name": "priorite",
+                        "value": "2"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
+            "_id": "fcf32cc3-a153-46a7-ba1e-352b6fd7decc",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "563d2d0f-8914-4a87-a9f8-9a501087fdc3",
+            "name": "putOne",
+            "url": "http://localhost:3000/EnsCreneaux/8/creneaux/3",
+            "method": "PUT",
+            "sortNum": 115000,
+            "created": "2024-03-30T21:11:15.204Z",
+            "modified": "2024-03-30T21:29:37.488Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "id_creneau_new",
+                        "value": "4"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
             "_id": "236f3455-ac8f-4180-8c49-b79849821d73",
             "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
             "containerId": "6dbcace6-d888-4fe6-9ce2-5ff4b3bdcd73",
             "name": "deleteOne",
-            "url": "http://localhost:3000/emploistemps/3",
+            "url": "http://localhost:3000/emploistemps/10",
             "method": "DELETE",
             "sortNum": 125000,
             "created": "2024-03-30T14:16:44.454Z",
-            "modified": "2024-03-30T14:29:15.730Z",
+            "modified": "2024-03-30T16:22:40.708Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "f11069bd-95ef-45f0-9b4a-6f45b492a44e",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "87eca01e-8b12-46d3-9d11-076f8642f157",
+            "name": "deleteOne",
+            "url": "http://localhost:3000/ensEtoccup/8/occupations/1",
+            "method": "DELETE",
+            "sortNum": 125000,
+            "created": "2024-03-30T14:36:05.021Z",
+            "modified": "2024-03-30T15:09:28.753Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "e3e3cfe6-85d6-4783-9782-c6b4a44eb16e",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "fb1bbc00-ee53-4a89-9d1a-3f62b1ba1edd",
+            "name": "deleteOne",
+            "url": "http://localhost:3000/moduleEns/8/modules/BDD",
+            "method": "DELETE",
+            "sortNum": 125000,
+            "created": "2024-03-30T20:44:33.900Z",
+            "modified": "2024-03-30T21:04:49.281Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "6b1ee7d0-0c38-4fe4-ac03-7c274506259d",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "563d2d0f-8914-4a87-a9f8-9a501087fdc3",
+            "name": "deleteOne",
+            "url": "http://localhost:3000/EnsCreneaux/8/creneaux/4",
+            "method": "DELETE",
+            "sortNum": 125000,
+            "created": "2024-03-30T21:11:15.205Z",
+            "modified": "2024-03-30T21:29:52.671Z",
             "headers": [],
             "params": [],
             "tests": []
