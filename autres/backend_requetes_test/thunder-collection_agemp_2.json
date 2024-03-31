@@ -77,6 +77,7 @@
             "tests": []
         },
         {
+
             "_id": "a891729e-a020-4e58-88cf-177522b49585",
             "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
             "containerId": "563d2d0f-8914-4a87-a9f8-9a501087fdc3",
@@ -142,6 +143,20 @@
             "sortNum": 101093.8,
             "created": "2024-03-30T21:11:15.202Z",
             "modified": "2024-03-30T21:12:23.597Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "8ada3d5b-f2e3-430f-9eef-e1100f198a72",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "87eca01e-8b12-46d3-9d11-076f8642f157",
+            "name": "getAllById",
+            "url": "http://localhost:3000/ensEtoccup/7",
+            "method": "GET",
+            "sortNum": 101093.8,
+            "created": "2024-03-30T14:36:05.017Z",
+            "modified": "2024-03-30T14:38:42.185Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -360,6 +375,7 @@
             "tests": []
         },
         {
+
             "_id": "fcf32cc3-a153-46a7-ba1e-352b6fd7decc",
             "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
             "containerId": "563d2d0f-8914-4a87-a9f8-9a501087fdc3",
@@ -421,6 +437,7 @@
             "sortNum": 125000,
             "created": "2024-03-30T20:44:33.900Z",
             "modified": "2024-03-30T21:04:49.281Z",
+
             "headers": [],
             "params": [],
             "tests": []
@@ -435,6 +452,20 @@
             "sortNum": 125000,
             "created": "2024-03-30T21:11:15.205Z",
             "modified": "2024-03-30T21:29:52.671Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "f11069bd-95ef-45f0-9b4a-6f45b492a44e",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "87eca01e-8b12-46d3-9d11-076f8642f157",
+            "name": "deleteOne",
+            "url": "http://localhost:3000/ensEtoccup/8/occupations/1",
+            "method": "DELETE",
+            "sortNum": 125000,
+            "created": "2024-03-30T14:36:05.021Z",
+            "modified": "2024-03-30T15:09:28.753Z",
             "headers": [],
             "params": [],
             "tests": []
