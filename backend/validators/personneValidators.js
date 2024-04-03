@@ -1,4 +1,5 @@
 import { TypePersonne } from "../../constants.js";
+import { typePersonneValidator } from "./OtherValidators.js";
 
 export const addPersonneValidator = (req, res, next) => {
   const {
@@ -7,12 +8,6 @@ export const addPersonneValidator = (req, res, next) => {
     email,
     password,
     type,
-    role,
-    anneeBac,
-    niveau,
-    charges,
-    id_groupe,
-    code_specialite,
   } = req.body;
 
   //? check for presonne required fields
@@ -45,48 +40,91 @@ export const addPersonneValidator = (req, res, next) => {
 
   //? check type 
     if (
-        type !== TypePersonne.Etudiant &&
-        type !== TypePersonne.Enseignant &&
-        type !== TypePersonne.Administrateur
+        !typePersonneValidator(type)
     ) {
         res.status(400).json({
         status: "error",
-        message: `invalid value for type: ${type}`,
+        message: `invalid value '${type}' for type`,
         });
         return;
     }
   //? check for personne type and validate fields based on type TypePersonne(Etudiant, Enseignant, Administrateur)
   if (type === TypePersonne.Etudiant) {
-    if (
-      anneeBac === undefined ||
-      niveau === undefined ||
-      id_groupe === undefined ||
-      code_specialite === undefined
-    ) {
-      res.status(400).json({
-        status: "error",
-        message: `missing required fields for type ${TypePersonne.Etudiant}: anneeBac, niveau, id_groupe, code_specialite`,
-      });
-      return;
-    }
+      EtudiantValidator(req, res, next);
   } else if (type === TypePersonne.Enseignant) {
-    if (charges === undefined) {
-      res.status(400).json({
-        status: "error",
-        message: `missing required fields for type ${TypePersonne.Enseignant}: charges `,
-      });
-      return;
-    }
-    // sourcery skip: merge-nested-ifs
+      EnseignantValidator(req, res, next);
+    
   } else if (type === TypePersonne.Administrateur) {
-    if (role === undefined) {
-      res.status(400).json({
-        status: "error",
-        message: `missing required fields for type ${TypePersonne.Administrateur} : role`,
-      });
-      return;
-    }
+      AdministrateurValidator(req, res, next);
+  }
+};
+
+
+const EtudiantValidator = (req, res, next) => {
+  const { anneeBac, niveau, id_groupe, code_specialite } = req.body;
+  //? check for Etudiant required fields
+  const missingFields = [];
+  if (anneeBac === undefined) {
+    missingFields.push("anneeBac");
+  }
+  if (niveau === undefined) {
+    missingFields.push("niveau");
+  }
+  if (id_groupe === undefined) {
+    missingFields.push("id_groupe");
+  }
+  if (code_specialite === undefined) {
+    missingFields.push("code_specialite");
   }
 
+  if (missingFields.length > 0) {
+    res.status(400).json({
+      status: "error",
+      message:
+        "missing required fields for type Etudiant: " +
+        missingFields
+    });
+    return;
+  }
+  next();
+};
+
+const EnseignantValidator = (req, res, next) => {
+  const { charges } = req.body;
+  //? check for Enseignant required fields
+  const missingFields = [];
+  if (charges === undefined) {
+    missingFields.push("charges");
+  }
+
+  if (missingFields.length > 0) {
+    res.status(400).json({
+      status: "error",
+      message:
+        "missing required fields for type Enseignant: " +
+        missingFields
+    });
+    return;
+  }
+  next();
+};
+
+const AdministrateurValidator = (req, res, next) => {
+  const { role } = req.body;
+  //? check for Administrateur required fields
+  const missingFields = [];
+  if (role === undefined) {
+    missingFields.push("role");
+  }
+
+  if (missingFields.length > 0) {
+    res.status(400).json({
+      status: "error",
+      message:
+        "missing required fields for type Administrateur: " +
+        missingFields
+    });
+    return;
+  }
   next();
 };
