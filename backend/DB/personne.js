@@ -29,6 +29,19 @@ export const selectPersonne = (matricule) => {
 };
 
 /**
+ * 
+ * @param {email} email 
+ * @returns {Promise<object|null>} 
+ */
+
+
+export const selectPersonneByEmail=(email)=>{
+  return db.oneOrNone("SELECT * FROM personne WHERE email=$1 ",[email]);
+}
+
+
+
+/**
  * Inserts a person with a given matricule into the database.
  *
  * @param {string} matricule - The matricule of the person.
