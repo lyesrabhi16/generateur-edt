@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addPersonneValidator } from "../validators/personneValidators.js";
+import { addPersonneValidator, getPersonnesBytypeValidator } from "../validators/personneValidators.js";
 import { addPersonne, deletePersonne, getPersonne, getPersonnes, updatePersonne } from "../controllers/personneController.js";
 
 const personneRouter = Router();
@@ -8,6 +8,9 @@ const personneRouter = Router();
 
 //? get all
 personneRouter.get("/", getPersonnes);
+
+//? get all by type
+personneRouter.get("/:type", getPersonnesBytypeValidator, getPersonnes);
 
 //? get one
 personneRouter.get("/:matricule", getPersonne);

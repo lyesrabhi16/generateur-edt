@@ -128,3 +128,16 @@ const AdministrateurValidator = (req, res, next) => {
   }
   next();
 };
+
+export const getPersonnesBytypeValidator = (req, res, next) => {
+  const { type } = req.params;
+
+  if (!typePersonneValidator(type)) {
+    res.status(400).json({
+      status: "error",
+      message: `invalid value '${type}' for type, must be one of: ${Object.values(TypePersonne)}`,
+    });
+    return;
+  }
+  next();
+}

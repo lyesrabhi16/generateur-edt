@@ -10,7 +10,13 @@ import {
 
 
 export const getPersonnes = (req, res) => {
-  selectPersonnes()
+
+  const { type } = req.params;
+  let getAll = () => { return selectPersonnes()};
+  if (type !== undefined) {
+    getAll = () => { return selectPersonnes(type)};
+  }
+  getAll()
     .then((data) => {
       const response = {
         status: "success",
