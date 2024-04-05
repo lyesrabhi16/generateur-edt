@@ -3,7 +3,7 @@ import dotEnv from "dotenv";
 import cors from "cors";
 import DB from "./DB/DB.js";
 import morgan from "morgan";
-
+import cookieParser from "cookie-parser";
 import PersonneRouter from "./router/Personne.js";
 import SpecialiteRouter from "./router/Specialite.js";
 import SectionRouter from './router/Section.js';
@@ -17,6 +17,10 @@ import EmploisRouter from "./router/EmploisDuTemps.js";
 import EnsEtOccupRouter from "./router/EnsEtOccup.js";
 import ModuleEnsRouter from "./router/ModuleEns.js";
 import EnsEtCreneauxRouter from "./router/EnsEtCreneaux.js";
+
+import authRouter from "./router/Auth.js";
+
+import { cookieJwtAuthentication } from "./Auth/cookieJwtAuth.js";
 dotEnv.config();
 
 const app = new Express();
@@ -27,24 +31,26 @@ app.use(morgan('dev'))
 app.use(Express.urlencoded({ extended: true }));
 app.use(Express.json());
 app.use(cors());
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
     res.send("AGEMP Server");// for testing purposes
 });
 
-app.use("/Personne", PersonneRouter);
-app.use("/Specialite", SpecialiteRouter);
-app.use("/Section", SectionRouter);
-app.use('/Occupation',OccupationRouter);
-app.use("/Groupe", GroupeRouter);
-app.use("/Module", moduleRouter );
-app.use("/Local",LocalRouter);
-app.use("/Seance",SeanceRouter);
-app.use('/Creneau',CreneauRouter);
-app.use('/EmploisTemps',EmploisRouter);
-app.use('/EnsEtOccup',EnsEtOccupRouter);
-app.use('/ModuleEns',ModuleEnsRouter);
-app.use('/EnsCreneaux',EnsEtCreneauxRouter);
+app.use("/Personne", cookieJwtAuthentication,PersonneRouter);
+app.use("/Specialite", cookieJwtAuthentication ,SpecialiteRouter);
+app.use("/Section", cookieJwtAuthentication ,SectionRouter);
+app.use('/Occupation',cookieJwtAuthentication,OccupationRouter);
+app.use("/Groupe",cookieJwtAuthentication, GroupeRouter);
+app.use("/Module",cookieJwtAuthentication, moduleRouter );
+app.use("/Local",cookieJwtAuthentication,LocalRouter);
+app.use("/Seance",cookieJwtAuthentication,SeanceRouter);
+app.use('/Creneau',cookieJwtAuthentication,CreneauRouter);
+app.use('/EmploisTemps',cookieJwtAuthentication,EmploisRouter);
+app.use('/EnsEtOccup',cookieJwtAuthentication,EnsEtOccupRouter);
+app.use('/ModuleEns',cookieJwtAuthentication,ModuleEnsRouter);
+app.use('/EnsCreneaux',cookieJwtAuthentication,EnsEtCreneauxRouter);
+app.use('/login',authRouter);
 
 app.listen(port, () => {
   console.log("Server running on http://localhost:" + port);
