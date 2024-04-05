@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "agemp",
-    "dateExported": "2024-03-30T14:09:17.494Z",
+    "dateExported": "2024-04-05T16:42:35.713Z",
     "version": "1.1",
     "folders": [
         {
@@ -78,7 +78,21 @@
             "method": "GET",
             "sortNum": 10000,
             "created": "2024-03-30T12:46:08.813Z",
-            "modified": "2024-03-30T12:46:08.813Z",
+            "modified": "2024-04-05T16:41:53.484Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "8ab54520-071f-4fdc-89f7-c59a2116ae98",
+            "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
+            "containerId": "881a0942-36ea-45b1-986d-8de35a153051",
+            "name": "getAllByType",
+            "url": "http://localhost:3000/personne/Etudiant",
+            "method": "GET",
+            "sortNum": 15000,
+            "created": "2024-04-05T16:41:59.560Z",
+            "modified": "2024-04-05T16:42:27.451Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -106,7 +120,7 @@
             "method": "POST",
             "sortNum": 30000,
             "created": "2024-03-30T12:46:08.815Z",
-            "modified": "2024-03-30T12:46:08.815Z",
+            "modified": "2024-04-03T12:47:11.585Z",
             "headers": [],
             "params": [],
             "body": {
@@ -115,15 +129,15 @@
                 "form": [
                     {
                         "name": "nom",
-                        "value": "Rabhi"
+                        "value": "Rabhi0000"
                     },
                     {
                         "name": "prenom",
-                        "value": "Lyes"
+                        "value": "Lyes0000"
                     },
                     {
                         "name": "email",
-                        "value": "lyes.rabhi@se.univ-bejaia.dz"
+                        "value": "lyes.rabhi@se.univ-bejaia.dz0"
                     },
                     {
                         "name": "password",
@@ -131,7 +145,7 @@
                     },
                     {
                         "name": "type",
-                        "value": "Etudiant"
+                        "value": "Administrateur"
                     },
                     {
                         "name": "anneeBac",
@@ -151,7 +165,8 @@
                     },
                     {
                         "name": "matricule",
-                        "value": "2020330094150"
+                        "value": "2020330094150000",
+                        "isDisabled": true
                     }
                 ]
             },
@@ -732,7 +747,7 @@
             "method": "POST",
             "sortNum": 108750,
             "created": "2024-03-30T12:46:08.837Z",
-            "modified": "2024-03-30T12:46:08.837Z",
+            "modified": "2024-03-30T14:11:18.727Z",
             "headers": [],
             "params": [],
             "body": {
