@@ -51,7 +51,7 @@ export const updateSpecialite = (code_specialite_old, code_specialite_new = code
  * @returns {Promise} - A promise that resolves to the result of the delete query.
  */
 export const deleteSpecialite = (code_specialite) => {
-  return db.none("DELETE FROM specialite WHERE code_specialite = $1 returning *", [
+  return db.none("DELETE FROM specialite WHERE code_specialite = $1", [
     code_specialite,
   ]);
 };
