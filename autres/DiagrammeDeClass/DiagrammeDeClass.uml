@@ -84,6 +84,12 @@
     <ownedAttribute xmi:type="uml:Property" xmi:id="_1mN9gNs4Ee6c3_EZZbm1kg" name="code_section" visibility="private">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
     </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_sboUsPOLEe6mBN3P71SdKw" name="niveau" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_r-uO4POOEe6mBN3P71SdKw" name="id_section">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+    </ownedAttribute>
   </packagedElement>
   <packagedElement xmi:type="uml:Association" xmi:id="_niQUgNstEe6c3_EZZbm1kg" memberEnd="_niRiodstEe6c3_EZZbm1kg _niSJsdstEe6c3_EZZbm1kg">
     <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_niQ7kNstEe6c3_EZZbm1kg" source="org.eclipse.papyrus">
@@ -248,6 +254,16 @@
     </ownedEnd>
     <ownedEnd xmi:type="uml:Property" xmi:id="_upxtcN_mEe6cy7XLLLsWcg" name="creneaux  " type="_6pdO4NstEe6c3_EZZbm1kg" association="_upsN4N_mEe6cy7XLLLsWcg">
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6KmsUN_mEe6cy7XLLLsWcg" value="*"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_Wy4qoPOLEe6mBN3P71SdKw" memberEnd="_W0fNIPOLEe6mBN3P71SdKw _W0hCUPOLEe6mBN3P71SdKw">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_W0dX8POLEe6mBN3P71SdKw" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_W0d_APOLEe6mBN3P71SdKw" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_W0fNIPOLEe6mBN3P71SdKw" name="specialite  " type="_j4m3UNxsEe6c3_EZZbm1kg" association="_Wy4qoPOLEe6mBN3P71SdKw"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_W0hCUPOLEe6mBN3P71SdKw" name="section " type="_wOycQNssEe6c3_EZZbm1kg" association="_Wy4qoPOLEe6mBN3P71SdKw">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_cYsckPOLEe6mBN3P71SdKw"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_cZOoEPOLEe6mBN3P71SdKw" value="*"/>
     </ownedEnd>
   </packagedElement>
   <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_k5IcgNs1Ee6c3_EZZbm1kg">
