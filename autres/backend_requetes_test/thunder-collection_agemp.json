@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "agemp",
-    "dateExported": "2024-04-05T16:42:35.713Z",
+    "dateExported": "2024-04-06T23:56:41.441Z",
     "version": "1.1",
     "folders": [
         {
@@ -88,11 +88,11 @@
             "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
             "containerId": "881a0942-36ea-45b1-986d-8de35a153051",
             "name": "getAllByType",
-            "url": "http://localhost:3000/personne/Etudiant",
+            "url": "http://localhost:3000/personne/Enseignant",
             "method": "GET",
             "sortNum": 15000,
             "created": "2024-04-05T16:41:59.560Z",
-            "modified": "2024-04-05T16:42:27.451Z",
+            "modified": "2024-04-06T22:36:48.233Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -102,11 +102,11 @@
             "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
             "containerId": "881a0942-36ea-45b1-986d-8de35a153051",
             "name": "getOne",
-            "url": "http://localhost:3000/personne/202033009415",
+            "url": "http://localhost:3000/personne/24",
             "method": "GET",
             "sortNum": 20000,
             "created": "2024-03-30T12:46:08.814Z",
-            "modified": "2024-03-30T12:46:08.814Z",
+            "modified": "2024-04-06T22:46:27.910Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -120,7 +120,7 @@
             "method": "POST",
             "sortNum": 30000,
             "created": "2024-03-30T12:46:08.815Z",
-            "modified": "2024-04-03T12:47:11.585Z",
+            "modified": "2024-04-06T22:48:33.113Z",
             "headers": [],
             "params": [],
             "body": {
@@ -129,31 +129,31 @@
                 "form": [
                     {
                         "name": "nom",
-                        "value": "Rabhi0000"
+                        "value": "test_etd"
                     },
                     {
                         "name": "prenom",
-                        "value": "Lyes0000"
+                        "value": "test_etd"
                     },
                     {
                         "name": "email",
-                        "value": "lyes.rabhi@se.univ-bejaia.dz0"
+                        "value": "test_etd@test.dz"
                     },
                     {
                         "name": "password",
-                        "value": "0000"
+                        "value": "password"
                     },
                     {
                         "name": "type",
-                        "value": "Administrateur"
+                        "value": "Etudiant"
+                    },
+                    {
+                        "name": "niveau",
+                        "value": "Master"
                     },
                     {
                         "name": "anneeBac",
                         "value": "2020"
-                    },
-                    {
-                        "name": "niveau",
-                        "value": "M1"
                     },
                     {
                         "name": "id_groupe",
@@ -162,11 +162,6 @@
                     {
                         "name": "code_specialite",
                         "value": "GL"
-                    },
-                    {
-                        "name": "matricule",
-                        "value": "2020330094150000",
-                        "isDisabled": true
                     }
                 ]
             },
@@ -177,11 +172,11 @@
             "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
             "containerId": "881a0942-36ea-45b1-986d-8de35a153051",
             "name": "updateOne",
-            "url": "http://localhost:3000/personne/110",
+            "url": "http://localhost:3000/personne/26",
             "method": "PUT",
             "sortNum": 35000,
             "created": "2024-03-30T12:46:08.817Z",
-            "modified": "2024-03-30T12:46:08.817Z",
+            "modified": "2024-04-06T22:51:16.563Z",
             "headers": [],
             "params": [],
             "body": {
@@ -190,19 +185,19 @@
                 "form": [
                     {
                         "name": "nom",
-                        "value": "Rabhi2"
+                        "value": "test_etd1"
                     },
                     {
                         "name": "prenom",
-                        "value": "Lyes2"
+                        "value": "test_etd1"
                     },
                     {
                         "name": "email",
-                        "value": "lyes.rabhi@se.univ-bejaia.dz"
+                        "value": "ltest_etd1@test_etd1.dz"
                     },
                     {
                         "name": "password",
-                        "value": "0000"
+                        "value": "password"
                     },
                     {
                         "name": "type",
@@ -214,11 +209,11 @@
                     },
                     {
                         "name": "niveau",
-                        "value": "M1"
+                        "value": "Master"
                     },
                     {
                         "name": "id_groupe",
-                        "value": "1"
+                        "value": "2"
                     },
                     {
                         "name": "code_specialite",
@@ -233,11 +228,11 @@
             "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
             "containerId": "881a0942-36ea-45b1-986d-8de35a153051",
             "name": "deleteOne",
-            "url": "http://localhost:3000/personne/11",
+            "url": "http://localhost:3000/personne/26",
             "method": "DELETE",
             "sortNum": 40000,
             "created": "2024-03-30T12:46:08.816Z",
-            "modified": "2024-03-30T12:46:08.816Z",
+            "modified": "2024-04-06T22:51:25.413Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -303,11 +298,11 @@
             "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
             "containerId": "d2831a84-6791-44d9-8bca-7e31f891bdfc",
             "name": "getOne",
-            "url": "http://localhost:3000/section/M1GL",
+            "url": "http://localhost:3000/section/1",
             "method": "GET",
             "sortNum": 60000,
             "created": "2024-03-30T12:46:08.825Z",
-            "modified": "2024-03-30T12:46:08.825Z",
+            "modified": "2024-04-06T22:53:43.494Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -317,11 +312,11 @@
             "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
             "containerId": "d0130eb5-3a3d-4770-bfe1-aaac138d192b",
             "name": "getOne",
-            "url": "http://localhost:3000/groupe/10",
+            "url": "http://localhost:3000/groupe/1",
             "method": "GET",
             "sortNum": 60000,
             "created": "2024-03-30T12:46:08.830Z",
-            "modified": "2024-03-30T12:46:08.830Z",
+            "modified": "2024-04-06T23:00:13.773Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -363,7 +358,7 @@
             "method": "POST",
             "sortNum": 70000,
             "created": "2024-03-30T12:46:08.826Z",
-            "modified": "2024-03-30T12:46:08.826Z",
+            "modified": "2024-04-06T22:55:59.057Z",
             "headers": [],
             "params": [],
             "body": {
@@ -372,7 +367,15 @@
                 "form": [
                     {
                         "name": "code_section",
-                        "value": "L1STA0"
+                        "value": "G"
+                    },
+                    {
+                        "name": "niveau",
+                        "value": "L3"
+                    },
+                    {
+                        "name": "code_specialite",
+                        "value": "MI"
                     }
                 ]
             },
@@ -387,7 +390,7 @@
             "method": "POST",
             "sortNum": 70000,
             "created": "2024-03-30T12:46:08.831Z",
-            "modified": "2024-03-30T12:46:08.831Z",
+            "modified": "2024-04-06T23:00:40.983Z",
             "headers": [],
             "params": [],
             "body": {
@@ -395,8 +398,8 @@
                 "raw": "",
                 "form": [
                     {
-                        "name": "code_section",
-                        "value": "L1STA"
+                        "name": "id_section",
+                        "value": "1"
                     },
                     {
                         "name": "code_groupe",
@@ -439,11 +442,11 @@
             "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
             "containerId": "2d1be867-4492-4dc2-8da9-bbb9cbb18152",
             "name": "deleteOne",
-            "url": "http://localhost:3000/specialite/ST25",
+            "url": "http://localhost:3000/specialite/ST2",
             "method": "DELETE",
             "sortNum": 80000,
             "created": "2024-03-30T12:46:08.822Z",
-            "modified": "2024-03-30T12:46:08.822Z",
+            "modified": "2024-04-06T22:51:49.730Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -453,11 +456,11 @@
             "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
             "containerId": "d2831a84-6791-44d9-8bca-7e31f891bdfc",
             "name": "updateOne",
-            "url": "http://localhost:3000/section/L1STA0",
+            "url": "http://localhost:3000/section/5",
             "method": "PUT",
             "sortNum": 80000,
             "created": "2024-03-30T12:46:08.827Z",
-            "modified": "2024-03-30T12:46:08.827Z",
+            "modified": "2024-04-06T22:55:44.103Z",
             "headers": [],
             "params": [
                 {
@@ -472,8 +475,16 @@
                 "raw": "",
                 "form": [
                     {
-                        "name": "code_section_new",
-                        "value": "L1STA1"
+                        "name": "code_section",
+                        "value": "B"
+                    },
+                    {
+                        "name": "niveau",
+                        "value": "L3"
+                    },
+                    {
+                        "name": "code_specialite",
+                        "value": "MI"
                     }
                 ]
             },
@@ -519,11 +530,11 @@
             "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
             "containerId": "d2831a84-6791-44d9-8bca-7e31f891bdfc",
             "name": "deleteOne",
-            "url": "http://localhost:3000/section/L1STA1",
+            "url": "http://localhost:3000/section/7",
             "method": "DELETE",
             "sortNum": 90000,
             "created": "2024-03-30T12:46:08.828Z",
-            "modified": "2024-03-30T12:46:08.828Z",
+            "modified": "2024-04-06T22:56:09.048Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -533,11 +544,11 @@
             "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
             "containerId": "d0130eb5-3a3d-4770-bfe1-aaac138d192b",
             "name": "deleteOne",
-            "url": "http://localhost:3000/groupe/5",
+            "url": "http://localhost:3000/groupe/3",
             "method": "DELETE",
             "sortNum": 90000,
             "created": "2024-03-30T12:46:08.833Z",
-            "modified": "2024-03-30T12:46:08.833Z",
+            "modified": "2024-04-06T23:01:58.751Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -659,11 +670,11 @@
             "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
             "containerId": "e0f60cfc-768c-4592-ac3b-e118ba483a56",
             "name": "getAllByType",
-            "url": "http://localhost:3000/seance/types/TD0",
+            "url": "http://localhost:3000/seance/types/TD",
             "method": "GET",
             "sortNum": 102187.5,
             "created": "2024-03-30T12:49:01.767Z",
-            "modified": "2024-03-30T12:54:54.901Z",
+            "modified": "2024-04-06T23:04:23.119Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -673,11 +684,11 @@
             "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
             "containerId": "41d20393-d1f7-4333-ae2d-5a515df6f09c",
             "name": "getAllByGroupe",
-            "url": "http://localhost:3000/creneau/groupes/100",
+            "url": "http://localhost:3000/creneau/groupes/1",
             "method": "GET",
             "sortNum": 102187.5,
             "created": "2024-03-30T13:14:21.037Z",
-            "modified": "2024-03-30T13:48:50.055Z",
+            "modified": "2024-04-06T23:46:08.518Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -687,11 +698,11 @@
             "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
             "containerId": "393cb0ec-50f3-4404-a050-47cdf4eefa7f",
             "name": "getOne",
-            "url": "http://localhost:3000/module/GL",
+            "url": "http://localhost:3000/module/POO",
             "method": "GET",
             "sortNum": 104375,
             "created": "2024-03-30T12:46:08.844Z",
-            "modified": "2024-03-30T12:46:08.844Z",
+            "modified": "2024-04-06T23:02:34.423Z",
             "headers": [],
             "params": [],
             "tests": []
