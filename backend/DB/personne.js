@@ -12,11 +12,15 @@ export const selectPersonnes = (typePersonne = null) => {
   let sql = `SELECT * FROM personne`;
 
   if (typePersonne === TypePersonne.Etudiant){
-    sql = `SELECT  p.*, g.code_groupe, g.code_section, s.nom_specialite
-            FROM personne p
-            join groupe g on p.id_groupe = g.id_groupe 
-            join specialite s on p.code_specialite = s.code_specialite`;
-  }
+    sql = `SELECT  p.matricule, p.nom, p.prenom, p.email, p.password, p.type, p.anneebac, p.niveau,
+                    g.id_groupe, g.code_groupe,
+                    s.id_section, s.code_section, s.niveau, 
+                    sp.code_specialite, sp.nom_specialite
+          FROM personne p
+              join groupe g on p.id_groupe = g.id_groupe
+              join section s on g.id_section = s.id_section
+              join specialite sp on s.code_specialite = sp.code_specialite`;
+    }
   if (typePersonneValidator(typePersonne)) {
     sql += ` WHERE type = $1`;
   }

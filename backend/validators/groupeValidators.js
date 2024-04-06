@@ -1,13 +1,13 @@
 export const addGroupeValidator = (req, res, next) => {
-    const { code_groupe, code_section } = req.body;
+    const { code_groupe, id_section } = req.body;
     const missingFeilds = [];
 
     if (code_groupe === undefined) {
       missingFeilds.push("code_groupe");
     }
 
-    if (code_section === undefined) {
-        missingFeilds.push("code_section");
+    if (id_section === undefined) {
+        missingFeilds.push("id_section");
     }
 
     if (missingFeilds.length > 0){

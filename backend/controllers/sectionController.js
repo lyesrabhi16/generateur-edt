@@ -27,8 +27,8 @@ export const getSections = (req, res) => {
 };
 
 export const getSection = (req, res) => {
-  const { code_section } = req.params;
-  selectSection(code_section)
+  const { id_section } = req.params;
+  selectSection(id_section)
     .then((data) => {
       if (data) {
         const response = {
@@ -57,8 +57,8 @@ export const getSection = (req, res) => {
 };
 
 export const addSection = (req, res) => {
-  const { code_section } = req.body;
-  insertSection(code_section)
+  const { code_section, niveau, code_specialite } = req.body;
+  insertSection(code_section, niveau, code_specialite)
     .then((data) => {
       const response = {
         status: "success",
@@ -78,9 +78,9 @@ export const addSection = (req, res) => {
 };
 
 export const updateSection = (req, res) => {
-  const { code_section_new } = req.body;
-  const { code_section } = req.params;
-  updateSection_db(code_section, code_section_new)
+  const { code_section, niveau, code_specialite } = req.body;
+  const { id_section } = req.params;
+  updateSection_db(id_section, code_section, niveau, code_specialite)
     .then((data) => {
       const response = {
         status: "success",
@@ -100,8 +100,8 @@ export const updateSection = (req, res) => {
 };
 
 export const deleteSection = (req, res) => {
-  const { code_section } = req.params;
-  deleteSection_db(code_section)
+  const { id_section } = req.params;
+  deleteSection_db(id_section)
     .then((data) => {
       const response = {
         status: "success",

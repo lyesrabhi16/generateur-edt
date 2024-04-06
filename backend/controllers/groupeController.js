@@ -55,8 +55,8 @@ export const getGroupe = (req, res) => {
 };
 
 export const addGroupe = (req, res) => {
-  const { code_groupe, code_section } = req.body;
-  insertGroupe(code_groupe, code_section)
+  const { code_groupe, id_section } = req.body;
+  insertGroupe(code_groupe, id_section)
     .then((data) => {
       const response = {
         status: "success",
@@ -77,8 +77,8 @@ export const addGroupe = (req, res) => {
 
 export const updateGroupe = (req, res) => {
   const { id_groupe } = req.params;
-  const { code_groupe, code_section } = req.body;
-  updateGroupe_db(id_groupe, code_groupe, code_section)
+  const { code_groupe, id_section } = req.body;
+  updateGroupe_db(id_groupe, code_groupe, id_section)
     .then((data) => {
       const response = {
         status: "success",

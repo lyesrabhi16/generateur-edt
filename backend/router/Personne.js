@@ -10,7 +10,7 @@ const personneRouter = Router();
 personneRouter.get("/", getPersonnes);
 
 //? get all by type
-personneRouter.get("/:type", getPersonnesBytypeValidator, getPersonnes);
+personneRouter.get("/type/:type", getPersonnesBytypeValidator, getPersonnes);
 
 //? get one
 personneRouter.get("/:matricule", getPersonne);

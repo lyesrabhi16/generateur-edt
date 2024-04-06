@@ -11,43 +11,47 @@ export const selectSections = () => {
 }
 
 /**
- * Retrieves a section from the database based on the provided code_section.
+ * Retrieves a section from the database based on the provided id_section.
  *
- * @param {string} code_section - The code_section of the section to retrieve.
+ * @param {string} id_section - The id_section of the section to retrieve.
  * @returns {Promise<Object>} - A promise that resolves to the retrieved section object.
  */
-export const selectSection = (code_section) => {
-    return db.oneOrNone(`SELECT * FROM section WHERE code_section = $1`, [code_section]);
+export const selectSection = (id_section) => {
+    return db.oneOrNone(`SELECT * FROM section WHERE id_section = $1`, [id_section]);
 }
 
 /**
  * Inserts a new section into the database.
  * 
  * @param {string} code_section - The code of the section to be inserted.
+ * @param {string} niveau - The niveau of the section to be inserted.
+ * @param {string} code_specialite - The code of the speciality of the section to be inserted.
  * @returns {Promise} - A promise that resolves to the result of the database query.
  */
-export const insertSection = (code_section) => {
-    return db.one(`INSERT INTO section (code_section) VALUES ($1) returning *`, [code_section]);
+export const insertSection = (code_section, niveau, code_specialite) => {
+    return db.one(`INSERT INTO section (code_section, niveau, code_specialite) VALUES ($1, $2, $3) returning *`, [code_section, niveau, code_specialite]);
 };
 
 
 /**
- * Updates the code_section value in the section table of the database.
+ * Updates a section.
  *
- * @param {string} code_section_old - The old code_section value to be updated.
- * @param {string} code_section_new - The new code_section value to replace the old value.
+ * @param {string} id_section - The old id_section value to be updated.
+ * @param {string} code_section - The new code_section value to replace the old value.
+ * @param {string} niveau - The new niveau value to replace the old value.
+ * @param {string} code_specialite - The new code_specialite value to replace the old value.
  * @returns {Promise} - A promise that resolves when the update query is executed successfully.
  */
-export const updateSection = (code_section_old, code_section_new) => {
-    return db.one(`UPDATE section SET code_section = $1 WHERE code_section = $2 returning *`, [code_section_new, code_section_old]);
+export const updateSection = (id_section, code_section, niveau, code_specialite) => {
+    return db.one(`UPDATE section SET code_section = $1, niveau = $2, code_specialite = $3 WHERE id_section = $4 returning *`, [code_section, niveau, code_specialite, id_section]);
 }
 
 /**
- * Deletes a section from the database based on the provided code_section.
+ * Deletes a section from the database based on the provided id_section.
  *
- * @param {string} code_section - The code_section of the section to be deleted.
+ * @param {string} id_section - The id_section of the section to be deleted.
  * @returns {Promise} A promise that resolves to the result of the delete operation.
  */
-export const deleteSection = (code_section) => {
-    return db.none("DELETE FROM section WHERE code_section = $1", [code_section]);
+export const deleteSection = (id_section) => {
+    return db.none("DELETE FROM section WHERE id_section = $1", [id_section]);
 }
