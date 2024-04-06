@@ -4,9 +4,17 @@ import { db } from "../server.js";
 @returns {Promise}
 */
 
-export const getAllSeance =()=>{
+/* @MassinS
+        !fixed
+        * i get errors for code_module and code_specialite: 
+        *    ERROR:  column reference "code_module/code_specialite" is ambiguous
+        * so added the table names before the column names
+      ?--written by @lyesrabhi16
+*/
 
-    return db.manyOrNone(`SELECT id_seance , type,nom_module , nom_specialite,code_module,code_specialite 
+export const getAllSeance =()=>{
+    
+    return db.manyOrNone(`SELECT id_seance , type,nom_module , nom_specialite,Module.code_module,Specialite.code_specialite 
                           from Seance left join Module on Seance.code_module=Module.code_module
                           left join Specialite on Seance.code_specialite=Specialite.code_specialite 
                           `
@@ -18,7 +26,7 @@ export const getAllSeance =()=>{
   @returns {Promise<object|null>} 
  */
 export const getOneSeanceById =(id_seance)=>{
-return db.oneOrNone(`SELECT id_seance , type,nom_module , nom_specialite , code_module,code_specialite 
+return db.oneOrNone(`SELECT id_seance , type,nom_module , nom_specialite , Module.code_module, Specialite.code_specialite 
                     from Seance left join Module on Seance.code_module=Module.code_module
                     left join Specialite on Seance.code_specialite=Specialite.code_specialite
                     WHERE id_seance=$1 `,[id_seance]  
