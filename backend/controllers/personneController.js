@@ -50,6 +50,7 @@ export const getPersonne = (req, res) => {
         response.message = "Person not found";
         response.personne = null;
         res.status(404).json(response);
+        return;
       }
 
       res.status(200).json(response);
