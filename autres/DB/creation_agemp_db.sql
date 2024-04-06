@@ -16,19 +16,27 @@ create table specialite(
 
 
 create table section(
-	code_section varchar(10), 
-	constraint pk_section primary key(code_section)
+	id_section serial,
+	code_section varchar(10),
+	niveau varchar(10),
+	code_specialite varchar(10),
+	constraint pk_section primary key(id_section),
+	constraint fk_specialite foreign key(code_specialite) references specialite(code_specialite),
+	constraint nn_code_section check(code_section is not null),
+	constraint nn_niveau check(niveau is not null),
+	constraint nn_code_specialite check(code_specialite is not null),
+	constraint un_niveau_specialite_section unique(niveau, code_specialite, code_section)
 );
 
 create table groupe(
 	id_groupe serial,
 	code_groupe varchar(4),
-	code_section varchar(10),
+	id_section integer,
 	constraint pk_groupe primary key(id_groupe),
-	constraint fk_section foreign key(code_section) references section(code_section),
-	constraint nn_section check(code_section is not null),
+	constraint fk_section foreign key(id_section) references section(id_section),
+	constraint nn_section check(id_section is not null),
 	constraint nn_code_groupe check(code_groupe is not null),
-	constraint un_section_groupe unique(code_groupe, code_section)
+	constraint un_section_groupe unique(code_groupe, id_section)
 );
 
 create table personne(
