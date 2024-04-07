@@ -5,21 +5,29 @@ import { db } from "../server.js";
  * @returns {Promise}
  */
 
+/* @MassinS
+   * modifed to include the new changes on section table
+   returns:
+      id_creneau, debut, fin, jour, id_emp,
+      id_groupe, code_groupe ,
+      id_section, code_section,niveau,
+      code_specialite, nom_specialite.
+      id_seance, type, 
+      code_module, nom_module
+   ?--written by @lyesrabhi16
+*/
+
 export const getAllCreneau =()=>{
 
-   return db.manyOrNone(`SELECT c.id_creneau,c.debut,c.fin,c.jour,g.code_groupe,s.type,m.nom_module,s.code_specialite,l.code_local  
-                         FROM 
-                         Creneau c
-                         LEFT JOIN 
-                         Seance s ON c.id_seance = s.id_seance 
-                         LEFT JOIN  
-                         Module m ON s.code_module = m.code_module
-                         LEFT JOIN  
-                         EmploisDuTemps edt ON c.id_Emp = edt.id_Emp
-                         LEFT JOIN  
-                         Groupe g ON edt.id_groupe = g.id_groupe
-                         LEFT JOIN  
-                         Local l ON c.code_local = l.code_local`)
+   return db.manyOrNone(`SELECT c.*, g.id_groupe, g.code_groupe, s.*, sp.nom_specialite, sc.type, m.*
+                           FROM Creneau c
+                                 join emploisdutemps emp on c.id_emp = emp.id_emp
+                                 join groupe g on emp.id_groupe = g.id_groupe
+                                 join section s on g.id_section = s.id_section
+                                 join specialite sp on s.code_specialite = sp.code_specialite
+                                 join seance sc on c.id_seance = sc.id_seance
+                                 join module m on sc.code_module = m.code_module
+                           `);
 
 }
 
@@ -30,20 +38,15 @@ export const getAllCreneau =()=>{
  *  @returns {Promise<object|null>} 
  */
 export const getOneCreneauById = (id_creneau) => {
-   return db.oneOrNone(`SELECT c.id_creneau,c.debut,c.fin,c.jour,g.code_groupe,s.type,m.nom_module,s.code_specialite,l.code_local  
-                         FROM 
-                         Creneau c
-                         LEFT JOIN 
-                         Seance s ON c.id_seance = s.id_seance 
-                         LEFT JOIN  
-                         Module m ON s.code_module = m.code_module
-                         LEFT JOIN  
-                         EmploisDuTemps edt ON c.id_Emp = edt.id_Emp
-                         LEFT JOIN  
-                         Groupe g ON edt.id_groupe = g.id_groupe
-                         LEFT JOIN  
-                         Local l ON c.code_local = l.code_local
-                         WHERE c.id_Creneau=$1 `,[id_creneau])
+   return db.oneOrNone(`SELECT c.*, g.id_groupe, g.code_groupe, s.*, sp.nom_specialite, sc.type, m.*
+                        FROM Creneau c
+                              join emploisdutemps emp on c.id_emp = emp.id_emp
+                              join groupe g on emp.id_groupe = g.id_groupe
+                              join section s on g.id_section = s.id_section
+                              join specialite sp on s.code_specialite = sp.code_specialite
+                              join seance sc on c.id_seance = sc.id_seance
+                              join module m on sc.code_module = m.code_module
+                        WHERE c.id_Creneau=$1 `,[id_creneau])
 }
 /**
  * 
@@ -52,20 +55,15 @@ export const getOneCreneauById = (id_creneau) => {
  */
 export const getAllCreneauByGroupe = (id_groupe) =>{
     console.log(id_groupe);
-    return db.manyOrNone(`SELECT c.id_creneau,c.debut,c.fin,c.jour,g.code_groupe, g.code_section,s.type,m.nom_module,s.code_specialite,l.code_local  
-                         FROM 
-                         Creneau c
-                         LEFT JOIN 
-                         Seance s ON c.id_seance = s.id_seance 
-                         LEFT JOIN  
-                         Module m ON s.code_module = m.code_module
-                         LEFT JOIN  
-                         EmploisDuTemps edt ON c.id_Emp = edt.id_Emp
-                         LEFT JOIN  
-                         Groupe g ON edt.id_groupe = g.id_groupe
-                         LEFT JOIN  
-                         Local l ON c.code_local = l.code_local
-                         WHERE g.id_groupe=$1 `, [id_groupe] );
+    return db.manyOrNone(`SELECT c.*, g.id_groupe, g.code_groupe, s.*, sp.nom_specialite, sc.type, m.*
+                           FROM Creneau c
+                                 join emploisdutemps emp on c.id_emp = emp.id_emp
+                                 join groupe g on emp.id_groupe = g.id_groupe
+                                 join section s on g.id_section = s.id_section
+                                 join specialite sp on s.code_specialite = sp.code_specialite
+                                 join seance sc on c.id_seance = sc.id_seance
+                                 join module m on sc.code_module = m.code_module
+                          WHERE g.id_groupe=$1 `, [id_groupe] );
     
 }
 /**
