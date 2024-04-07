@@ -5,8 +5,17 @@ export const cookieJwtAuthentication = (req, res, next) => {
     console.log(token);
     
     try {
-        const email = jwt.verify(token, process.env.JWTSecret);
+        /* @MassinS
+            !modified 
+                * extracted only email and id from the token
+            ?--written by @lyesrabhi16
+         */
+
+        const { id, email } = jwt.verify(token, process.env.JWTSecret);
+        
         req.email = email;
+        req.matricule = id;
+
         next();
     } catch {
         res.clearCookie('token');
