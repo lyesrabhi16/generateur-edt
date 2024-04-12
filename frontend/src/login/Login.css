@@ -1,0 +1,16 @@
+.wi{
+    width: 600px;
+}
+.wim{
+width:400px;
+}
+.hi{
+    height:100%
+}
+#error{
+    outline: none;
+    border: 2px solid red;
+}
+#error::placeholder{
+    color: red;
+}

@@ -107,4 +107,5 @@ export const deleteOneModule=(req,res)=>{
           };
           res.status(500).json(response);
     })
+
 }

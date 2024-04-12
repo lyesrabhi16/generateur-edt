@@ -1,0 +1,268 @@
+import image from '../assets/download.png'
+import './mainsection.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faFilter } from '@fortawesome/free-solid-svg-icons'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faPen } from '@fortawesome/free-solid-svg-icons'
+import { useState, useEffect } from "react";
+import Ajouter from './formajouter';
+import axios from 'axios'
+import Cookies from 'js-cookie';
+import { Navigate } from "react-router-dom";
+function Section({page}){
+  const [etudiants, setEtudiants] = useState([]);
+  const [chercher, setChercher] = useState("");
+  const[indexPage,Setpage]=useState(0);
+  const regex = new RegExp(chercher, 'i');
+  const nbrPages = etudiants.length > 0 ? Math.ceil(etudiants.length / 8) : 0;
+  const initialClickedStates = new Array(nbrPages).fill(false);
+  const [clickedStates, setClickedStates] = useState(initialClickedStates);
+  const [Show, setShow] = useState(false);
+  const [Finish, setFinish] = useState(false);
+  const [supprime, setSupprime] = useState(false);
+  const [info, setInfo] = useState('');
+  let user=Cookies.get('user');
+  if(user){
+    user=JSON.parse(user);
+  }
+  useEffect(() => {
+    if(page ==='Modules'){
+      axios.get("http://localhost:3000/module/", {
+        withCredentials: true
+      })
+.then(res => {
+  setEtudiants(res.data.Modules);
+})
+.catch(err => console.log(err));
+    }else if(page==='Local'){
+      axios.get("http://localhost:3000/local/", {
+        withCredentials: true
+      }).then(respo =>{
+        
+      setEtudiants(respo.data.Locaux);
+     })
+     .catch(err => console.log(err));
+    }else{
+      axios.get("http://localhost:3000/personne/", {
+        withCredentials: true
+      }).then(respo =>{
+        const etudiantsFiltres = respo.data.personnes.filter(personne => personne.type === page);
+        setEtudiants(etudiantsFiltres);
+    
+       })
+       .catch(err => console.log(err));
+    }
+       Setpage(0);//pour initialiser a 1 numero de page par defaut a chaque fois quand on change de direction dans navbar menu
+       const updatedClickedStates = clickedStates.map(() => false);//pour enlever l'effet du clique sur numero de page 
+       setClickedStates(updatedClickedStates);
+  },[page,Finish,supprime]);
+    const np=user?user.nom+' '+user.prenom:'';
+    const role=user?user.role : '';
+    const handleClick = (index) => {
+      // Mettre à jour l'état de l'élément individuel lorsqu'il est cliqué
+      const updatedClickedStates = clickedStates.map(() => false);
+      updatedClickedStates[index] = true;
+      setClickedStates(updatedClickedStates);
+    };
+
+    const getPageStyle = (index) => {
+      return {
+        backgroundColor: clickedStates[index] ? 'blue' : null,
+        color: clickedStates[index] ?'#fff': null,
+        cursor: 'pointer',
+      };
+    };
+    const handleAdd = () => {
+      setFinish(!Finish);//pour faire un refresh de la table
+      setShow(false);//fermer le formulaire
+    };
+
+  
+    return(
+      <>
+      {user===undefined?<Navigate to="/"  replace={true} />:null}{/*pour savoir si le cookie est expire*/}
+      <div className="flex flex-col main px-10 z-0 h-full" id={Show ? 'mainflou' : undefined}>
+
+      {Show?<Ajouter onAdd={handleAdd} typep={page} modify={info} />:null /*formulaire d'ajout*/}
+
+    <header className="flex justify-between  mt-8 h-fit">
+    <div className="">
+    <p className="text-black  text-3xl font-bold">{page}</p>
+  <p className="text-base text-gray-500">{true ? etudiants.length : 0} {page} trouve</p>
+    </div>
+    <div className="flex items-center">
+    <img src={image} className="h-10 w-10 image"></img>
+    <div className="flex flex-col justify-center ml-2">
+        <p className='font-semibold'>{np}</p>
+        <p className="text-sm text-gray-500">{role}</p>
+    </div>
+  </div>
+</header>
+
+<div className='flex mt-12 justify-between'>
+    <div className='search h-8 flex items-center bg-gray-100 px-3 py-5'>
+    <input 
+  type='search' 
+  placeholder='Chercher des étudiants' 
+  className=' text-black' 
+  onChange={(e) => {
+    setChercher(e.target.value);
+  }}
+/>
+
+    <FontAwesomeIcon icon={faMagnifyingGlass} className='flex self-center text-black'/>
+    </div>
+    <div className='flex '>
+        <div className='add flex items-center mr-10  rounded-2xl px-3 py-2 transition-all delay-100'>
+            <FontAwesomeIcon icon={faPlus} className='mr-2 text-white'/>
+            <button className='text-white' onClick={()=>{
+              setInfo('');
+              setShow(true);
+            }}>Ajouter un {page==='Modules'?'Module':page}</button>
+        </div>
+        <div className='filter flex items-center rounded-2xl border-2 border-gray-500 px-3 py-2 '>
+            <FontAwesomeIcon icon={faFilter} className='mr-2 text-gray-500'/>
+            <p className='text-gray-500'>filter</p>
+        </div>
+    </div>
+    
+
+
+</div>
+<table className='mt-10 z-0 ' >
+  {
+    page==="Modules"?<tr className='head'> 
+    <td>Id</td>
+    <td>Code Module</td>
+    <td>Nom Module</td>
+    <td>Action</td>
+  </tr>:
+  page==="Local"?<tr className='head'>
+  <td>Id</td>   
+  <td>code Local</td>
+  <td>capacite</td>
+  <td>type</td>
+  <td>Action</td>
+</tr>:
+ <tr className='head'> 
+ <td>Nom</td>
+ <td>Prenom</td>
+ <td>Matricule</td>
+ <td>Email</td>
+ <td>{page==='Etudiant'?'Annee du bac':"role"}</td>
+ <td>Action</td>
+</tr>
+  }
+{etudiants.map((etud, index) => {
+  if (index>=indexPage && index<Math.min(indexPage+8,etudiants.length)) {
+    if(page ==='Modules'){
+      if (regex.test(etud.code_module) || regex.test(etud.nom_module)) {
+        return (
+          <tr key={index}>
+            <td>{index+1}</td>
+            <td>{etud.code_module}</td>
+            <td>{etud.nom_module}</td>
+            <td>
+            <div className='flex items-center justify-center'>
+                <FontAwesomeIcon icon={faPen} className='text-blue-700 cursor-pointer' onClick={()=>{
+                  setInfo(etud)
+                  setShow(!Show)
+                }}/>
+                <FontAwesomeIcon icon={faTrash} className='ml-4 text-red-600 cursor-pointer' onClick={()=>{
+                    axios.delete('http://localhost:3000/module/'+etud.code_module,{
+                      withCredentials: true
+                    }).then(()=>{
+                      setSupprime(!supprime);
+                    });
+                }}/>
+              </div>
+            </td>
+          </tr>
+        );
+      }
+      
+    }else if(page ==='Local'){
+      if (regex.test(etud.code_local) || regex.test(etud.capacite) || regex.test(etud.type)) {
+        return (
+          <tr key={index}>
+            <td>{index+1}</td>
+            <td>{etud.code_local}</td>
+            <td>{etud.capacite}</td>
+            <td>{etud.type}</td>
+            <td>
+            <div className='flex items-center justify-center'>
+                <FontAwesomeIcon icon={faPen} className='text-blue-700 cursor-pointer' onClick={()=>{
+                  setInfo(etud)
+                  setShow(!Show)
+                }}/>
+                <FontAwesomeIcon icon={faTrash} className='ml-4 text-red-600 cursor-pointer' onClick={()=>{
+                    axios.delete('http://localhost:3000/local/'+etud.code_local,{
+                      withCredentials: true
+                    }).then(()=>{
+                      setSupprime(!supprime);
+                    }).catch(err =>console.log(err));
+                }}/>
+              </div>
+            </td>
+          </tr>
+        );
+      }
+    
+    
+    
+    }else{
+      if(regex.test(etud.nom) || regex.test(etud.prenom) || regex.test(etud.matricule) || regex.test(etud.email) || page==='Etudiant'?regex.test(etud.anneebac):regex.test(etud.role)){
+        return (
+          <tr key={index}>
+            <td>{etud.nom}</td>
+            <td>{etud.prenom}</td>
+            <td>{etud.matricule}</td>
+            <td>{etud.email}</td>
+            <td>{page==='Etudiant'?etud.anneebac:etud.role}</td>
+            <td>
+            <div className='flex items-center justify-center'>
+                <FontAwesomeIcon icon={faPen} className='text-blue-700 cursor-pointer' onClick={()=>{
+                  setInfo(etud)
+                  setShow(!Show)
+                }}/>
+                <FontAwesomeIcon icon={faTrash} className='ml-4 text-red-600 cursor-pointer' onClick={()=>{
+                  axios.delete('http://localhost:3000/personne/'+etud.matricule,{
+                    withCredentials: true
+                  }).then(()=>{
+                    setSupprime(!supprime);
+                  });
+                  
+                }}/>
+              </div>
+            </td>
+          </tr>
+        );
+      }
+      
+    }
+    
+  } else {
+    return null;
+  }
+})}
+</table>
+<div className='flex w-full justify-center mt-6 pb-16 '>
+  {Array.from({ length: nbrPages }, (_, index) => (
+    <div key={index} className='pages' onClick={()=>{
+      Setpage(index*8);
+      handleClick(index)
+    }} style={getPageStyle(index)} >{index+1}</div>
+  ))}
+</div>
+
+        </div>
+       
+        
+        </>
+        
+    )
+    
+}
+export default Section;

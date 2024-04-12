@@ -157,6 +157,7 @@ export const deletePersonne = (req, res) => {
 
 export const updatePersonne = (req, res) => {
   const {
+    matricule,
     nom,
     prenom,
     email,
@@ -169,13 +170,14 @@ export const updatePersonne = (req, res) => {
     id_groupe,
     code_specialite,
   } = req.body;
-  const {matricule} = req.params;
+  const mat = req.params.matricule;
 
   const salt = bcrypt.genSaltSync(10);
   const hashedPassword = bcrypt.hashSync(password, salt);
 
   updatePersonne_db(
     matricule,
+    mat,
     nom,
     prenom,
     email,
@@ -186,7 +188,7 @@ export const updatePersonne = (req, res) => {
     niveau,
     charges,
     id_groupe,
-    code_specialite
+    code_specialite,
   )
     .then((personne) => {
       const response = {

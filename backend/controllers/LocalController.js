@@ -31,7 +31,7 @@ export const putOneLocal =(req,res)=>{
      UpdateLocal(code_local,code_local_new,capacite,type).then(()=>{
         const response = {
             status: "success",
-            message: "Local mis à jour "
+            message: "Local mis à jour ",
           };
           res.status(200).json(response);
 
@@ -41,8 +41,10 @@ export const putOneLocal =(req,res)=>{
             message: "Erreur pendant la mis à jour ",
             erreur: err
           };
+          
           res.status(500).json(response);
      })
+     console.log(req.body)
 
 }
 
