@@ -1,10 +1,10 @@
 import { selectPersonneByEmail } from "../DB/personne.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-
+import { env } from 'node:process';
 
     export const AuthOnePersonne = (req,res)=>{
-
+     
     const {email,password}=req.body;
       selectPersonneByEmail(email).then( async (data)=>{
         const response = {
@@ -32,6 +32,7 @@ import jwt from 'jsonwebtoken';
     const passwordFound =data.password;
     const passwordMatch = await bcrypt.compare(password,passwordFound);
     console.log(passwordMatch);
+  
 
     if (!passwordMatch) {
         response.status = "Error";
@@ -56,6 +57,7 @@ import jwt from 'jsonwebtoken';
             status:"Error",
             Message:err
         })
+        console.log(err)
       }) 
 
 }

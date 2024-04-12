@@ -30,7 +30,10 @@ export const db = DB();
 app.use(morgan('dev'))
 app.use(Express.urlencoded({ extended: true }));
 app.use(Express.json());
-app.use(cors());
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 app.use(cookieParser());
 
 app.get("/", (req, res) => {

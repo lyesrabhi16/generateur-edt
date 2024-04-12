@@ -12,10 +12,10 @@ export const cookieJwtAuthentication = (req, res, next) => {
          */
 
         const { id, email } = jwt.verify(token, process.env.JWTSecret);
-        
         req.email = email;
         req.matricule = id;
-
+        // Autoriser les credentials
+        res.set('Access-Control-Allow-Credentials', 'true');
         next();
     } catch {
         res.clearCookie('token');

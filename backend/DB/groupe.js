@@ -27,4 +27,3 @@ export const updateGroupe = (id_groupe, code_groupe, id_section) => {
 export const deleteGroupe = (id_groupe) => {
     return db.none("DELETE FROM groupe WHERE id_groupe = $1", [id_groupe]);
 };
-
