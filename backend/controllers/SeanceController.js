@@ -3,7 +3,8 @@ import { getAllSeance,
          getAllSeanceByType ,
          createSeance,
          UpdateSeance,
-         deleteSeance
+         deleteSeance,
+         deleteSeanceByCodeModule
 
 } from "../DB/Seance.js";
 
@@ -138,7 +139,7 @@ export const putOneSeance=(req,res)=>{
 }
 export const deleteOneSeance=(req,res)=>{
     const {id_seance}=req.params;
-    deleteSeance(id_seance).then((data)=>{
+    deleteSeance(id_seance).then(()=>{
         const response={
             status:"Success",
             message:"Séance supprimé"
@@ -155,3 +156,26 @@ export const deleteOneSeance=(req,res)=>{
       })
 
 }
+
+export const deleteOneSeanceByCodeModule=(req,res)=>{
+  const {code_module}=req.params;
+
+  deleteSeanceByCodeModule(code_module).then(()=>{
+    const response={
+        status:"Success",
+        message:"Séances supprimés"
+       }
+       res.status(200).json(response);
+
+  }).catch((err)=>{
+    const response={
+        status:"Error",
+        message:"Erreur pendant la suppression des séances",
+        erreur:err
+       }
+      res.status(500).json(response);
+
+  })
+
+}
+
