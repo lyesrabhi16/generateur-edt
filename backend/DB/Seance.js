@@ -88,3 +88,13 @@ export const deleteSeance =(id_seance)=>{
   return db.oneOrNone(`DELETE FROM Seance WHERE id_seance=$1`,[id_seance])
 
 }
+/**
+ * 
+ * @param {string} code_module 
+ * @returns {Promise}
+ */
+export const deleteSeanceByCodeModule=(code_module)=>{
+
+  return db.manyOrNone(`DELETE FROM Seance where code_module=$1`,[code_module])
+
+}

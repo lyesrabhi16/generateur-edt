@@ -4,7 +4,8 @@ import { selectAllSeance ,
          selectAllSeanceByType,
          insertOneSeance,
          putOneSeance,
-         deleteOneSeance
+         deleteOneSeance,
+         deleteOneSeanceByCodeModule
 
 
 } from "../controllers/SeanceController.js";
@@ -22,5 +23,6 @@ SeanceRouter.get('/types/:type', selectAllSeanceByTypeValidator,selectAllSeanceB
 SeanceRouter.post('/',addSeanceValidator,insertOneSeance);
 SeanceRouter.put('/:id_seance',addSeanceValidator,putOneSeance);
 SeanceRouter.delete('/:id_seance',deleteOneSeance);
+SeanceRouter.delete('/Modules/:code_module',deleteOneSeanceByCodeModule);
 
 export default SeanceRouter;
