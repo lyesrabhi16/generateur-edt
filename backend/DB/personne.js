@@ -180,7 +180,8 @@ export const deletePersonne = (matricule) => {
  * @returns {Promise} - A promise that resolves to the updated person's information.
  */
 export const updatePersonne = (
-  matricule,
+  mat, // Nouveau matricule
+  matricule, // Ancien matricule, nécessaire pour identifier l'enregistrement
   nom,
   prenom,
   email,
@@ -194,12 +195,12 @@ export const updatePersonne = (
   code_specialite
 ) => {
   return db.one(
-    `UPDATE personne 
-     SET nom=$1, prenom=$2, email=$3, password=$4, type=$5, role=$6, 
-         anneeBac=$7, niveau=$8, charges=$9, id_groupe=$10, 
-         code_specialite=$11
-    where matricule=$12 RETURNING *`,
+    `UPDATE personne
+     SET matricule=$1, nom=$2, prenom=$3, email=$4, password=$5, type=$6, role=$7,
+         anneeBac=$8, niveau=$9, charges=$10, id_groupe=$11, code_specialite=$12
+     WHERE matricule=$13 RETURNING *`,
     [
+      mat, // Nouveau matricule
       nom,
       prenom,
       email,
@@ -211,7 +212,7 @@ export const updatePersonne = (
       charges,
       id_groupe,
       code_specialite,
-      matricule,
+      matricule, // Ancien matricule
     ]
   );
 };
