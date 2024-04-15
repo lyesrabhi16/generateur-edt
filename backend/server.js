@@ -1,7 +1,6 @@
 import  Express  from "express";
 import dotEnv from "dotenv";
 import cors from "cors";
-import DB from "./DB/DB.js";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import PersonneRouter from "./router/Personne.js";
@@ -17,7 +16,7 @@ import EmploisRouter from "./router/EmploisDuTemps.js";
 import EnsEtOccupRouter from "./router/EnsEtOccup.js";
 import ModuleEnsRouter from "./router/ModuleEns.js";
 import EnsEtCreneauxRouter from "./router/EnsEtCreneaux.js";
-
+import DB from "./DB/db.js"
 import authRouter from "./router/Auth.js";
 
 import { cookieJwtAuthentication } from "./Auth/cookieJwtAuth.js";import path from "path";
@@ -30,6 +29,7 @@ const app = new Express();
 const port = process.env.ServerPort || 2999;
 
 export const db = DB();
+
 app.use(morgan('dev'))
 app.use(Express.urlencoded({ extended: true }));
 app.use(Express.json());
@@ -66,5 +66,5 @@ app.listen(port, () => {
 
 
 db.connect()
-      .then(()=>console.log("Database connected: "+db.$cn.database))
+      .then(()=>console.log(`Database connected ${(db.$cn.database === undefined) ? "" : (': '+ db.$cn.database)}`))
       .catch((err)=>console.log("Error connecting to the database:", err));
