@@ -39,8 +39,10 @@ app.use(cors({
 }));
 app.use(cookieParser());
 
+app.use(Express.static(path.join(__dir_name, "/frontend/dist")));
+
 app.get("/", (req, res) => {
-    res.send("AGEMP Server");// for testing purposes
+    res.sendFile(path.join(__dir_name, "/frontend/dist/index.html"));
 });
 
 app.use("/Personne", cookieJwtAuthentication,PersonneRouter);
@@ -59,13 +61,8 @@ app.use('/EnsCreneaux',cookieJwtAuthentication,EnsEtCreneauxRouter);
 app.use('/login',authRouter);
 
 app.listen(port, () => {
-  console.log("Server running on http://localhost:" + port);
+  console.log("Server running on port " + port);
 });
-
-db.connect()
-      .then(()=>console.log("Database connected: "+db.$cn.database))
-      .catch((err)=>console.log("Error connecting to the database:", err));
-
 
 
 db.connect()
