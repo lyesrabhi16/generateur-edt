@@ -21,7 +21,7 @@ create table section(
 	niveau varchar(10),
 	code_specialite varchar(10),
 	constraint pk_section primary key(id_section),
-	constraint fk_specialite foreign key(code_specialite) references specialite(code_specialite),
+	constraint fk_specialite foreign key(code_specialite) references specialite(code_specialite) on update cascade on delete cascade,
 	constraint nn_code_section check(code_section is not null),
 	constraint nn_niveau check(niveau is not null),
 	constraint nn_code_specialite check(code_specialite is not null),
@@ -33,7 +33,7 @@ create table groupe(
 	code_groupe varchar(4),
 	id_section integer,
 	constraint pk_groupe primary key(id_groupe),
-	constraint fk_section foreign key(id_section) references section(id_section),
+	constraint fk_section foreign key(id_section) references section(id_section) on update cascade on delete cascade,
 	constraint nn_section check(id_section is not null),
 	constraint nn_code_groupe check(code_groupe is not null),
 	constraint un_section_groupe unique(code_groupe, id_section)
@@ -53,8 +53,8 @@ create table personne(
 	id_groupe integer,
 	code_specialite varchar(10),
 	constraint pk_personne Primary Key(matricule),
-	constraint fk_groupe Foreign Key(id_groupe) references groupe(id_groupe),
-	constraint fk_specialite Foreign Key(code_specialite) references specialite(code_specialite),
+	constraint fk_groupe Foreign Key(id_groupe) references groupe(id_groupe) on update cascade on delete cascade,
+	constraint fk_specialite Foreign Key(code_specialite) references specialite(code_specialite) on update cascade on delete cascade,
 	constraint un_email unique(email),
 	constraint nn_nom check(nom is not null),
 	constraint nn_prenom check(prenom is not null),
@@ -110,15 +110,15 @@ create table ensetoccup(
 	matricule integer,
 	id_occup integer,
 	constraint pk_ensetoccup primary key(matricule, id_occup),
-	constraint fk_personne foreign key(matricule) references personne(matricule),
-	constraint fk_occupation foreign key(id_occup) references occupation(id_occup)
+	constraint fk_personne foreign key(matricule) references personne(matricule) on update cascade on delete cascade,
+	constraint fk_occupation foreign key(id_occup) references occupation(id_occup) on update cascade on delete cascade
 );
 
 create table emploisdutemps(
 	id_emp serial,
 	id_groupe integer,
 	constraint pk_emploisdutemps primary key(id_emp),
-	constraint fk_groupe foreign key(id_groupe) references groupe(id_groupe),
+	constraint fk_groupe foreign key(id_groupe) references groupe(id_groupe) on update cascade on delete cascade,
 	constraint nn_groupe check(id_groupe is not null)
 );
 
@@ -135,8 +135,8 @@ create table moduleens(
 	matricule integer,
 	priorite integer,
 	constraint pk_moduleEns primary key(code_module, matricule),
-	constraint fk_module foreign key(code_module) references module(code_module),
-	constraint fk_personne foreign key(matricule) references personne(matricule),
+	constraint fk_module foreign key(code_module) references module(code_module) on update cascade on delete cascade,
+	constraint fk_personne foreign key(matricule) references personne(matricule) on update cascade on delete cascade,
 	constraint nn_priorite check(priorite is not null)
 );
 
@@ -155,8 +155,8 @@ create table seance(
 	code_specialite varchar(10),
 	type TypeSeance,
 	constraint pk_seance primary key(id_seance),
-	constraint fk_module foreign key(code_module) references module(code_module),
-	constraint fk_specialite foreign key(code_specialite) references specialite(code_specialite),
+	constraint fk_module foreign key(code_module) references module(code_module) on update cascade on delete cascade,
+	constraint fk_specialite foreign key(code_specialite) references specialite(code_specialite) on update cascade on delete cascade,
 	constraint nn_module check(code_module is not null),
 	constraint nn_specialite check(code_specialite is not null),
 	constraint nn_type check(type is not null),
@@ -172,9 +172,9 @@ create table creneau(
 	id_seance integer,
 	code_local varchar(10),
 	constraint pk_creneau primary key(id_creneau),
-	constraint fk_emploisdutemps foreign key(id_emp) references emploisdutemps(id_emp),
-	constraint fk_seance foreign key(id_seance) references seance(id_seance),
-	constraint fk_local foreign key(code_local) references local(code_local),
+	constraint fk_emploisdutemps foreign key(id_emp) references emploisdutemps(id_emp) on update cascade on delete cascade,
+	constraint fk_seance foreign key(id_seance) references seance(id_seance) on update cascade on delete cascade,
+	constraint fk_local foreign key(code_local) references local(code_local) on update cascade on delete cascade,
 	constraint nn_debut check(debut is not null),
 	constraint nn_fin check(fin is not null),
 	constraint nn_jour check(jour is not null),
@@ -187,8 +187,8 @@ create table ensetcreneaux(
 	matricule integer,
 	id_creneau integer,
 	constraint pk_ensetcreneaux primary key(matricule, id_creneau),
-	constraint fk_personne foreign key(matricule) references personne(matricule),
-	constraint fk_creneau foreign key(id_creneau) references creneau(id_creneau)
+	constraint fk_personne foreign key(matricule) references personne(matricule) on update cascade on delete cascade,
+	constraint fk_creneau foreign key(id_creneau) references creneau(id_creneau) on update cascade on delete cascade
 );
 
 
