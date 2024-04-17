@@ -25,3 +25,5 @@ export const jours = Object.freeze({
   Vendredi: "Vendredi",
   Samedi: "Samedi",
 });
+
+export const URL_BASE = "https://agemp-projet-aie.onrender.com";

@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
+import { URL_BASE } from '../../../constants.js';
 function Ajouter({onAdd,typep,modify}){
     const[nom,SetNom]=useState(modify.nom);
     const[prenom,SetPrenom]=useState(modify.prenom);
@@ -64,7 +65,7 @@ function Ajouter({onAdd,typep,modify}){
     }
 
     useEffect(() => {
-        axios.get("http://localhost:3000/Specialite/",{
+        axios.get(URL_BASE+"/Specialite/",{
             withCredentials: true
           }).then(respo =>{
           setSpecialite(respo.data.specialites)
@@ -74,7 +75,7 @@ function Ajouter({onAdd,typep,modify}){
     },[]);
     
     useEffect(() => {
-        axios.get("http://localhost:3000/groupe/",{
+        axios.get(URL_BASE+"/groupe/",{
             withCredentials: true
           }).then(respo =>{
             const groupes = respo.data.groupes.filter((gr) => gr.code_specialite === code_specialite );
@@ -86,7 +87,7 @@ function Ajouter({onAdd,typep,modify}){
 
     
         useEffect(() => {
-        axios.get("http://localhost:3000/seance/",{
+        axios.get(URL_BASE+"/seance/",{
             withCredentials: true
           }).then(respo =>{
             console.log(respo)
@@ -111,14 +112,14 @@ function Ajouter({onAdd,typep,modify}){
         if (password.length > 8 && nom !== '' && prenom !== '' && email !== '' && typep==='Etudiant'?anneeBac:role !== '' && typep==='Etudiant'?code_specialite !== '':typep==='Enseignant'?charges !== '':true && typep==='Etudiant'?niveau !== '':true) {
             if(modify==''){
                 
-                axios.post('http://localhost:3000/personne/',personnes,{
+                axios.post(URL_BASE+'/personne/',personnes,{
                     withCredentials: true
                   }).then(()=> onAdd())
             .catch(err=>{
                 console.log(err)
             });
             }else{
-                axios.put('http://localhost:3000/personne/'+modify.matricule,personnes,{
+                axios.put(URL_BASE+'/personne/'+modify.matricule,personnes,{
                     withCredentials: true
                   }).then((res)=> {onAdd();console.log(res)})
                 .catch(err=>{
@@ -130,14 +131,14 @@ function Ajouter({onAdd,typep,modify}){
         }
     }else if(typep==='Modules') {
         if(modify===''){
-            axios.post('http://localhost:3000/module/',{
+            axios.post(URL_BASE+'/module/',{
                 withCredentials: true
               }, module).then(() => {
             typeS.forEach((option) => {
                 if (option.checked) {
                     let type=option.label;
                     const seance = { code_module, code_specialite,type };
-                    axios.post("http://localhost:3000/seance/",{
+                    axios.post(URL_BASE+"/seance/",{
                         withCredentials: true
                       }, seance).then(()=>{onAdd()})
                         .catch(err => {console.log(err);});
@@ -147,7 +148,7 @@ function Ajouter({onAdd,typep,modify}){
         }else{
             const code_module_new=code_module
             const modu={code_module_new,nom_module};
-            axios.put('http://localhost:3000/module/'+modify.code_module,module,{
+            axios.put(URL_BASE+'/module/'+modify.code_module,module,{
                 withCredentials: true
               }).then(()=>{
                 onAdd();
@@ -157,7 +158,7 @@ function Ajouter({onAdd,typep,modify}){
 
     }else{
         if(modify===''){//pour savoir s'il s'agit d'une modification ou un ajout
-            axios.post('http://localhost:3000/local/',local,{
+            axios.post(URL_BASE+'/local/',local,{
                 withCredentials: true
               }).then(()=> onAdd())
             .catch(err=>{
@@ -166,7 +167,7 @@ function Ajouter({onAdd,typep,modify}){
         }else{
             const code_local_new=code_local
             const lc={code_local_new,capacite,type};
-            axios.put('http://localhost:3000/local/'+modify.code_local,lc,{
+            axios.put(URL_BASE+'/local/'+modify.code_local,lc,{
                 withCredentials: true
               }).then(()=>onAdd())
             .catch(err=>{

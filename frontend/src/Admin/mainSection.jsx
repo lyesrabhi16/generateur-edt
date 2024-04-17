@@ -11,6 +11,7 @@ import Ajouter from './formajouter';
 import axios from 'axios'
 import Cookies from 'js-cookie';
 import { Navigate } from "react-router-dom";
+import { URL_BASE } from '../../../constants.js'
 function Section({page}){
   const [etudiants, setEtudiants] = useState([]);
   const [chercher, setChercher] = useState("");
@@ -29,7 +30,7 @@ function Section({page}){
   }
   useEffect(() => {
     if(page ==='Modules'){
-      axios.get("http://localhost:3000/module/", {
+      axios.get(URL_BASE+"/module/", {
         withCredentials: true
       })
 .then(res => {
@@ -37,7 +38,7 @@ function Section({page}){
 })
 .catch(err => console.log(err));
     }else if(page==='Local'){
-      axios.get("http://localhost:3000/local/", {
+      axios.get(URL_BASE+"/local/", {
         withCredentials: true
       }).then(respo =>{
         
@@ -45,7 +46,7 @@ function Section({page}){
      })
      .catch(err => console.log(err));
     }else{
-      axios.get("http://localhost:3000/personne/", {
+      axios.get(URL_BASE+"/personne/", {
         withCredentials: true
       }).then(respo =>{
         const etudiantsFiltres = respo.data.personnes.filter(personne => personne.type === page);
@@ -171,7 +172,7 @@ function Section({page}){
                   setShow(!Show)
                 }}/>
                 <FontAwesomeIcon icon={faTrash} className='ml-4 text-red-600 cursor-pointer' onClick={()=>{
-                    axios.delete('http://localhost:3000/module/'+etud.code_module,{
+                    axios.delete(URL_BASE+'/module/'+etud.code_module,{
                       withCredentials: true
                     }).then(()=>{
                       setSupprime(!supprime);
@@ -198,7 +199,7 @@ function Section({page}){
                   setShow(!Show)
                 }}/>
                 <FontAwesomeIcon icon={faTrash} className='ml-4 text-red-600 cursor-pointer' onClick={()=>{
-                    axios.delete('http://localhost:3000/local/'+etud.code_local,{
+                    axios.delete(URL_BASE+'/local/'+etud.code_local,{
                       withCredentials: true
                     }).then(()=>{
                       setSupprime(!supprime);
@@ -228,7 +229,7 @@ function Section({page}){
                   setShow(!Show)
                 }}/>
                 <FontAwesomeIcon icon={faTrash} className='ml-4 text-red-600 cursor-pointer' onClick={()=>{
-                  axios.delete('http://localhost:3000/personne/'+etud.matricule,{
+                  axios.delete(URL_BASE+'/personne/'+etud.matricule,{
                     withCredentials: true
                   }).then(()=>{
                     setSupprime(!supprime);
