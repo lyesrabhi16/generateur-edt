@@ -107,7 +107,7 @@ create table occupation(
 );
 
 create table ensetoccup(
-	matricule integer,
+	matricule bigint,
 	id_occup integer,
 	constraint pk_ensetoccup primary key(matricule, id_occup),
 	constraint fk_personne foreign key(matricule) references personne(matricule) on update cascade on delete cascade,
@@ -132,7 +132,7 @@ create table module(
 
 create table moduleens(
 	code_module varchar(10),
-	matricule integer,
+	matricule bigint,
 	priorite integer,
 	constraint pk_moduleEns primary key(code_module, matricule),
 	constraint fk_module foreign key(code_module) references module(code_module) on update cascade on delete cascade,
@@ -184,7 +184,7 @@ create table creneau(
 );
 
 create table ensetcreneaux(
-	matricule integer,
+	matricule bigint,
 	id_creneau integer,
 	constraint pk_ensetcreneaux primary key(matricule, id_creneau),
 	constraint fk_personne foreign key(matricule) references personne(matricule) on update cascade on delete cascade,
