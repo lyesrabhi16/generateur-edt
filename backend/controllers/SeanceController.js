@@ -159,7 +159,6 @@ export const deleteOneSeance=(req,res)=>{
 
 export const deleteOneSeanceByCodeModule=(req,res)=>{
   const {code_module}=req.params;
-
   deleteSeanceByCodeModule(code_module).then(()=>{
     const response={
         status:"Success",
