@@ -38,3 +38,9 @@ export const deleteModuleEns =(matricule,code_module)=>{
 }
 
 
+export const deleteModulebyMatricule =(matricule)=>{
+
+return db.manyOrNone('DELETE FROM ModuleEns where matricule=$1',[matricule]);
+
+}
+
