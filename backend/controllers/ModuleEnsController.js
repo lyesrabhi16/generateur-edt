@@ -2,7 +2,9 @@ import { getAllModuleEns,
          getAllModuleEnsById,
          createModuleEns,
          updateModuleEns,
-         deleteModuleEns } from "../DB/ModuleEns.js";
+         deleteModuleEns,
+         deleteModulebyMatricule
+        } from "../DB/ModuleEns.js";
 
 
 export const selectAllModuleEns =(req,res)=>{
@@ -128,4 +130,25 @@ export const deleteOneModuleEns =(req,res)=>{
 
   })
 
+}
+export const deleteAllModulesByMatricule =(req,res)=>{
+    const {matricule} =req.params;
+    console.log(matricule);
+    deleteModulebyMatricule(matricule).then(()=>{
+        
+    const response={
+        status:"Success",
+        message:"ModuleEns supprimé "
+       }
+       res.status(200).json(response);
+
+    }).catch((err)=>{
+        const response={
+            status:"Error",
+            message:"Erreur pendant la suppression des données ",
+            erreur:err
+           }
+          res.status(500).json(response);
+    
+      })
 }

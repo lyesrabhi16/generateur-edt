@@ -4,13 +4,7 @@ import { db } from "../server.js";
 @returns {Promise}
 */
 
-/* @MassinS
-        !fixed
-        * i get errors for code_module and code_specialite: 
-        *    ERROR:  column reference "code_module/code_specialite" is ambiguous
-        * so added the table names before the column names
-      ?--written by @lyesrabhi16
-*/
+
 
 export const getAllSeance =(code_specialite)=>{
     let sql = `SELECT id_seance , type,nom_module , nom_specialite,Module.code_module,Specialite.code_specialite 
