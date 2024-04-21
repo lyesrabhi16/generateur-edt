@@ -85,12 +85,12 @@ INSERT INTO public.module (code_module, nom_module) VALUES ('POO', 'programmatio
 -- Data for Name: seance; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (3, 'PA', 'GL', 'TD');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (4, 'BDD', 'MI', 'TD');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (5, 'PA', 'GL', 'Cours');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (6, 'PA', 'GL', 'TP');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (7, 'BDD', 'MI', 'Cours');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (8, 'BDD', 'MI', 'TP');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (3, 'PA', 'GL', 'TD', 'M1', 'S1');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (4, 'BDD', 'MI', 'TD', 'L2', 'S2');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (5, 'PA', 'GL', 'Cours', 'M1', 'S1');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (6, 'PA', 'GL', 'TP', 'M1', 'S1');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (7, 'BDD', 'MI', 'Cours', 'L2', 'S2');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (8, 'BDD', 'MI', 'TP', 'L2', 'S2');
 
 
 --
