@@ -565,6 +565,14 @@
         <element xmi:type="uml:Property" href="DiagrammeDeClass.uml#_D5fRgOFdEe68RdYxJZrRTQ"/>
         <layoutConstraint xmi:type="notation:Location" xmi:id="_D8gwUeFdEe68RdYxJZrRTQ"/>
       </children>
+      <children xmi:type="notation:Shape" xmi:id="_f7NasP-4Ee6_7d8iABRUIA" type="Property_ComponentAttributeLabel">
+        <element xmi:type="uml:Property" href="DiagrammeDeClass.uml#_f0RFMP-4Ee6_7d8iABRUIA"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_f7Nasf-4Ee6_7d8iABRUIA"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_j5UusP-7Ee6_7d8iABRUIA" type="Property_ComponentAttributeLabel">
+        <element xmi:type="uml:Property" href="DiagrammeDeClass.uml#_j3gw0P-7Ee6_7d8iABRUIA"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_j5VVwP-7Ee6_7d8iABRUIA"/>
+      </children>
       <styles xmi:type="notation:TitleStyle" xmi:id="_zLxp9NxtEe6c3_EZZbm1kg"/>
       <styles xmi:type="notation:SortingStyle" xmi:id="_zLxp9dxtEe6c3_EZZbm1kg"/>
       <styles xmi:type="notation:FilteringStyle" xmi:id="_zLxp9txtEe6c3_EZZbm1kg"/>
