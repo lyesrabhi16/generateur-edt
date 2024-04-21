@@ -47,28 +47,32 @@ return db.oneOrNone(`SELECT id_seance , type,nom_module , nom_specialite , Modul
 /**
  
  * @param {string} type 
+ * @param {string} niveau 
+ * @param {string} semestre 
  * @param {string} code_module 
  * @param {string} code_specialite 
  * @returns {Promise}
  */
-export const createSeance =( type, code_module, code_specialite)=>{
+export const createSeance =( type,niveau, semestre,code_module, code_specialite)=>{
 
-    return db.oneOrNone(`INSERT INTO Seance (type, code_module, code_specialite) 
-                        VALUES($1,$2,$3)`,[type,code_module,code_specialite]);
+    return db.oneOrNone(`INSERT INTO Seance (type, niveau, semestre,code_module, code_specialite) 
+                        VALUES($1,$2,$3,$4,$5)`,[type,niveau,semestre,code_module,code_specialite]);
 }
 
 /**
  * 
  * @param {string} type 
+ * @param {string} niveau 
+ * @param {string} semestre 
  * @param {string} code_module 
  * @param {string} code_specialite 
  * @param {string} id_seance 
  * @returns {Promise}
  */
 
-export const UpdateSeance=(type,code_module,code_specialite,id_seance)=>{
-      return db.oneOrNone(`UPDATE Seance SET type=$1,code_module=$2,code_specialite=$3 WHERE id_seance=$4 `
-      ,[type,code_module,code_specialite,id_seance]
+export const UpdateSeance=(type,niveau, semestre,code_module,code_specialite,id_seance)=>{
+      return db.oneOrNone(`UPDATE Seance SET type=$1,niveau=$2,semestre=$3,code_module=$4,code_specialite=$5 WHERE id_seance=$6 `
+      ,[type,niveau,semestre,code_module,code_specialite,id_seance]
       );
 }
 
