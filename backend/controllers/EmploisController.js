@@ -95,8 +95,8 @@ export const selectOneEmploisByGroupe = (req,res) =>{
 
 export const insertOneEmplois = (req,res) =>{
 
-  const { niveau, semesetre, id_groupe } =req.body;
-    createEmplois(id_groupe, niveau, semesetre).then(()=>{
+  const { niveau, semestre, id_groupe } =req.body;
+    createEmplois(id_groupe, niveau, semestre).then(()=>{
      
         const response={
             status:"Success",
