@@ -53,7 +53,7 @@ INSERT INTO public.groupe (id_groupe, code_groupe, id_section) VALUES (2, 'G4', 
 -- Data for Name: emploisdutemps; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.emploisdutemps (id_emp, id_groupe) VALUES (1, 1);
+INSERT INTO public.emploisdutemps (id_emp, id_groupe, niveau, semestre) VALUES (1, 1, 'M1', 'S1');
 
 
 --
