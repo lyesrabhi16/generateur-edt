@@ -8,7 +8,7 @@ import { db } from "../server.js";
 
 export const getAllSeance =()=>{
     
-    return db.manyOrNone(`SELECT id_seance , type,nom_module , nom_specialite,Module.code_module,Specialite.code_specialite 
+    return db.manyOrNone(`SELECT id_seance , type, niveau, semestre,nom_module , nom_specialite,Module.code_module,Specialite.code_specialite 
                           from Seance left join Module on Seance.code_module=Module.code_module
                           left join Specialite on Seance.code_specialite=Specialite.code_specialite 
                           `
@@ -20,7 +20,7 @@ export const getAllSeance =()=>{
   @returns {Promise<object|null>} 
  */
 export const getOneSeanceById =(id_seance)=>{
-return db.oneOrNone(`SELECT id_seance , type,nom_module , nom_specialite , Module.code_module, Specialite.code_specialite 
+return db.oneOrNone(`SELECT id_seance , type, niveau, semestre,nom_module , nom_specialite , Module.code_module, Specialite.code_specialite 
                     from Seance left join Module on Seance.code_module=Module.code_module
                     left join Specialite on Seance.code_specialite=Specialite.code_specialite
                     WHERE id_seance=$1 `,[id_seance]  
@@ -35,7 +35,7 @@ return db.oneOrNone(`SELECT id_seance , type,nom_module , nom_specialite , Modul
 
    export const getAllSeanceByType = (type) => {
     return db.manyOrNone(`
-        SELECT id_seance, type, nom_module, nom_specialite
+        SELECT id_seance, type, niveau, semestre, nom_module, nom_specialite
         FROM Seance 
         LEFT JOIN Module ON Seance.code_module = Module.code_module
         LEFT JOIN Specialite ON Seance.code_specialite = Specialite.code_specialite
