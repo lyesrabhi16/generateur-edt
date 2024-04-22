@@ -71,6 +71,12 @@
     <ownedAttribute xmi:type="uml:Property" xmi:id="_K4h7ANstEe6c3_EZZbm1kg" name="id_Emp" visibility="private">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
     </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_knbeIP_4Ee6_7d8iABRUIA" name="niveau" visibility="private" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_o9jw4P_4Ee6_7d8iABRUIA" name="semestre" visibility="private" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_uc-gYNssEe6c3_EZZbm1kg" name="Groupe " visibility="public">
     <ownedAttribute xmi:type="uml:Property" xmi:id="_fo2HQNs4Ee6c3_EZZbm1kg" name="code_groupe" visibility="private">
