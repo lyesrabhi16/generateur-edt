@@ -95,15 +95,14 @@ export const selectOneEmploisByGroupe = (req,res) =>{
 
 export const insertOneEmplois = (req,res) =>{
 
-  const { id_groupe } =req.body;
-    createEmplois(id_groupe).then(()=>{
+  const { niveau, semesetre, id_groupe } =req.body;
+    createEmplois(id_groupe, niveau, semesetre).then(()=>{
      
         const response={
             status:"Success",
             message:"Emplois de temps créé "
            }
            res.status(200).json(response);
-
 
     }).catch((err)=>{
         const response={
@@ -118,11 +117,9 @@ export const insertOneEmplois = (req,res) =>{
 }
 
 export const updateOneEmplois =(req,res)=>{
-    const { id_groupe } = req.body;
+    const { id_groupe, niveau, semesetre } = req.body;
     const {id_emp}=req.params;
-    console.log(id_groupe);
-    console.log(id_emp);
-    updateEmplois(id_emp,id_groupe).then(()=>{
+    updateEmplois(id_emp,id_groupe, niveau, semesetre).then(()=>{
         const response={
             status:"Success",
             message:"Emplois de temps mis à jour "

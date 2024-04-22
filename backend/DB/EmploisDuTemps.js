@@ -36,14 +36,14 @@ export const getOneEmploisByGroupe = (id_groupe) =>{
    
 }
 
-export const createEmplois = (id_groupe) =>{
+export const createEmplois = (id_groupe, niveau, semesetre) =>{
 
-    return db.oneOrNone("INSERT INTO emploisdutemps(id_groupe) values($1) ",[id_groupe]);
+    return db.oneOrNone("INSERT INTO emploisdutemps(id_groupe) values($1, $2, $3) ",[id_groupe, niveau, semesetre]);
 
 }
 
-export const updateEmplois =(id_Emp,id_groupe) =>{
-    return db.oneOrNone("UPDATE emploisdutemps SET id_groupe=$1 WHERE id_Emp=$2 " , [id_groupe,id_Emp]);
+export const updateEmplois =(id_Emp,id_groupe, niveau, semesetre) =>{
+    return db.oneOrNone("UPDATE emploisdutemps SET id_groupe=$1, niveau=$2, semestre=$3 WHERE id_Emp=$4 " , [id_groupe,niveau,semesetre,id_Emp]);
 }
 
 export const deleteEmplois =(id_Emp) => {
