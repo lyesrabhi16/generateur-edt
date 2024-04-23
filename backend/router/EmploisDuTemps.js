@@ -5,7 +5,8 @@ import { selectAllEmplois,
          selectOneEmploisByGroupe,
          insertOneEmplois,
          deleteOneEmplois,
-         updateOneEmplois
+         updateOneEmplois,
+         deleteOneEmploisByIdGroupe
 
 } from "../controllers/EmploisController.js";
 import { insertOneEmploisValidator } from "../validators/emploisDutemps.js";
@@ -20,5 +21,6 @@ EmploisRouter.get('/groupes/:id_groupe',selectOneEmploisByGroupe);
 EmploisRouter.post('/', insertOneEmploisValidator,insertOneEmplois);
 EmploisRouter.delete('/:id_emp',deleteOneEmplois);
 EmploisRouter.put('/:id_emp', insertOneEmploisValidator,updateOneEmplois);
+EmploisRouter.delete('/groupes/:id_groupe',deleteOneEmploisByIdGroupe);
 
 export default EmploisRouter;
