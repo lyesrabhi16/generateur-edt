@@ -24,7 +24,8 @@ export const generate = async (req, res) => {
     response.groupes = groupes;
     
     // get All seances related to the section specialite
-    let seances = await getAllSeance(section.code_specialite);
+    let seances = await getAllSeance(section.code_specialite)
+    seances.forEach(seance => {seance.remaining_groupes = [...groupes];});
     response.seances = seances;
 
     const modules = [];
@@ -187,13 +188,15 @@ export const generate = async (req, res) => {
                                 locale: amphi,
                             };
                             groupes.forEach(groupe => {
-                                console.log(groupe);
                                 ocp_groupes[groupe.id_groupe][jour][period] = true;
                                 creneaux[jour][period][groupe.code_groupe] = creneau;
+                                seance.remaining_groupes = [...seance.remaining_groupes.filter(g => g.id_groupe !== groupe.id_groupe)];
                             });
                             ocp_ens[enseignant.matricule][jour][period] = true;
                             ocp_locales[amphi.code_local][jour][period] = true;
-                            seances = seances.filter(s => s.id_seance !== seance.id_seance);
+                            if (seance.remaining_groupes.length === 0){
+                                seances = seances.filter(s => s.id_seance !== seance.id_seance);
+                            }
                             break;
                         }
                     }
@@ -245,8 +248,13 @@ export const generate = async (req, res) => {
                     const locale = locales.find(local => (!ocp_locales[local.code_local][jour][period]) && (local.type === 'Salle'+seance.type));
                     if (locale){
                         // try to find a groupe for the seance
-                        const groupe = groupes.find(groupe => !ocp_groupes[groupe.id_groupe][jour][period]);
+                        const groupe = groupes.find(groupe => {
+                            if ((!ocp_groupes[groupe.id_groupe][jour][period]) && ( seance.remaining_groupes.find(g => g.id_groupe === groupe.id_groupe) !== undefined )){
+                                return groupe
+                            }
+                        } );
                         if(groupe){
+
                             const creneau = {
                                 period: period,
                                 jour: jour,
@@ -255,10 +263,13 @@ export const generate = async (req, res) => {
                                 locale: locale,
                             };
                             ocp_groupes[groupe.id_groupe][jour][period] = true;
+                            seance.remaining_groupes = [...seance.remaining_groupes.filter(g => g.id_groupe !== groupe.id_groupe)];
                             ocp_ens[enseignant.matricule][jour][period] = true;
                             ocp_locales[locale.code_local][jour][period] = true;
                             creneaux[jour][period][groupe.code_groupe] = creneau;
-                            seances = seances.filter(s => s.id_seance !== seance.id_seance);
+                            if (seance.remaining_groupes.length === 0){
+                                seances = seances.filter(s => s.id_seance !== seance.id_seance);
+                            }
                         }
                     }
                 }  
@@ -288,7 +299,6 @@ export const generate = async (req, res) => {
 const getPeriodFromHeurDebutEtHeurFin = (heur_debut, heur_fin, duree_creneaux)=>{
     const debut = new Date();
     const fin = new Date();
-
     debut.setUTCHours(heur_debut.h, heur_debut.m);
     fin.setUTCHours(heur_fin.h, heur_fin.m);
 
