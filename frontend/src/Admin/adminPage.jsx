@@ -7,6 +7,9 @@ import { faBookOpen } from '@fortawesome/free-solid-svg-icons'
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons'
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import { faBuilding } from '@fortawesome/free-solid-svg-icons'
+import { faList } from '@fortawesome/free-solid-svg-icons'
+import { faS } from '@fortawesome/free-solid-svg-icons'
+import { faG } from '@fortawesome/free-solid-svg-icons'
 import '../navbar.css'
 import Section from '../Admin/mainSection'
 import { useState } from "react";
@@ -17,7 +20,7 @@ function AdminPage() {
 
   return (
     
-    <div className='flex w-full h-full ' >
+    <div className='flex w-full h-full bg-white' >
         <div className="flex flex-col w-56 background h-full h-screen pl-3 fixed">
             <div className=' flex pl-3 pt-8 items-center'>
                 <div className='logo'></div>
@@ -66,6 +69,27 @@ function AdminPage() {
             }}>
             <FontAwesomeIcon icon={faBuilding} className='text-lg w-5 text-white child' />
             <li className='list-none ml-3 text-white text-base child' >Local</li>
+            </div>
+
+            <div  className='flex pl-3 items-center py-2 h-14  rounded-2xl parent  relative'onClick={()=>{
+              setNomPage("Specialite")
+            }}>
+            <FontAwesomeIcon icon={faList} className='text-lg w-5 text-white child' />
+            <li className='list-none ml-3 text-white text-base child' >Specialite</li>
+            </div>
+
+            <div  className='flex pl-3 items-center py-2 h-14  rounded-2xl parent  relative'onClick={()=>{
+              setNomPage("Section")
+            }}>
+            <FontAwesomeIcon icon={faS} className='text-lg w-5 text-white child' />
+            <li className='list-none ml-3 text-white text-base child' >Section</li>
+            </div>
+
+            <div  className='flex pl-3 items-center py-2 h-14  rounded-2xl parent  relative'onClick={()=>{
+              setNomPage("Groupe")
+            }}>
+            <FontAwesomeIcon icon={faG} className='text-lg w-5 text-white child' />
+            <li className='list-none ml-3 text-white text-base child' >Groupe</li>
             </div>
 
             <div  className='flex pl-3 items-center py-2 h-14  rounded-2xl parent  relative'onClick={()=>{
