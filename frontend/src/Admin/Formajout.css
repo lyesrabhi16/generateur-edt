@@ -57,14 +57,26 @@
 .droplist{
     position: absolute;
     border: 1px solid #999 ;
-    bottom: -170px;
     left: 0px;
     width: 100%;
     background-color: white;
     border-radius: 10px;
     padding: 12px;
+    overflow: auto;
     
 }
+.droplist::-webkit-scrollbar {
+    width: 6px; /* Largeur de la barre de défilement */
+  }
+  
+  .droplist::-webkit-scrollbar-track {
+    background: transparent; /* Couleur de fond de la piste de défilement */
+  }
+  
+  .droplist::-webkit-scrollbar-thumb {
+    background: #888; /* Couleur de la poignée de défilement */
+    border-radius: 5px; /* Bordure arrondie de la poignée */
+  }
 .droplist li{
     display: flex;
     align-items: center;
