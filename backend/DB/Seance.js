@@ -6,13 +6,15 @@ import { db } from "../server.js";
 
 
 
-export const getAllSeance =()=>{
-    
-    return db.manyOrNone(`SELECT id_seance , type,nom_module , nom_specialite,Module.code_module,Specialite.code_specialite 
-                          from Seance left join Module on Seance.code_module=Module.code_module
-                          left join Specialite on Seance.code_specialite=Specialite.code_specialite 
-                          `
-                        );
+export const getAllSeance =(code_specialite)=>{
+    let sql = `SELECT id_seance , type,nom_module , nom_specialite,Module.code_module,Specialite.code_specialite 
+    from Seance left join Module on Seance.code_module=Module.code_module
+    left join Specialite on Seance.code_specialite=Specialite.code_specialite 
+    `;
+    if (code_specialite !== undefined) {
+      sql += ' where Seance.code_specialite = $1' 
+    }
+    return db.manyOrNone(sql, [code_specialite]);
 }
 
 /**
