@@ -14,19 +14,57 @@ import { getAllCreneau } from "../DB/Creneau.js";
 
 export const generate = async (req, res) => {
     const { id_section } = req.params;
+    /*
+        l'envoi de chaque contraint est optionnel, 
+        format et valuer par defaut:
+        temps_debut: {h: 8, m: 0} (objet avec les champs h et m qui sont des entiers)
+        temps_fin: {h: 18, m: 0}  (objet avec les champs h et m qui sont des entiers)
+        duree_creneaux: {h: 1, m: 30} (objet avec les champs h et m qui sont des entiers)
+        minutes_entre_creneaux: 10 (entier)
+        nbr_creneaux_par_jour: 6 (entier) (default value is calculated from temps_debut, temps_fin, duree_creneaux, minutes_entre_creneaux)    
+    */ 
+    let { temps_debut, temps_fin, nbr_creneaux_par_jour, duree_creneaux, minutes_entre_creneaux } = req.body;
+    
+
+    if (temps_debut === undefined){
+        temps_debut = {h: 8, m: 0};
+    };
+    if (temps_fin === undefined){
+        temps_fin = {h: 18, m: 0};
+    }
+    if (duree_creneaux === undefined){
+        duree_creneaux = {h: 1, m: 30};
+    }
+    if (minutes_entre_creneaux === undefined){
+        minutes_entre_creneaux = 10;
+    }
+    const t_d = new Date();
+    t_d.setUTCHours(temps_debut.h, temps_debut.m); 
+    
+    const t_f = new Date();
+    t_f.setUTCHours(temps_fin.h, temps_fin.m);
+    if (nbr_creneaux_par_jour === undefined){
+        nbr_creneaux_par_jour = getMaxPeriodFromConstraints(t_d, t_f, duree_creneaux, minutes_entre_creneaux);
+    }
+
+    const contraints = {
+        temps_debut: t_d,
+        temps_fin: t_f,
+        duree_creneaux : duree_creneaux,
+        temps_entre_creneaux : minutes_entre_creneaux,
+        nbr_creneaux_par_jour : nbr_creneaux_par_jour,
+    }
+
     const response = {};
     // get section info
     const section = await selectSection(id_section);
-    response.section = section;
     
     // get all groupes of the section
     const groupes = await selectGroupes(id_section);
-    response.groupes = groupes;
     
     // get All seances related to the section specialite
     let seances = await getAllSeance(section.code_specialite)
     seances.forEach(seance => {seance.remaining_groupes = [...groupes];});
-    response.seances = seances;
 
     const modules = [];
     // get All modules for these seances
@@ -35,7 +73,6 @@ export const generate = async (req, res) => {
             modules.push(seance.code_module);
         }
     });
-    response.modules = modules;
 
     // get All Enseignants that teach each module
     const ens = {};
@@ -44,30 +81,15 @@ export const generate = async (req, res) => {
         const EnsM = await getAllModuleEns(module);
         ens[module] = EnsM;
     }
-    response.ens = ens;
 
     // get All locales
     const locales = await getAllLocal();
-    response.locales = locales;
 
 
 
 
-    const t_d = new Date();
-    t_d.setUTCHours(8, 0); 
-    
-    const t_f = new Date();
-    t_f.setUTCHours(18, 0);
     
 
-
-    const contraints = {
-        temps_debut: t_d,
-        temps_fin: t_f,
-        duree_creneaux : {h:1, m:30},
-        nbr_creneaux_par_jour : 6,
-        temps_entre_creneaux : 10,
-    }
 
     /// build matrixes for occupancy
     //
@@ -135,15 +157,9 @@ export const generate = async (req, res) => {
         });
     }
 
-    //response.ocp_ens = ocp_ens;
-    //response.ocp_locales = ocp_locales;
-    //response.ocp_groupes = ocp_groupes;
-
-    // TODO: build the creneaux lists for each groupe
-
      // creneaux[jour][period][groupe]
-     const creneaux = {};
-    
+    const creneaux = {};
+    const creneaux_class_objects = {};
     Object.keys(jours).forEach(jour => {
         creneaux[jour] = {};
         for (let period = 0; period < contraints.nbr_creneaux_par_jour; period++) {
@@ -191,12 +207,26 @@ export const generate = async (req, res) => {
                                 ocp_groupes[groupe.id_groupe][jour][period] = true;
                                 creneaux[jour][period][groupe.code_groupe] = creneau;
                                 seance.remaining_groupes = [...seance.remaining_groupes.filter(g => g.id_groupe !== groupe.id_groupe)];
+                            
+                                const temps = getHoursFromPeriods([creneau.period], temps_debut, contraints.duree_creneaux, contraints.temps_entre_creneaux)[0];
+                                const s = {...seance};
+                                delete s.remaining_groupes;
+                                const creneau_class_obj = new Creneau(temps.debut, temps.fin, jour, s, amphi, enseignant, groupe);
+                                //console.log(creneau_class_obj);
+                                if (creneaux_class_objects[groupe.code_groupe] === undefined){
+                                    creneaux_class_objects[groupe.code_groupe] = [];
+                                }
+                                creneaux_class_objects[groupe.code_groupe].push(creneau_class_obj);
                             });
                             ocp_ens[enseignant.matricule][jour][period] = true;
                             ocp_locales[amphi.code_local][jour][period] = true;
                             if (seance.remaining_groupes.length === 0){
                                 seances = seances.filter(s => s.id_seance !== seance.id_seance);
                             }
+
+
+                            
+
                             break;
                         }
                     }
@@ -270,6 +300,19 @@ export const generate = async (req, res) => {
                             if (seance.remaining_groupes.length === 0){
                                 seances = seances.filter(s => s.id_seance !== seance.id_seance);
                             }
+
+                            const temps = getHoursFromPeriods([creneau.period], temps_debut, contraints.duree_creneaux, contraints.temps_entre_creneaux)[0];
+                            const s = {...seance};
+                            delete s.remaining_groupes;
+                            const creneau_class_obj = new Creneau(temps.debut, temps.fin, jour, s, locale, enseignant, groupe);
+                            //console.log(creneau_class_obj);
+
+                            if (creneaux_class_objects[groupe.code_groupe] === undefined){
+                                creneaux_class_objects[groupe.code_groupe] = [];
+                            }
+
+                            creneaux_class_objects[groupe.code_groupe].push(creneau_class_obj);
+            
                         }
                     }
                 }  
@@ -278,23 +321,38 @@ export const generate = async (req, res) => {
 
         }
     });
-    response.creneaux = creneaux;
+
+
+
+    response.creneaux = creneaux_class_objects;
     
+
+
     if (seances.length > 0){
         response.error = 'Some seances have not been scheduled';
         response['unscheduled-seances'] = seances;
-        response['ocp_ens'] = ocp_ens;
-        response['ocp_locales'] = ocp_locales;
-        response['ocp_groupes'] = ocp_groupes;
     }
     else{
 
         response.message = 'All seances have been scheduled';
     }
 
+
     res.status(200).json(response);
 
 };
+
+const getMaxPeriodFromConstraints = (heur_debut, heur_fin, duree_creneaux, temps_entre_creneau) => {
+    let p = 0;
+    while (heur_debut <= heur_fin) {
+        heur_debut.setUTCMinutes(heur_debut.getUTCMinutes() + duree_creneaux.m + temps_entre_creneau);
+        heur_debut.setUTCHours(heur_debut.getUTCHours() + duree_creneaux.h);
+        if(heur_debut <= heur_fin){
+            p++;
+        }
+    }
+    return p;
+}
 
 const getPeriodFromHeurDebutEtHeurFin = (heur_debut, heur_fin, duree_creneaux)=>{
     const debut = new Date();
@@ -312,6 +370,26 @@ const getPeriodFromHeurDebutEtHeurFin = (heur_debut, heur_fin, duree_creneaux)=>
     }
 
     return periods;
+}
+
+const getHoursFromPeriods = (Periods, temps_debut, duree_creneaux, temps_entre_creneau) => {
+    const heures = [];
+    let heur_debut_f = temps_debut;
+    if (temps_debut["h"] === undefined || temps_debut["m"] === undefined){
+        heur_debut_f = {h: temps_debut.getUTCHours(), m: temps_debut.getUTCMinutes()};
+    }
+    for (let i = 0; i < Periods.length; i++) {
+        const period = Periods[i];
+        const d_heur_debut = new Date();
+        d_heur_debut.setUTCHours(heur_debut_f.h, heur_debut_f.m);
+        d_heur_debut.setUTCMinutes(d_heur_debut.getUTCMinutes() + period * (duree_creneaux.m + temps_entre_creneau));
+        d_heur_debut.setUTCHours(d_heur_debut.getUTCHours() + period * duree_creneaux.h);
+        const d_heur_fin = new Date();
+        d_heur_fin.setUTCHours(d_heur_debut.getUTCHours() + duree_creneaux.h, d_heur_debut.getUTCMinutes() + duree_creneaux.m);
+        heures.push({debut: d_heur_debut, fin: d_heur_fin});
+    }
+
+    return heures;
 }
 
 const buildOCPMatrix = (ids, jours, nbr_creneaux_par_jour)=>{
@@ -348,20 +426,27 @@ const getEnseignantWithHighestPriorite = (ens)=>{
 }
 
 
-
 class Creneau {
     
-    constructor(debut, fin, jour, id_seance, code_local, enseignants){
-        this.debut = debut;
-        this.fin = fin;
+    constructor(debut, fin, jour, id_seance, code_local, matricule_enseignant, id_groupe){
+        
+        if (debut.toISOString().includes("T")){
+            this.debut = debut.toISOString().split("T")[1].split(".")[0];
+        }
+        else{
+            this.debut = debut;
+        }
+        if (fin.toISOString().includes("T")){
+            this.fin = fin.toISOString().split("T")[1].split(".")[0];
+        }
+        else{
+            this.fin = fin;
+        }
         this.jour = jour;
-
+        this.seance = id_seance;
+        this.local = code_local;
+        this.enseignant = matricule_enseignant;
+        this.groupe = id_groupe;
     }
 
-    setSeance(seance){
-        this.seance = seance;
-    }
-    getSeance(){
-        return this.seance;
-    }
 }
