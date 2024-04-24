@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "agemp_2",
-    "dateExported": "2024-04-06T23:56:56.790Z",
+    "dateExported": "2024-04-19T15:02:26.737Z",
     "version": "1.1",
     "folders": [
         {
@@ -466,6 +466,18 @@
             "headers": [],
             "params": [],
             "tests": []
+        },
+        {
+            "_id": "7f5333ac-d2be-40b4-9c13-7cfd122e87c4",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "",
+            "name": "generate",
+            "url": "http://localhost:3000/generate/1",
+            "method": "GET",
+            "sortNum": 135000,
+            "created": "2024-04-17T12:38:45.776Z",
+            "modified": "2024-04-17T12:40:10.755Z",
+            "headers": []
         }
     ]
 }
