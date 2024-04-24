@@ -213,7 +213,7 @@ function Section({page}){
     
     
     }else{
-      if(regex.test(etud.nom) || regex.test(etud.prenom) || regex.test(etud.matricule) || regex.test(etud.email) || page==='Etudiant'?regex.test(etud.anneebac):regex.test(etud.role)){
+      if(regex.test(etud.nom) || regex.test(etud.prenom) || regex.test(etud.matricule) || regex.test(etud.email) || regex.test(etud.anneebac) || regex.test(etud.role)){
         return (
           <tr key={index}>
             <td>{etud.nom}</td>
