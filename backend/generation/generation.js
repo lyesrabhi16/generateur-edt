@@ -5,10 +5,11 @@ import { selectAllSeance } from "../controllers/SeanceController.js";
 import { getAllSeance } from "../DB/Seance.js";
 import { getAllLocal } from "../DB/Local.js";
 import { getAllModuleEns } from "../DB/ModuleEns.js";
-import { jours } from "../../constants.js";
+import { TypePersonne, jours } from "../../constants.js";
 import { getAllEnsetOccupByMatricule } from "../DB/EnsEtOccup.js";
 import { getAllEnsEtCreneauxById } from "../DB/EnsEtCreneaux.js";
 import { getAllCreneau } from "../DB/Creneau.js";
+import { selectPersonnes } from "../DB/personne.js";
 
  
 
@@ -61,6 +62,14 @@ export const generate = async (req, res) => {
     
     // get all groupes of the section
     const groupes = await selectGroupes(id_section);
+    // add nbr_etudiants to each groupe and calculate the total number of students
+    let NBR_ALL_ETUDIANTS = 0;
+    for (let i = 0; i < groupes.length; i++) {
+    const groupe = groupes[i];
+    const etudiants = await selectPersonnes(TypePersonne.Etudiant, groupe.id_groupe);
+    groupe.nbr_etudiants = etudiants.length;
+    NBR_ALL_ETUDIANTS += groupe.nbr_etudiants;
+   }
     
     // get All seances related to the section specialite
     let seances = await getAllSeance(section.code_specialite)
@@ -84,7 +93,6 @@ export const generate = async (req, res) => {
 
     // get All locales
     const locales = await getAllLocal();
-
 
 
 
@@ -170,7 +178,7 @@ export const generate = async (req, res) => {
             });
             if (all_groupes_available){
                 // check for an available Amphi
-                const amphi = locales.find(local => (local.type === 'Amphi') && !ocp_locales[local.code_local][jour][period]);
+                const amphi = getLocal(locales, 'Amphi', ocp_locales, jour, period, NBR_ALL_ETUDIANTS);
                 if (amphi){ 
                     
                     for (let c = 0; c < seances.length; c++) {
@@ -274,9 +282,7 @@ export const generate = async (req, res) => {
                     }                             
                 }
                 if (enseignant !== undefined){
-                    // try to find a locale for the seance
-                    const locale = locales.find(local => (!ocp_locales[local.code_local][jour][period]) && (local.type === 'Salle'+seance.type));
-                    if (locale){
+                    
                         // try to find a groupe for the seance
                         const groupe = groupes.find(groupe => {
                             if ((!ocp_groupes[groupe.id_groupe][jour][period]) && ( seance.remaining_groupes.find(g => g.id_groupe === groupe.id_groupe) !== undefined )){
@@ -284,34 +290,36 @@ export const generate = async (req, res) => {
                             }
                         } );
                         if(groupe){
+                            const locale = getLocal(locales, 'Salle'+seance.type, ocp_locales, jour, period, groupe.nbr_etudiants);
+                            // try to find a locale for the seance
+                            if (locale){
+                                const creneau = {
+                                    period: period,
+                                    jour: jour,
+                                    enseignant: enseignant,
+                                    seance: seance,
+                                    locale: locale,
+                                };
+                                ocp_groupes[groupe.id_groupe][jour][period] = true;
+                                seance.remaining_groupes = [...seance.remaining_groupes.filter(g => g.id_groupe !== groupe.id_groupe)];
+                                ocp_ens[enseignant.matricule][jour][period] = true;
+                                ocp_locales[locale.code_local][jour][period] = true;
+                                creneaux[jour][period][groupe.code_groupe] = creneau;
+                                if (seance.remaining_groupes.length === 0){
+                                    seances = seances.filter(s => s.id_seance !== seance.id_seance);
+                                }
 
-                            const creneau = {
-                                period: period,
-                                jour: jour,
-                                enseignant: enseignant,
-                                seance: seance,
-                                locale: locale,
-                            };
-                            ocp_groupes[groupe.id_groupe][jour][period] = true;
-                            seance.remaining_groupes = [...seance.remaining_groupes.filter(g => g.id_groupe !== groupe.id_groupe)];
-                            ocp_ens[enseignant.matricule][jour][period] = true;
-                            ocp_locales[locale.code_local][jour][period] = true;
-                            creneaux[jour][period][groupe.code_groupe] = creneau;
-                            if (seance.remaining_groupes.length === 0){
-                                seances = seances.filter(s => s.id_seance !== seance.id_seance);
-                            }
+                                const temps = getHoursFromPeriods([creneau.period], temps_debut, contraints.duree_creneaux, contraints.temps_entre_creneaux)[0];
+                                const s = {...seance};
+                                delete s.remaining_groupes;
+                                const creneau_class_obj = new Creneau(temps.debut, temps.fin, jour, s, locale, enseignant, groupe);
+                                //console.log(creneau_class_obj);
 
-                            const temps = getHoursFromPeriods([creneau.period], temps_debut, contraints.duree_creneaux, contraints.temps_entre_creneaux)[0];
-                            const s = {...seance};
-                            delete s.remaining_groupes;
-                            const creneau_class_obj = new Creneau(temps.debut, temps.fin, jour, s, locale, enseignant, groupe);
-                            //console.log(creneau_class_obj);
+                                if (creneaux_class_objects[groupe.code_groupe] === undefined){
+                                    creneaux_class_objects[groupe.code_groupe] = [];
+                                }
 
-                            if (creneaux_class_objects[groupe.code_groupe] === undefined){
-                                creneaux_class_objects[groupe.code_groupe] = [];
-                            }
-
-                            creneaux_class_objects[groupe.code_groupe].push(creneau_class_obj);
+                                creneaux_class_objects[groupe.code_groupe].push(creneau_class_obj);
             
                         }
                     }
@@ -341,6 +349,30 @@ export const generate = async (req, res) => {
     res.status(200).json(response);
 
 };
+
+// get local respecting these constraints:
+// 1. the local must be of the same type as the seance type
+// 2. the local must not be occupied
+// 3. the local must have a capacity greater or equal to the provided capacity
+// 4. the local must be the most suitable local for the seance calculated with the capacity provided devided by the local capacity
+const getLocal = (locaux, type, ocp_locales, jour, period, capacite)=>{
+    const locaux_f = [];
+    locaux.forEach(local => {
+        if (local.type === type && !ocp_locales[local.code_local][jour][period] && local.capacite >= capacite){
+            locaux_f.push([local, capacite/local.capacite]);
+        }
+    });
+    if (locaux_f.length === 0){
+        return undefined;
+    }
+    let local = locaux_f[0];
+    locaux_f.forEach((l) => {
+        if (l[1] > local[1]){
+            local = l;
+        }
+    });
+    return local[0];
+}
 
 const getMaxPeriodFromConstraints = (heur_debut, heur_fin, duree_creneaux, temps_entre_creneau) => {
     let p = 0;
