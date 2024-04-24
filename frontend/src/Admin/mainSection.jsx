@@ -44,7 +44,34 @@ function Section({page}){
       setEtudiants(respo.data.Locaux);
      })
      .catch(err => console.log(err));
-    }else{
+    }else if(page==='Specialite'){
+      axios.get("http://localhost:3000/Specialite/", {
+        withCredentials: true
+      }).then(respo =>{
+        
+      setEtudiants(respo.data.specialites);
+     })
+     .catch(err => console.log(err));
+
+    }else if(page==='Section'){
+      axios.get("http://localhost:3000/section", {
+        withCredentials: true
+      }).then(respo =>{
+        
+      setEtudiants(respo.data.sections);
+     })
+     .catch(err => console.log(err));
+    }else if(page==='Groupe'){
+      axios.get("http://localhost:3000/groupe", {
+        withCredentials: true
+      }).then(respo =>{
+        
+      setEtudiants(respo.data.groupes);
+     })
+     .catch(err => console.log(err));
+    }
+    
+    else{
       axios.get("http://localhost:3000/personne/", {
         withCredentials: true
       }).then(respo =>{
@@ -105,10 +132,11 @@ function Section({page}){
     <div className='search h-8 flex items-center bg-gray-100 px-3 py-5'>
     <input 
   type='search' 
-  placeholder='Chercher des étudiants' 
+  placeholder={'Chercher des'+ ' '+page} 
   className=' text-black' 
   onChange={(e) => {
     setChercher(e.target.value);
+    console.log(chercher);
   }}
 />
 
@@ -145,6 +173,27 @@ function Section({page}){
   <td>capacite</td>
   <td>type</td>
   <td>Action</td>
+</tr>:
+page==='Specialite'?<tr className='head'>
+<td>Id</td>   
+<td>code specialite</td>
+<td>nom specialite</td>
+<td>Action</td>
+</tr>:
+page==='Section'?<tr className='head'>
+<td>Id</td>   
+<td>nom section</td>
+<td>niveau</td>
+<td>specialite</td>
+<td>Action</td>
+</tr>:
+page==='Groupe'?<tr className='head'>
+<td>Id</td>   
+<td>Groupe</td>
+<td>Section</td>
+<td>niveau</td>
+<td>specialite</td>
+<td>Action</td>
 </tr>:
  <tr className='head'> 
  <td>Nom</td>
@@ -185,6 +234,7 @@ function Section({page}){
       
     }else if(page ==='Local'){
       if (regex.test(etud.code_local) || regex.test(etud.capacite) || regex.test(etud.type)) {
+        
         return (
           <tr key={index}>
             <td>{index+1}</td>
@@ -212,8 +262,86 @@ function Section({page}){
     
     
     
-    }else{
+    }else if(page==='Specialite'){
+     if(regex.test(etud.code_specialite) || regex.test(etud.nom_specialite)){
+      return (
+        <tr key={index}>
+          <td>{index+1}</td>
+          <td>{etud.code_specialite}</td>
+          <td>{etud.nom_specialite}</td>
+          <td>
+          <div className='flex items-center justify-center'>
+              <FontAwesomeIcon icon={faPen} className='text-blue-700 cursor-pointer' onClick={()=>{
+                setInfo(etud)
+                setShow(!Show)
+              }}/>
+              <FontAwesomeIcon icon={faTrash} className='ml-4 text-red-600 cursor-pointer' onClick={()=>{
+                axios.delete('http://localhost:3000/specialite/'+etud.code_specialite,{
+                  withCredentials: true
+                }).then(()=>{
+                  setSupprime(!supprime);
+                });
+                
+              }}/>
+            </div>
+          </td>
+        </tr>
+      );}
+    }else if(page==='Section'){
+      if(regex.test(etud.code_section) || regex.test(etud.niveau) || regex.test(etud.code_specialite)){
+       return (
+         <tr key={index}>
+           <td>{index+1}</td>
+           <td>{etud.code_section}</td>
+           <td>{etud.niveau}</td>
+           <td>{etud.code_specialite}</td>
+           <td>
+           <div className='flex items-center justify-center'>
+               <FontAwesomeIcon icon={faPen} className='text-blue-700 cursor-pointer' onClick={()=>{
+                 setInfo(etud)
+                 setShow(!Show)
+               }}/>
+               <FontAwesomeIcon icon={faTrash} className='ml-4 text-red-600 cursor-pointer' onClick={()=>{
+                 axios.delete('http://localhost:3000/section/'+etud.id_section,{
+                   withCredentials: true
+                 }).then(()=>{
+                   setSupprime(!supprime);
+                 });
+                 
+               }}/>
+             </div>
+           </td>
+         </tr>
+       );}
+     }else if(page==='Groupe'){
+      if(regex.test(etud.code_groupe) || regex.test(etud.code_section) || regex.test(etud.niveau) || regex.test(etud.code_specialite)){
+       return (
+         <tr key={index}>
+           <td>{index+1}</td>
+           <td>{etud.code_groupe}</td>
+           <td>{etud.code_section}</td>
+           <td>{etud.niveau}</td>
+           <td>{etud.code_specialite}</td>
+           <td>
+           <div className='flex items-center justify-center'>
+               
+               <FontAwesomeIcon icon={faTrash} className='ml-4 text-red-600 cursor-pointer' onClick={()=>{
+                 axios.delete('http://localhost:3000/groupe/'+etud.id_groupe,{
+                   withCredentials: true
+                 }).then(()=>{
+                   setSupprime(!supprime);
+                 });
+                 
+               }}/>
+             </div>
+           </td>
+         </tr>
+       );}
+     }
+    
+    else{
       if(regex.test(etud.nom) || regex.test(etud.prenom) || regex.test(etud.matricule) || regex.test(etud.email) || regex.test(etud.anneebac) || regex.test(etud.role)){
+       
         return (
           <tr key={index}>
             <td>{etud.nom}</td>
