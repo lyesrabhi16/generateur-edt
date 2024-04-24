@@ -70,7 +70,7 @@ export const generate = async (req, res) => {
     }
 
     /// build matrixes for occupancy
-
+    //
     // matricule:  jour    :   1     2    3      4     5     6  (le creneaux n de la journée, est ce qu'il est occupé ou non)
     //    1     : dimanche : false false true false false false 
     //               .
