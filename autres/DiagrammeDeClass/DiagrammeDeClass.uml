@@ -71,6 +71,12 @@
     <ownedAttribute xmi:type="uml:Property" xmi:id="_K4h7ANstEe6c3_EZZbm1kg" name="id_Emp" visibility="private">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
     </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_knbeIP_4Ee6_7d8iABRUIA" name="niveau" visibility="private" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_o9jw4P_4Ee6_7d8iABRUIA" name="semestre" visibility="private" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_uc-gYNssEe6c3_EZZbm1kg" name="Groupe " visibility="public">
     <ownedAttribute xmi:type="uml:Property" xmi:id="_fo2HQNs4Ee6c3_EZZbm1kg" name="code_groupe" visibility="private">
@@ -174,6 +180,12 @@
     <ownedAttribute xmi:type="uml:Property" xmi:id="_B0pX0NxuEe6c3_EZZbm1kg" name="type" visibility="private" type="__rkaMNxnEe6c3_EZZbm1kg" isUnique="false"/>
     <ownedAttribute xmi:type="uml:Property" xmi:id="_D5fRgOFdEe68RdYxJZrRTQ" name="id_seance" visibility="private">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_f0RFMP-4Ee6_7d8iABRUIA" name="niveau" visibility="private" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_j3gw0P-7Ee6_7d8iABRUIA" name="semestre" visibility="private" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
     </ownedAttribute>
     <ownedEnd xmi:type="uml:Property" xmi:id="_zKiT0NxtEe6c3_EZZbm1kg" name="modules" type="_Oh65ANssEe6c3_EZZbm1kg" association="_zKf3kNxtEe6c3_EZZbm1kg">
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5wQjQNxwEe6c3_EZZbm1kg"/>
