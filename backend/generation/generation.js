@@ -18,7 +18,7 @@ export const generate = async (req, res) => {
     const { id_section } = req.params;
     /*
         l'envoi de chaque contraint est optionnel, 
-        format et valuer par defaut:
+        format et valeur par defaut:
         temps_debut: {h: 8, m: 0} (objet avec les champs h et m qui sont des entiers)
         temps_fin: {h: 18, m: 0}  (objet avec les champs h et m qui sont des entiers)
         duree_creneaux: {h: 1, m: 30} (objet avec les champs h et m qui sont des entiers)
