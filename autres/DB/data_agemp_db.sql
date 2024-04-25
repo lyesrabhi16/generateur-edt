@@ -53,7 +53,7 @@ INSERT INTO public.groupe (id_groupe, code_groupe, id_section) VALUES (2, 'G4', 
 -- Data for Name: emploisdutemps; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.emploisdutemps (id_emp, id_groupe) VALUES (1, 1);
+INSERT INTO public.emploisdutemps (id_emp, id_groupe, niveau, semestre) VALUES (1, 1, 'M1', 'S1');
 
 
 --
@@ -91,26 +91,26 @@ INSERT INTO public.module (code_module, nom_module) VALUES ('Anglais', 'Anglais'
 -- Data for Name: seance; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (3, 'PA', 'GL', 'TD');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (4, 'BDD', 'MI', 'TD');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (5, 'PA', 'GL', 'Cours');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (6, 'PA', 'GL', 'TP');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (7, 'BDD', 'MI', 'Cours');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (8, 'BDD', 'MI', 'TP');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (9, 'PS', 'GL', 'Cours');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (10, 'PS', 'GL', 'TD');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (11, 'PS', 'GL', 'TP');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (12, 'AIE', 'GL', 'TD');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (13, 'AIE', 'GL', 'TP');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (14, 'TOP', 'GL', 'Cours');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (15, 'TOP', 'GL', 'TD');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (16, 'MC', 'GL', 'Cours');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (17, 'MC', 'GL', 'TD');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (18, 'MC', 'GL', 'TP');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (19, 'Req-Con', 'GL', 'Cours');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (20, 'Req-Con', 'GL', 'TD');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (21, 'Req-Con', 'GL', 'TP');
-INSERT INTO public.seance (id_seance, code_module, code_specialite, type) VALUES (22, 'Anglais', 'GL', 'TD');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (3, 'PA', 'GL', 'TD', 'M1', 'S1');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (4, 'BDD', 'MI', 'TD', 'L2', 'S2');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (5, 'PA', 'GL', 'Cours', 'M1', 'S1');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (6, 'PA', 'GL', 'TP', 'M1', 'S1');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (7, 'BDD', 'MI', 'Cours', 'L2', 'S2');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (8, 'BDD', 'MI', 'TP', 'L2', 'S2');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (10, 'PS', 'GL', 'TD', 'M1', 'S2');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (9, 'PS', 'GL', 'Cours', 'M1', 'S2');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (11, 'PS', 'GL', 'TP', 'M1', 'S2');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (12, 'AIE', 'GL', 'TD', 'M1', 'S2');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (13, 'AIE', 'GL', 'TP', 'M1', 'S2');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (14, 'TOP', 'GL', 'Cours', 'M1', 'S2');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (15, 'TOP', 'GL', 'TD', 'M1', 'S2');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (16, 'MC', 'GL', 'Cours', 'M1', 'S2');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (17, 'MC', 'GL', 'TD', 'M1', 'S2');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (18, 'MC', 'GL', 'TP', 'M1', 'S2');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (19, 'Req-Con', 'GL', 'Cours', 'M1', 'S2');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (20, 'Req-Con', 'GL', 'TD', 'M1', 'S2');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (21, 'Req-Con', 'GL', 'TP', 'M1', 'S2');
+INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau, semestre) VALUES (22, 'Anglais', 'GL', 'TD', 'M1', 'S2');
 
 
 --
