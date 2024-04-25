@@ -3,7 +3,8 @@ import { getAllEmplois,
          getOneEmploisByGroupe,
          createEmplois,
          updateEmplois,
-         deleteEmplois
+         deleteEmplois,
+         deleteEmploisByIdGroupe
          
 } from "../DB/EmploisDuTemps.js";
 
@@ -150,6 +151,28 @@ export const deleteOneEmplois =(req,res)=>{
            res.status(200).json(response);
 
 
+
+    }).catch((err)=>{
+        const response={
+            status:"Error",
+            message:"Erreur pendant la suppression d'emplois de temps",
+            erreur:err
+           }
+          res.status(500).json(response);
+    
+      })
+
+}
+
+export const deleteOneEmploisByIdGroupe=(req,res)=>{
+    const {id_groupe} = req.params;
+    deleteEmploisByIdGroupe(id_groupe).then(()=>{
+
+        const response={
+            status:"Success",
+            message:"Emplois de temps supprimé  "
+           }
+           res.status(200).json(response);
 
     }).catch((err)=>{
         const response={
