@@ -1,11 +1,17 @@
 import { db } from "../server.js";
 
-export const selectGroupes = () => {
-    return db.manyOrNone(`
-    SELECT g.id_groupe, g.code_groupe, s.id_section, s.code_section, s.niveau, sp.code_specialite, sp.nom_specialite
-    FROM groupe g 
-           join section s on g.id_section = s.id_section
-           join specialite sp on s.code_specialite = sp.code_specialite`);
+export const selectGroupes = (id_section) => {
+
+    let sql = `
+                SELECT g.id_groupe, g.code_groupe, s.id_section, s.code_section, s.niveau, sp.code_specialite, sp.nom_specialite
+                FROM groupe g 
+                    join section s on g.id_section = s.id_section
+                    join specialite sp on s.code_specialite = sp.code_specialite`;
+    if (id_section !== undefined) {
+        sql += ` where g.id_section = $1`;
+    } 
+
+    return db.manyOrNone(sql, [id_section]);
 };
 
 export const selectGroupe = (id_groupe) => {
