@@ -187,7 +187,7 @@ export const generate = async (req, res) => {
      // creneaux[jour][period][groupe]
     const creneaux = {};
     const creneaux_class_objects = {};
-    Object.keys(jours).forEach(jour => {
+    Object.keys(jours).filter(jour => jour !== jours.Vendredi).forEach(jour => {
         creneaux[jour] = {};
         let nbr_cours = 0;
         for (let period = 0; period < contraints.nbr_creneaux_par_jour; period++) {
@@ -504,13 +504,17 @@ class Creneau {
     constructor(debut, fin, jour, id_seance, code_local, matricule_enseignant, id_groupe){
         
         if (debut.toISOString().includes("T")){
-            this.debut = debut.toISOString().split("T")[1].split(".")[0];
+            let d = debut.toISOString().split("T")[1].split(".")[0].split(":");
+            d.pop();
+            this.debut = d.join(":");
         }
         else{
             this.debut = debut;
         }
         if (fin.toISOString().includes("T")){
-            this.fin = fin.toISOString().split("T")[1].split(".")[0];
+            let f = fin.toISOString().split("T")[1].split(".")[0].split(":");
+            f.pop();
+            this.fin = f.join(":");
         }
         else{
             this.fin = fin;
