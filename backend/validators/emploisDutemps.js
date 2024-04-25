@@ -1,8 +1,14 @@
 export const insertOneEmploisValidator = (req, res, next) => {
-    const { id_groupe } = req.body;
+    const { id_groupe, niveau, semestre } = req.body;
     const missingFields = [];
     if (id_groupe === undefined) {
         missingFields.push('id_groupe');
+    }
+    if (niveau === undefined) {
+        missingFields.push('niveau');
+    }
+    if (semestre === undefined) {
+        missingFields.push('semestre');
     }
 
     if (missingFields.length > 0){
@@ -14,5 +20,3 @@ export const insertOneEmploisValidator = (req, res, next) => {
 
     next();
 }
-
-/* test main branch protection */
