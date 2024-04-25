@@ -23,8 +23,10 @@ export const generate = async (req, res) => {
         duree_creneaux: {h: 1, m: 30} (objet avec les champs h et m qui sont des entiers)
         minutes_entre_creneaux: 10 (entier)
         nbr_creneaux_par_jour: 6 (entier) (default value is calculated from temps_debut, temps_fin, duree_creneaux, minutes_entre_creneaux)    
-    */ 
-    let { temps_debut, temps_fin, nbr_creneaux_par_jour, duree_creneaux, minutes_entre_creneaux } = req.body;
+        max_seances_consecutif: 3 (entier)
+        */ 
+    let {   temps_debut, temps_fin, nbr_creneaux_par_jour, 
+            duree_creneaux, minutes_entre_creneaux, max_seances_consecutif } = req.body;
     
 
     if (temps_debut === undefined){
@@ -39,6 +41,10 @@ export const generate = async (req, res) => {
     if (minutes_entre_creneaux === undefined){
         minutes_entre_creneaux = 10;
     }
+    if (max_seances_consecutif === undefined){
+        max_seances_consecutif = 3;
+    }
+
     const t_d = new Date();
     t_d.setUTCHours(temps_debut.h, temps_debut.m); 
     
@@ -54,6 +60,7 @@ export const generate = async (req, res) => {
         duree_creneaux : duree_creneaux,
         temps_entre_creneaux : minutes_entre_creneaux,
         nbr_creneaux_par_jour : nbr_creneaux_par_jour,
+        max_seances_consecutif: max_seances_consecutif
     }
 
     const response = {};
@@ -171,10 +178,11 @@ export const generate = async (req, res) => {
     Object.keys(jours).forEach(jour => {
         creneaux[jour] = {};
         for (let period = 0; period < contraints.nbr_creneaux_par_jour; period++) {
+            
             creneaux[jour][period] = {};
             // check if all groupes are available, pour avoir un cours
             const all_groupes_available = groupes.every(groupe => {
-                return !ocp_groupes[groupe.id_groupe][jour][period];
+                return !ocp_groupes[groupe.id_groupe][jour][period] && checkNbrSeancesConsecutif(ocp_groupes, groupe, jour, period, contraints.max_seances_consecutif);
             });
             if (all_groupes_available){
                 // check for an available Amphi
@@ -285,7 +293,7 @@ export const generate = async (req, res) => {
                     
                         // try to find a groupe for the seance
                         const groupe = groupes.find(groupe => {
-                            if ((!ocp_groupes[groupe.id_groupe][jour][period]) && ( seance.remaining_groupes.find(g => g.id_groupe === groupe.id_groupe) !== undefined )){
+                            if ((!ocp_groupes[groupe.id_groupe][jour][period]) && ( seance.remaining_groupes.find(g => g.id_groupe === groupe.id_groupe) !== undefined ) && checkNbrSeancesConsecutif(ocp_groupes, groupe, jour, period, contraints.max_seances_consecutif)){
                                 return groupe
                             }
                         } );
@@ -349,6 +357,25 @@ export const generate = async (req, res) => {
     res.status(200).json(response);
 
 };
+
+const checkNbrSeancesConsecutif = (ocp_groupes, groupe, jour, period, max_seances_consecutif) => {
+    
+    let nbr_seances_consecutif = 0;
+    let p = Math.max(period - max_seances_consecutif,0);
+    while (p < period){
+        if (ocp_groupes[groupe.id_groupe][jour][p]){
+            nbr_seances_consecutif++;
+        }
+        else{
+            nbr_seances_consecutif = 0;
+        }
+        p++;
+    }
+    if (nbr_seances_consecutif >= max_seances_consecutif){
+        return false;
+    }    
+    return true;
+}
 
 // get local respecting these constraints:
 // 1. the local must be of the same type as the seance type
