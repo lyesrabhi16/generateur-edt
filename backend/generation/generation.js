@@ -10,6 +10,7 @@ import { getAllEnsetOccupByMatricule } from "../DB/EnsEtOccup.js";
 import { getAllEnsEtCreneauxById } from "../DB/EnsEtCreneaux.js";
 import { getAllCreneau } from "../DB/Creneau.js";
 import { selectPersonnes } from "../DB/personne.js";
+import { affichage } from "./affichage.js";
 
  
 
@@ -24,9 +25,15 @@ export const generate = async (req, res) => {
         minutes_entre_creneaux: 10 (entier)
         nbr_creneaux_par_jour: 6 (entier) (default value is calculated from temps_debut, temps_fin, duree_creneaux, minutes_entre_creneaux)    
         max_seances_consecutif: 3 (entier)
+        max_cours_par_jour : 2 (entier)
         */ 
-    let {   temps_debut, temps_fin, nbr_creneaux_par_jour, 
-            duree_creneaux, minutes_entre_creneaux, max_seances_consecutif } = req.body;
+    let {   temps_debut, temps_fin, 
+            nbr_creneaux_par_jour, 
+            duree_creneaux, 
+            minutes_entre_creneaux, 
+            max_seances_consecutif,
+            max_cours_par_jour
+        } = req.body;
     
 
     if (temps_debut === undefined){
@@ -44,6 +51,10 @@ export const generate = async (req, res) => {
     if (max_seances_consecutif === undefined){
         max_seances_consecutif = 3;
     }
+    if (max_cours_par_jour === undefined){
+        max_cours_par_jour = 2;
+    }
+
 
     const t_d = new Date();
     t_d.setUTCHours(temps_debut.h, temps_debut.m); 
@@ -60,7 +71,8 @@ export const generate = async (req, res) => {
         duree_creneaux : duree_creneaux,
         temps_entre_creneaux : minutes_entre_creneaux,
         nbr_creneaux_par_jour : nbr_creneaux_par_jour,
-        max_seances_consecutif: max_seances_consecutif
+        max_seances_consecutif: max_seances_consecutif,
+        max_cours_par_jour: max_cours_par_jour
     }
 
     const response = {};
@@ -177,6 +189,7 @@ export const generate = async (req, res) => {
     const creneaux_class_objects = {};
     Object.keys(jours).forEach(jour => {
         creneaux[jour] = {};
+        let nbr_cours = 0;
         for (let period = 0; period < contraints.nbr_creneaux_par_jour; period++) {
             
             creneaux[jour][period] = {};
@@ -184,7 +197,7 @@ export const generate = async (req, res) => {
             const all_groupes_available = groupes.every(groupe => {
                 return !ocp_groupes[groupe.id_groupe][jour][period] && checkNbrSeancesConsecutif(ocp_groupes, groupe, jour, period, contraints.max_seances_consecutif);
             });
-            if (all_groupes_available){
+            if (all_groupes_available && nbr_cours < contraints.max_cours_par_jour){
                 // check for an available Amphi
                 const amphi = getLocal(locales, 'Amphi', ocp_locales, jour, period, NBR_ALL_ETUDIANTS);
                 if (amphi){ 
@@ -240,7 +253,7 @@ export const generate = async (req, res) => {
                                 seances = seances.filter(s => s.id_seance !== seance.id_seance);
                             }
 
-
+                            nbr_cours++;
                             
 
                             break;
@@ -353,6 +366,7 @@ export const generate = async (req, res) => {
         response.message = 'All seances have been scheduled';
     }
 
+    affichage(response.creneaux);
 
     res.status(200).json(response);
 
