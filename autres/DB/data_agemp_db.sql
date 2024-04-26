@@ -53,7 +53,7 @@ INSERT INTO public.groupe (id_groupe, code_groupe, id_section) VALUES (2, 'G4', 
 -- Data for Name: emploisdutemps; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.emploisdutemps (id_emp, id_groupe, niveau, semestre) VALUES (1, 1, 'M1', 'S1');
+INSERT INTO public.emploisdutemps (id_emp, id_groupe, niveau, semestre,annee) VALUES (1, 1, 'M1', 'S1',2024);
 
 
 --
@@ -121,6 +121,7 @@ INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau
 
 INSERT INTO public.creneau (id_creneau, debut, fin, jour, id_emp, id_seance, code_local) VALUES (1, '08:00:00', '09:30:00', 'Dimanche', 1, 6, 'b1s1');
 INSERT INTO public.creneau (id_creneau, debut, fin, jour, id_emp, id_seance, code_local) VALUES (2, '08:00:00', '09:30:00', 'Dimanche', 1, 4, 'b5s112');
+INSERT INTO public.creneau (id_creneau, debut, fin, jour, id_emp, id_seance, code_local) VALUES (3, '13:00:00', '14:30:00', 'Jeudi', 1, 19, 'b5s112');
 
 
 --
@@ -163,6 +164,7 @@ INSERT INTO public.personne (matricule, nom, prenom, email, password, type, role
 INSERT INTO public.ensetcreneaux (matricule, id_creneau) VALUES (7, 2);
 INSERT INTO public.ensetcreneaux (matricule, id_creneau) VALUES (6, 1);
 INSERT INTO public.ensetcreneaux (matricule, id_creneau) VALUES (8, 2);
+INSERT INTO public.ensetcreneaux (matricule, id_creneau) VALUES (7, 3);
 
 
 --
