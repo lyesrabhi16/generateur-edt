@@ -164,6 +164,7 @@ INSERT INTO public.personne (matricule, nom, prenom, email, password, type, role
 INSERT INTO public.ensetcreneaux (matricule, id_creneau) VALUES (7, 2);
 INSERT INTO public.ensetcreneaux (matricule, id_creneau) VALUES (6, 1);
 INSERT INTO public.ensetcreneaux (matricule, id_creneau) VALUES (8, 2);
+INSERT INTO public.ensetcreneaux (matricule, id_creneau) VALUES (7, 3);
 
 
 --
