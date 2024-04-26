@@ -1,8 +1,9 @@
 {
-    "client": "Thunder Client",
+    "clientName": "Thunder Client",
     "collectionName": "agemp_2",
-    "dateExported": "2024-04-06T23:56:56.790Z",
-    "version": "1.1",
+    "collectionId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+    "dateExported": "2024-04-22T18:35:30.983Z",
+    "version": "1.2",
     "folders": [
         {
             "_id": "6dbcace6-d888-4fe6-9ce2-5ff4b3bdcd73",
@@ -197,20 +198,26 @@
             "method": "POST",
             "sortNum": 108750,
             "created": "2024-03-30T14:16:44.454Z",
-            "modified": "2024-03-30T16:22:16.629Z",
+            "modified": "2024-04-22T18:29:12.087Z",
             "headers": [],
-            "params": [],
             "body": {
                 "type": "formencoded",
                 "raw": "",
                 "form": [
                     {
                         "name": "id_groupe",
-                        "value": "4"
+                        "value": "2"
+                    },
+                    {
+                        "name": "niveau",
+                        "value": "M1"
+                    },
+                    {
+                        "name": "semestre",
+                        "value": "S1"
                     }
                 ]
-            },
-            "tests": []
+            }
         },
         {
             "_id": "fedbd8c3-9b42-4f7b-a3c9-5987603cd175",
@@ -305,13 +312,12 @@
             "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
             "containerId": "6dbcace6-d888-4fe6-9ce2-5ff4b3bdcd73",
             "name": "putOne",
-            "url": "http://localhost:3000/emploistemps/4",
+            "url": "http://localhost:3000/emploistemps/2",
             "method": "PUT",
             "sortNum": 115000,
             "created": "2024-03-30T14:16:44.454Z",
-            "modified": "2024-03-30T16:22:23.620Z",
+            "modified": "2024-04-22T18:29:36.205Z",
             "headers": [],
-            "params": [],
             "body": {
                 "type": "formencoded",
                 "raw": "",
@@ -319,10 +325,17 @@
                     {
                         "name": "id_groupe",
                         "value": "2"
+                    },
+                    {
+                        "name": "niveau",
+                        "value": "M1"
+                    },
+                    {
+                        "name": "semestre",
+                        "value": "S2"
                     }
                 ]
-            },
-            "tests": []
+            }
         },
         {
             "_id": "b3872d99-553e-4b0d-a1d4-abfb78a0b957",
@@ -416,14 +429,12 @@
             "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
             "containerId": "6dbcace6-d888-4fe6-9ce2-5ff4b3bdcd73",
             "name": "deleteOne",
-            "url": "http://localhost:3000/emploistemps/10",
+            "url": "http://localhost:3000/emploistemps/4",
             "method": "DELETE",
             "sortNum": 125000,
             "created": "2024-03-30T14:16:44.454Z",
-            "modified": "2024-03-30T16:22:40.708Z",
-            "headers": [],
-            "params": [],
-            "tests": []
+            "modified": "2024-04-22T18:29:56.568Z",
+            "headers": []
         },
         {
             "_id": "f11069bd-95ef-45f0-9b4a-6f45b492a44e",
@@ -466,6 +477,18 @@
             "headers": [],
             "params": [],
             "tests": []
+        },
+        {
+            "_id": "7f5333ac-d2be-40b4-9c13-7cfd122e87c4",
+            "colId": "c343bfa7-a6a1-494f-ae65-98263eb9ab1c",
+            "containerId": "",
+            "name": "generate",
+            "url": "http://localhost:3000/generate/1",
+            "method": "GET",
+            "sortNum": 135000,
+            "created": "2024-04-17T12:38:45.776Z",
+            "modified": "2024-04-17T12:40:10.755Z",
+            "headers": []
         }
     ]
 }

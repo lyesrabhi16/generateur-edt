@@ -1,8 +1,9 @@
 {
-    "client": "Thunder Client",
+    "clientName": "Thunder Client",
     "collectionName": "agemp",
-    "dateExported": "2024-04-06T23:56:41.441Z",
-    "version": "1.1",
+    "collectionId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
+    "dateExported": "2024-04-22T18:35:13.243Z",
+    "version": "1.2",
     "folders": [
         {
             "_id": "881a0942-36ea-45b1-986d-8de35a153051",
@@ -845,14 +846,13 @@
             "_id": "4266c2f5-9ffd-417d-80fc-0fce3b1ec6bc",
             "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
             "containerId": "e0f60cfc-768c-4592-ac3b-e118ba483a56",
-            "name": "insertOneLocal",
+            "name": "insertOneSeance",
             "url": "http://localhost:3000/seance",
             "method": "POST",
             "sortNum": 108750,
             "created": "2024-03-30T12:49:01.769Z",
-            "modified": "2024-03-30T12:58:48.259Z",
+            "modified": "2024-04-22T18:33:55.672Z",
             "headers": [],
-            "params": [],
             "body": {
                 "type": "formencoded",
                 "raw": "",
@@ -868,10 +868,17 @@
                     {
                         "name": "code_specialite",
                         "value": "GL"
+                    },
+                    {
+                        "name": "niveau",
+                        "value": "M1"
+                    },
+                    {
+                        "name": "semestre",
+                        "value": "S1"
                     }
                 ]
-            },
-            "tests": []
+            }
         },
         {
             "_id": "272e150a-54e9-45b1-b77d-95e950e4f557",
@@ -1015,13 +1022,12 @@
             "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
             "containerId": "e0f60cfc-768c-4592-ac3b-e118ba483a56",
             "name": "putOneSeance",
-            "url": "http://localhost:3000/seance/13",
+            "url": "http://localhost:3000/seance/10",
             "method": "PUT",
             "sortNum": 115000,
             "created": "2024-03-30T12:49:01.770Z",
-            "modified": "2024-03-30T13:03:32.669Z",
+            "modified": "2024-04-22T18:34:43.166Z",
             "headers": [],
-            "params": [],
             "body": {
                 "type": "formencoded",
                 "raw": "",
@@ -1037,10 +1043,17 @@
                     {
                         "name": "code_specialite",
                         "value": "GL"
+                    },
+                    {
+                        "name": "niveau",
+                        "value": "M1"
+                    },
+                    {
+                        "name": "semestre",
+                        "value": "S2"
                     }
                 ]
-            },
-            "tests": []
+            }
         },
         {
             "_id": "5123037a-2281-498c-8a3b-1417244329f4",
@@ -1133,14 +1146,12 @@
             "colId": "dc97e067-b09d-48cd-b065-3f901deb8c9b",
             "containerId": "e0f60cfc-768c-4592-ac3b-e118ba483a56",
             "name": "deleteOneSeance",
-            "url": "http://localhost:3000/seance/13",
+            "url": "http://localhost:3000/seance/10",
             "method": "DELETE",
             "sortNum": 125000,
             "created": "2024-03-30T12:49:01.771Z",
-            "modified": "2024-03-30T13:03:59.007Z",
-            "headers": [],
-            "params": [],
-            "tests": []
+            "modified": "2024-04-22T18:34:52.193Z",
+            "headers": []
         },
         {
             "_id": "42e5fbf2-72e0-4bdb-96d4-8ed60b2bbcdd",
@@ -1156,5 +1167,6 @@
             "params": [],
             "tests": []
         }
-    ]
+    ],
+    "ref": "WmyOZhuvDYlCFXSxOr-KFh649S0G4Zokv8sBeF5cb-0bzKrEZj5vtoR7pfYhW0NJAHnsNtoN3bShncVBrJaOSg"
 }
