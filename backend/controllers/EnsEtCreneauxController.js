@@ -2,7 +2,8 @@ import { getAllEnsEtCreneaux,
          getAllEnsEtCreneauxById,
          createEnsEtCreneau,
          updateEnsEtCreneau,
-         deleteEnsEtCreneau
+         deleteEnsEtCreneau,
+         getAllCreneauEns
 } from "../DB/EnsEtCreneaux.js";
 
 
@@ -99,12 +100,7 @@ export const putOneEnsEtCreneaux=(req,res)=>{
   
 } 
 export const deleteOneEnsEtCreneaux=(req,res)=>{
-    /* @MassinS
-        ! modified
-        * changed from req.body to req.params
-        ? remove after reading
-        --written by @lyesrabhi16
-     */
+   
     const {matricule,id_creneau}=req.params;
     deleteEnsEtCreneau(matricule,id_creneau).then(()=>{
         const response={
@@ -122,4 +118,36 @@ export const deleteOneEnsEtCreneaux=(req,res)=>{
           res.status(500).json(response);
 
       })
+}
+
+export const getAllCreneauWithAllInformation=(req,res)=>{
+
+const {matricule,annee}=req.params;
+
+
+getAllCreneauEns(matricule,annee).then((data)=>{
+
+    const response={
+        status :"Success",
+        message : "Tout les creneau de cet enseignant sont trouvé",
+        EnsEtCreneau : data
+    }
+    if( data===null) {
+     response.status='Error';
+     response.message='Aucun créneau  trouvé'
+     return res.status(404).json(response)
+    }
+    res.status(200).json(response);
+
+}).catch((err)=>{
+    const response={
+        status:"Error",
+        message:"Erreur pendant la recherche des données ",
+        erreur:err
+       }
+      res.status(500).json(response);
+
+
+})
+
 }
