@@ -119,11 +119,13 @@ create table emploisdutemps(
 	id_groupe integer,
 	niveau varchar(10),
 	semestre varchar(3),
+	annee numeric(4),
 	constraint pk_emploisdutemps primary key(id_emp),
 	constraint fk_groupe foreign key(id_groupe) references groupe(id_groupe) on update cascade on delete cascade,
 	constraint nn_groupe check(id_groupe is not null),
 	constraint nn_niveau check(niveau is not null),
-	constraint nn_semestre check(semestre is not null)
+	constraint nn_semestre check(semestre is not null),
+	constraint nn_annee check ( annee is not null ) 
 );
 
 create table module(
