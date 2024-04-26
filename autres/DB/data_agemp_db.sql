@@ -121,6 +121,7 @@ INSERT INTO public.seance (id_seance, code_module, code_specialite, type, niveau
 
 INSERT INTO public.creneau (id_creneau, debut, fin, jour, id_emp, id_seance, code_local) VALUES (1, '08:00:00', '09:30:00', 'Dimanche', 1, 6, 'b1s1');
 INSERT INTO public.creneau (id_creneau, debut, fin, jour, id_emp, id_seance, code_local) VALUES (2, '08:00:00', '09:30:00', 'Dimanche', 1, 4, 'b5s112');
+INSERT INTO public.creneau (id_creneau, debut, fin, jour, id_emp, id_seance, code_local) VALUES (3, '13:00:00', '14:30:00', 'Jeudi', 1, 19, 'b5s112');
 
 
 --
