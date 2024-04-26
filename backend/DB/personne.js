@@ -8,7 +8,7 @@ import { typePersonneValidator } from "../validators/OtherValidators.js";
  * @param {string|null} typePersonne - The type of person to filter the results by if not specified there will be no filtering. (optional)
  * @returns {Promise} A promise that resolves to an array of person objects.
  */
-export const selectPersonnes = (typePersonne = null) => {
+export const selectPersonnes = (typePersonne = null, id_groupe) => {
   let sql = `SELECT * FROM personne`;
 
   if (typePersonne === TypePersonne.Etudiant){
@@ -24,7 +24,15 @@ export const selectPersonnes = (typePersonne = null) => {
   if (typePersonneValidator(typePersonne)) {
     sql += ` WHERE type = $1`;
   }
-  return db.manyOrNone(sql, [typePersonne]);
+  if (id_groupe) {
+    if(sql.includes('WHERE type')){
+      sql += ` and p.id_groupe = $2`;
+    }
+    else{
+      sql += ` WHERE p.id_groupe = $1`;
+    }
+  }
+  return db.manyOrNone(sql, [typePersonne, id_groupe]);
 };
 
 /**
