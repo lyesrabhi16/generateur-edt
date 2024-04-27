@@ -37,9 +37,9 @@ export const deleteEnsEtCreneau=(matricule,id_creneau)=>{
 }
 
 
-export const getAllCreneauEns = (matricule,annee)=>{
+export const getAllCreneauEns = (matricule,annee,semestre)=>{
 
-    return db.manyOrNone(`SELECT E.matricule, P.nom , P.prenom ,C.jour, C.debut,C.fin , S.type,S.niveau , S.code_specialite  , g.id_section , L.code_Local , L.type  from ensetcreneaux E  
+    return db.manyOrNone(`SELECT E.matricule, P.nom , P.prenom ,C.jour, C.debut,C.fin , S.type,S.niveau , S.code_specialite  , g.id_section , Emp.semestre ,L.code_Local , L.type  from ensetcreneaux E  
                           left join personne P on E.matricule=P.matricule
                           left join Creneau C on E.id_creneau=C.id_creneau 
                           left join Seance S on C.id_seance = S.id_seance
@@ -48,7 +48,8 @@ export const getAllCreneauEns = (matricule,annee)=>{
                           left join emploisdutemps Emp on Emp.id_emp =C.id_emp
                           left join groupe g on g.id_groupe= Emp.id_groupe
                           left join section sn on sn.id_section=g.id_section
-                          WHERE E.matricule=$1 and Emp.annee=$2
-    `,[matricule,annee]);
+                          WHERE E.matricule=$1 and Emp.annee=$2 and Emp.semestre=$3
+    `,[matricule,annee,semestre]);
+
     
 }

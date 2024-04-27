@@ -122,10 +122,10 @@ export const deleteOneEnsEtCreneaux=(req,res)=>{
 
 export const getAllCreneauWithAllInformation=(req,res)=>{
 
-const {matricule,annee}=req.params;
+const {matricule,annee,semestre}=req.params;
 
 
-getAllCreneauEns(matricule,annee).then((data)=>{
+getAllCreneauEns(matricule,annee,semestre).then((data)=>{
 
     const response={
         status :"Success",
