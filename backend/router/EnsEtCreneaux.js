@@ -17,6 +17,6 @@ EnsEtCreneauxRouter.post('/', insertOneEnsEtCreneauValidator,insertOneEnsEtCrene
 
 EnsEtCreneauxRouter.put('/:matricule/creneaux/:id_creneau', putOneEnsEtCreneauValidator,putOneEnsEtCreneaux);
 EnsEtCreneauxRouter.delete('/:matricule/creneaux/:id_creneau',deleteOneEnsEtCreneaux);
-EnsEtCreneauxRouter.get('/EmploisTempsEns/:matricule/Annee/:annee',getAllCreneauWithAllInformation);
+EnsEtCreneauxRouter.get('/EmploisTempsEns/:matricule/Annee/:annee/Semestres/:semestre',getAllCreneauWithAllInformation);
 
 export default EnsEtCreneauxRouter;
