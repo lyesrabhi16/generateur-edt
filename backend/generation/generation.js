@@ -374,7 +374,7 @@ export const generate = async (req, res) => {
     }
     else{
 
-        response.message = 'All seances have been scheduled';
+        response.success = 'All seances have been scheduled';
     }
 
     affichage(response.creneaux);
