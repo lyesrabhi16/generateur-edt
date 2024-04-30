@@ -6,15 +6,39 @@ import { db } from "../server.js";
 
 
 
-export const getAllSeance =(code_specialite)=>{
-    let sql = `SELECT id_seance , type,nom_module , nom_specialite,Module.code_module,Specialite.code_specialite 
+export const getAllSeance =(niveau, semestre, code_specialite)=>{
+  console.log(semestre, code_specialite);
+    let sql = `SELECT id_seance , type, Seance.niveau, semestre,nom_module , nom_specialite,Module.code_module,Specialite.code_specialite 
     from Seance left join Module on Seance.code_module=Module.code_module
     left join Specialite on Seance.code_specialite=Specialite.code_specialite 
     `;
+    let w = false;
     if (code_specialite !== undefined) {
-      sql += ' where Seance.code_specialite = $1' 
+      sql += ' where Seance.code_specialite = $1';
+      w = true;
     }
-    return db.manyOrNone(sql, [code_specialite]);
+    if (semestre !== undefined) {
+      if (!w) {
+        sql += ' where';
+        w = true;
+      }
+      else{
+        sql += ' and'
+      }
+      sql += ' Seance.semestre = $2'
+    }
+    if (niveau !== undefined) {
+      if (!w) {
+        sql += ' where';
+        w = true;
+      }
+      else{
+        sql += ' and'
+      }
+      sql += ' Seance.niveau = $3'
+    }
+
+    return db.manyOrNone(sql, [code_specialite, semestre, niveau]);
 }
 
 /**
