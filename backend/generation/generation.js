@@ -26,13 +26,17 @@ export const generate = async (req, res) => {
         nbr_creneaux_par_jour: 6 (entier) (default value is calculated from temps_debut, temps_fin, duree_creneaux, minutes_entre_creneaux)    
         max_seances_consecutif: 3 (entier)
         max_cours_par_jour : 2 (entier)
+        shuffle : 0|1 (entier) (0: false, 1: true) default 0 (false)
         */ 
-    let {   temps_debut, temps_fin, 
+    let {   semestre,
+        
+            temps_debut, temps_fin, 
             nbr_creneaux_par_jour, 
             duree_creneaux, 
             minutes_entre_creneaux, 
             max_seances_consecutif,
-            max_cours_par_jour
+            max_cours_par_jour,
+            shuffle
         } = req.body;
     
 
@@ -53,6 +57,9 @@ export const generate = async (req, res) => {
     }
     if (max_cours_par_jour === undefined){
         max_cours_par_jour = 2;
+    }
+    if (shuffle === undefined){
+        shuffle = 0;
     }
 
 
@@ -91,8 +98,12 @@ export const generate = async (req, res) => {
    }
     
     // get All seances related to the section specialite
-    let seances = await getAllSeance(section.code_specialite)
+    let seances = await getAllSeance(section.niveau, semestre, section.code_specialite)
     seances.forEach(seance => {seance.remaining_groupes = [...groupes];});
+    // shuffle seances
+    if (( parseInt(shuffle) === 1)) {
+      shuffleArray(seances);
+    }
 
     const modules = [];
     // get All modules for these seances
@@ -527,3 +538,21 @@ class Creneau {
     }
 
 }
+
+// Fisher–Yates (aka Knuth) Shuffle algorithm
+function shuffleArray(array) {
+    let currentIndex = array.length;
+  
+    // While there remain elements to shuffle...
+    while (currentIndex != 0) {
+  
+      // Pick a remaining element...
+      let randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+  }
+  
