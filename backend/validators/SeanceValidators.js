@@ -2,13 +2,19 @@ import { TypeSeance } from "../../constants.js";
 import { TypeSeanceValidator } from "./OtherValidators.js";
 
 export const addSeanceValidator =(req,res,next)=>{
-    const {type,code_module,code_specialite} =req.body;
+    const {type, niveau, semestre,code_module,code_specialite} =req.body;
 
 
     const missingFields =[];
     
     if(!type) {
      missingFields.push("attribut type manquant , ");
+    }
+    if(!niveau) {
+        missingFields.push("attribut niveau manquant , ");
+    }
+    if(!semestre) {
+        missingFields.push("attribut semestre manquant , ");
     }
     if(!code_module) {
         missingFields.push("attribut code_module manquant , ");

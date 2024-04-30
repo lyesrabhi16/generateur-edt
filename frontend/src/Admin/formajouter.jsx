@@ -281,7 +281,7 @@ function Ajouter({onAdd,typep,modify}){
 
     }else if(typep==='Local'){
         if(modify===''){//pour savoir s'il s'agit d'une modification ou un ajout
-            axios.post('http://localhost:3000/local/',local,{
+            axios.post('http://localhost:3000/Local/',local,{
                 withCredentials: true
               }).then(()=> onAdd())
             .catch(err=>{
@@ -290,7 +290,7 @@ function Ajouter({onAdd,typep,modify}){
         }else{
             const code_local_new=code_local
             const lc={code_local_new,capacite,type};
-            axios.put('http://localhost:3000/local/'+modify.code_local,lc,{
+            axios.put('http://localhost:3000/Local/'+modify.code_local,lc,{
                 withCredentials: true
               }).then(()=>onAdd())
             .catch(err=>{
