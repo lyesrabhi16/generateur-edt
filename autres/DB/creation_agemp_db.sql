@@ -117,9 +117,15 @@ create table ensetoccup(
 create table emploisdutemps(
 	id_emp serial,
 	id_groupe integer,
+	niveau varchar(10),
+	semestre varchar(3),
+	annee numeric(4),
 	constraint pk_emploisdutemps primary key(id_emp),
 	constraint fk_groupe foreign key(id_groupe) references groupe(id_groupe) on update cascade on delete cascade,
-	constraint nn_groupe check(id_groupe is not null)
+	constraint nn_groupe check(id_groupe is not null),
+	constraint nn_niveau check(niveau is not null),
+	constraint nn_semestre check(semestre is not null),
+	constraint nn_annee check ( annee is not null ) 
 );
 
 create table module(
@@ -154,13 +160,17 @@ create table seance(
 	code_module varchar(10),
 	code_specialite varchar(10),
 	type TypeSeance,
+	niveau varchar(10),
+	semestre varchar(3),
 	constraint pk_seance primary key(id_seance),
 	constraint fk_module foreign key(code_module) references module(code_module) on update cascade on delete cascade,
 	constraint fk_specialite foreign key(code_specialite) references specialite(code_specialite) on update cascade on delete cascade,
 	constraint nn_module check(code_module is not null),
 	constraint nn_specialite check(code_specialite is not null),
 	constraint nn_type check(type is not null),
-	constraint un_specialite_module_type unique(code_specialite, code_module, type)
+	constraint nn_niveau check(niveau is not null),
+	constraint nn_semestre check(semestre is not null),
+	constraint un_specialite_module_type_niveau_semestre unique(code_specialite, code_module, type, niveau, semestre)
 );
 
 create table creneau(
