@@ -35,9 +35,9 @@ export const getOneEmploisByGroupe = (id_groupe) =>{
    
 }
 
-export const createEmplois = (id_groupe, niveau, semestre) =>{
+export const createEmplois = (id_groupe, niveau, semestre, annee) =>{
 
-    return db.oneOrNone("INSERT INTO emploisdutemps(id_groupe, niveau, semestre) values($1, $2, $3) ",[id_groupe, niveau, semestre]);
+    return db.oneOrNone("INSERT INTO emploisdutemps(id_groupe, niveau, semestre, annee) values($1, $2, $3, $4) returning *",[id_groupe, niveau, semestre, annee]);
 
 }
 

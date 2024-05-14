@@ -3,7 +3,7 @@
 create type TypePersonne as enum('Administrateur', 'Enseignant','Etudiant');
 create type TypeLocal as enum('Amphi', 'SalleTD', 'SalleTP');
 create type TypeSeance as enum('Cours', 'TD', 'TP');
-create type jour as enum('Dimanche', 'Lundi', 'Mardi', 'Merecredi', 'Jeudi', 'Vendredi', 'Samedi');
+create type jour as enum('Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi');
 
 -- Creation des Tables
 create table specialite(
@@ -125,7 +125,8 @@ create table emploisdutemps(
 	constraint nn_groupe check(id_groupe is not null),
 	constraint nn_niveau check(niveau is not null),
 	constraint nn_semestre check(semestre is not null),
-	constraint nn_annee check ( annee is not null ) 
+	constraint nn_annee check ( annee is not null ),
+	constraint un_groupe_niveau_semestre_annee unique(id_groupe, niveau, semestre, annee)
 );
 
 create table module(
