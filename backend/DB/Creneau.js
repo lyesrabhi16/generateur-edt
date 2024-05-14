@@ -99,7 +99,7 @@ export const updateCreneau=(id_creneau,debut, fin, jour,id_Emp,id_seance,code_lo
 export const createCreneau=(debut, fin, jour,id_Emp,id_seance,code_local)=>{
 
    return db.oneOrNone(` insert into Creneau (debut, fin, jour,id_Emp,id_seance,code_local)
-                         Values ($1,$2,$3,$4,$5,$6)`,[debut, fin, jour,id_Emp,id_seance,code_local])
+                         Values ($1,$2,$3,$4,$5,$6) returning *`,[debut, fin, jour,id_Emp,id_seance,code_local])
 }
 
 export const deleteCreneau = (id_creneau) =>{
