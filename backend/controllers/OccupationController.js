@@ -3,7 +3,8 @@ import { selectOccupationById ,
          DeleteOneOcuupation,
          PutOneOccupation,
          createOneOccupation,
-         selectAllOccupation
+         selectAllOccupation,
+         selectOccupationByDayHbHf
 } from "../DB/Occupation.js";
 
 
@@ -143,4 +144,40 @@ export const insertOneOccupation=(req,res)=>{
           };
           res.status(500).json(response);
     })
+}
+export const getOccupationDayHdHf=(req,res)=>{
+    const { jour,heur_debut,heur_fin} = req.body;
+
+    selectOccupationByDayHbHf(jour,heur_debut,heur_fin).then((data)=>{
+        const response = {
+            status : "Success",
+            message:"Occupation trouvé ",
+            Occupation: data
+           }
+
+           if(data==null) {
+             
+            response.status= "Error",
+            response.message= "aucune occupation trouvée "
+            response.Occupation= null
+        
+            return res.status(404).json(response);
+        
+      }
+
+
+        res.status(201).json(response);
+
+    }).catch((err)=>{
+        const response = {
+            status: "error",
+            message: "Erreur pendant la recherche ",
+            error: err,
+          };
+          res.status(500).json(response);
+    })
+
+
+
+
 }
