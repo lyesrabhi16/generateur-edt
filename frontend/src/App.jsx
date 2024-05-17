@@ -1,9 +1,10 @@
 import './App.css'
 import './navbar.css'
-import Admin from './Admin/adminPage'
 import Logo from './login/login'
 import AdminPage from './Admin/adminPage'
+import EtudPage from './etud&ens/menuPage'
 import { Route, Routes } from "react-router-dom";
+import { Toaster } from 'react-hot-toast'
 
 function App() {
   return (
@@ -11,7 +12,10 @@ function App() {
       <Routes>
         <Route path="/" element={<Logo />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/etu" element={<EtudPage />} />
+
       </Routes>
+      <Toaster position='top-center'/>
     </div>
   )
 }
