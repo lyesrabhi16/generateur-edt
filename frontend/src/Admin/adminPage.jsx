@@ -54,7 +54,7 @@ function AdminPage() {
               setNomPage("Administrateur")
             }}>
             <FontAwesomeIcon icon={faUserTie} className='text-lg w-5 text-white child ' />
-            <li className='list-none ml-3 text-white text-base child'>Liste des admins</li>
+            <li className='list-none ml-3 text-white text-base child'>Liste admin</li>
             </div>
 
             <div  className='parent flex pl-3  items-center py-2 h-14  rounded-2xl  relative' onClick={()=>{
@@ -98,7 +98,7 @@ function AdminPage() {
             <FontAwesomeIcon icon={faCalendarDays} className='text-lg w-5 text-white child' />
             <li className='list-none ml-3 text-white text-base child' >Emploi du temps</li>
             </div>
-
+            
             
 
             </div>
