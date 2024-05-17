@@ -33,13 +33,13 @@ function Occupation({page}){
       }).catch((err)=>{
         console.log(err)
       })
-    })
+    },[]);
 
     const handleAdd = () => {
       setShow(false);//fermer le formulaire
     };
     return(
-        <div className='flex flex-col w-full h-full main px-10'>
+      <div className="flex flex-col main px-10 z-0 h-full" id={Show ? 'mainflou' : undefined}>
           {Show?<Ajouter onAdd={handleAdd}  modify={info} />:null /*formulaire d'ajout*/}
     <header className="flex w-full  justify-between  mt-8 h-fit">
     <div className="">
@@ -73,14 +73,18 @@ function Occupation({page}){
             <button className='text-white' onClick={()=>{
               
               setShow(true);
-            }}>Ajouter un {page==='Modules'?'Module':page}</button>
+            }}>Ajouter une {page==='Modules'?'Module':page}</button>
         </div>
         <div className='filter flex items-center rounded-2xl border-2 border-gray-500 px-3 py-2 '>
             <FontAwesomeIcon icon={faFilter} className='mr-2 text-gray-500'/>
             <p className='text-gray-500'>filter</p>
         </div>
     </div>
-    <table className='mt-10 z-0 ' >
+    
+
+
+</div>
+<table className='mt-10 z-0 w-full' >
     <tr className='head'> 
     <td>Jour</td>
     <td>heure debut</td>
@@ -117,10 +121,6 @@ function Occupation({page}){
           }
     })}
     </table>
-
-
-</div>
-
     
 
     
