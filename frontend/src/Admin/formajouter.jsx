@@ -27,6 +27,7 @@ function Ajouter({onAdd,typep,modify}){
     const [matricule, setMatricule] = useState(modify.matricule);
     const [role, setRole] = useState(modify.role ||null);
     const [charges, setCharges] = useState(modify.charges ||null);
+    const [priorite, setPriorite] = useState(modify.charges ||null);
     const [id_groupe, setId_groupe] = useState(modify.id_groupe ||null);
     const [code_module, setCode_module] = useState(modify.code_module);
     const [nom_module, setNom_module] = useState(modify.nom_module);
@@ -71,6 +72,7 @@ function Ajouter({onAdd,typep,modify}){
             withCredentials: true
           }).then(respo =>{
             const moduleens = respo.data.ModuleEns.filter((mdl) => mdl.matricule == matricule );
+            setPriorite(moduleens[0].priorite);
             moduleens.forEach((module) => {
             const updatedOptions = [...modul] ;
             updatedOptions.forEach((mdl,idx)=>{
@@ -203,7 +205,7 @@ function Ajouter({onAdd,typep,modify}){
                     if(typep==='Enseignant'){
                         ensModules.forEach((module)=>{
                             const code_module=module.code_module;
-                            const modules={matricule:parseInt(matricule),code_module,priorite:1};
+                            const modules={matricule:parseInt(matricule),code_module,priorite:priorite};
                             if(module.checked){
                                 axios.post('http://localhost:3000/moduleens',modules,{
                               withCredentials: true
@@ -634,10 +636,9 @@ function Ajouter({onAdd,typep,modify}){
                 </>:null}
                
             {typep==='Enseignant'?<>
-            <option value="Maitre E">Maitre E</option>
-               <option value="Maitre D">Maitre D</option>
-               <option value="Maitre C">Maitre C</option>
-               <option value="Maitre B">Maitre B</option>
+            <option value="Doctorant">Doctorant</option>
+               <option value="vacataire">vacataire</option>
+               <option value="Professeur">Professeur</option>
             </>:null}
                
  
@@ -661,7 +662,8 @@ function Ajouter({onAdd,typep,modify}){
                 </select>
                 </div>:null
             }
-            { typep==='Enseignant'?<div className="flex w-full justify-between">
+            { typep==='Enseignant'?<>
+            <div className="flex w-full justify-between">
                 
                 <select className='w-1/2 border-b border-b-gray-500' value={charges} onChange={(e)=>{
                     setCharges(e.target.value);
@@ -701,7 +703,17 @@ function Ajouter({onAdd,typep,modify}){
                 
             </div>
 
-            </div>:null
+            </div>
+            <div className="flex w-full justify-between">
+            <select className='w-full border-b border-b-gray-500' value={priorite} onChange={(e)=>{
+                    setPriorite(e.target.value);
+                }}>
+                   <option value="" disabled selected>Priorite</option>
+                   <option value="1">1</option>
+                   <option value="2">2</option>
+                </select>
+            </div>
+            </>  :null
 }
 </>
             }
