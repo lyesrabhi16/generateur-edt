@@ -11,6 +11,7 @@ import { faPen } from '@fortawesome/free-solid-svg-icons'
 import '../Admin/mainsection.css'
 import Ajouter from './ajouter';
 import toast from 'react-hot-toast'
+import { Navigate } from "react-router-dom";
 function Occupation({page}){
     const [occupation, setOccupation] = useState([]);
     const [chercher, setChercher] = useState("");
@@ -18,6 +19,7 @@ function Occupation({page}){
     const regex = new RegExp(chercher, 'i');
     const [supprime, setSupprime] = useState(false);
     const [info, setInfo] = useState('');
+    const [Finish, setFinish] = useState(false);
     let user=Cookies.get('user');
     if(user){
       user=JSON.parse(user);
@@ -33,12 +35,15 @@ function Occupation({page}){
       }).catch((err)=>{
         console.log(err)
       })
-    },[]);
+    },[Finish,supprime]);
 
     const handleAdd = () => {
+      setFinish(!Finish);//pour faire un refresh de la table
       setShow(false);//fermer le formulaire
     };
     return(
+      <>
+      {user===undefined?<Navigate to="/"  replace={true} />:null /*pour savoir si le cookie est expire*/}
       <div className="flex flex-col main px-10 z-0 h-full" id={Show ? 'mainflou' : undefined}>
           {Show?<Ajouter onAdd={handleAdd}  modify={info} />:null /*formulaire d'ajout*/}
     <header className="flex w-full  justify-between  mt-8 h-fit">
@@ -85,10 +90,12 @@ function Occupation({page}){
 
 </div>
 <table className='mt-10 z-0 w-full' >
-    <tr className='head'> 
+    <tr className='head'>
+    <td>numero</td> 
     <td>Jour</td>
     <td>heure debut</td>
     <td>heure fin</td>
+    <td>operations</td>
     </tr>
     {occupation.map((occ,index)=>{
         if (regex.test(occ.jour) || regex.test(occ.heur_debut) || regex.test(occ.heur_fin)) {
@@ -105,7 +112,7 @@ function Occupation({page}){
                       setShow(!Show)
                     }}/>
                     <FontAwesomeIcon icon={faTrash} className='ml-4 text-red-600 cursor-pointer' onClick={()=>{
-                        axios.delete('http://localhost:3000/module/'+occ.code_module,{
+                        axios.delete('http://localhost:3000/EnsEtOccup/'+occ.matricule+"/Occupations/"+occ.id_occup,{
                           withCredentials: true
                         }).then(()=>{
                           setSupprime(!supprime);
@@ -126,6 +133,8 @@ function Occupation({page}){
     
 </main>
         </div>
+      </>
+      
     )
 }
 export default Occupation;
