@@ -5,7 +5,7 @@ import { selectAllSeance } from "../controllers/SeanceController.js";
 import { getAllSeance } from "../DB/Seance.js";
 import { getAllLocal } from "../DB/Local.js";
 import { getAllModuleEns } from "../DB/ModuleEns.js";
-import { TypePersonne, jours } from "../../constants.js";
+import { EnsRoles, TypePersonne, jours } from "../../constants.js";
 import { getAllEnsetOccupByMatricule } from "../DB/EnsEtOccup.js";
 import { getAllEnsEtCreneauxById } from "../DB/EnsEtCreneaux.js";
 import { getAllCreneau } from "../DB/Creneau.js";
@@ -208,8 +208,11 @@ export const generate = async (req, res) => {
                                 b = false;
                                 break;
                             }
-                            enseignant = getEnseignantWithHighestPriorite(enseignants);
-
+                            enseignant = getEnseignantWithHighestPriorite(enseignants, Object.keys(EnsRoles).filter(r => r !== "vacataire"));
+                            if (enseignant === undefined) {
+                                break;
+                            }
+                              
                             if (!ocp_ens[enseignant.matricule][jour][period]){
                                 b = false;   
                             }
@@ -284,7 +287,10 @@ export const generate = async (req, res) => {
                         b = false;
                         break;
                     }
-                    enseignant = getEnseignantWithHighestPriorite(enseignants);
+                    enseignant = getEnseignantWithHighestPriorite(enseignants, Object.keys(EnsRoles));
+                    if (enseignant === undefined) {
+                      break;
+                    }
 
                     if (!ocp_ens[enseignant.matricule][jour][period]){
                         b = false;   
@@ -354,7 +360,7 @@ export const generate = async (req, res) => {
         response.success = 'All seances have been scheduled';
     }
 
-    //affichage(response.creneaux);
+    affichage(response.creneaux);
 
     res.status(200).json(response);
 
@@ -456,11 +462,23 @@ const buildOCPMatrix = (ids, jours, nbr_creneaux_par_jour)=>{
     return ocp;
 }
 
-const getEnseignantWithHighestPriorite = (ens)=>{
+const getEnseignantWithHighestPriorite = (ens, AllowedRoles)=>{
     let d = 0;
     let f = ens.length - 1;
-    let max = ens[0];
+    let max = undefined;
     while (d<=f){
+
+        if(!(AllowedRoles.includes(ens[d].role))){
+            d++;
+            continue;
+        }
+        
+        if( max === undefined){
+            max = ens[d];
+            d++;
+            continue;
+        }
+
         if ( max.priorite > ens[d].priorite){
             max = ens[d];
         }
@@ -481,35 +499,6 @@ const formatTime = (d) =>{
     let t = d.toISOString().split("T")[1].split(".")[0].split(":");
     t.pop();
     return t.join(":");
-
-}
-
-class Creneau {
-    
-    constructor(debut, fin, jour, id_seance, code_local, matricule_enseignant, id_groupe){
-        
-        if (debut.toISOString().includes("T")){
-            let d = debut.toISOString().split("T")[1].split(".")[0].split(":");
-            d.pop();
-            this.debut = d.join(":");
-        }
-        else{
-            this.debut = debut;
-        }
-        if (fin.toISOString().includes("T")){
-            let f = fin.toISOString().split("T")[1].split(".")[0].split(":");
-            f.pop();
-            this.fin = f.join(":");
-        }
-        else{
-            this.fin = fin;
-        }
-        this.jour = jour;
-        this.seance = id_seance;
-        this.local = code_local;
-        this.enseignant = matricule_enseignant;
-        this.groupe = id_groupe;
-    }
 
 }
 
