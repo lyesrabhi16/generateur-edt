@@ -8,6 +8,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { faAdd } from '@fortawesome/free-solid-svg-icons'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
+import { faEye } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from "react";
 import axios from 'axios';
 function Emploi(){
@@ -15,10 +16,16 @@ function Emploi(){
     const [reverse2,setReverse2]=useState(false);
     const [reverse3,setReverse3]=useState(false);
     const [reverse4,setReverse4]=useState(false);
+    const [reverse5,setReverse5]=useState(false);
+    const [reverse6,setReverse6]=useState(false);
+    const [reverse7,setReverse7]=useState(false);
     const [selected,setSelected]=useState('Selectionner une annee');
     const [selected2,setSelected2]=useState('Choisir semestre');
     const [niveau,setNiveau]=useState('Choisir niveau');
     const [code_specialite,setCodespecialite]=useState('Choisir specialite');
+    const [dureeSeance,setdureeSeance]=useState('durée seance');
+    const [dureePose,setPose]=useState('durée pose');
+    const [maxSeance,setmax]=useState('nombre seance');
     const [sections, setSections] = useState([]);
     const [newsections, setNewsections] = useState(sections);
     const [specialites, setSpecialites] = useState([]);
@@ -188,6 +195,82 @@ function Emploi(){
 
     </div>
 
+    {(code_specialite!='Choisir specialite' && niveau!='Choisir niveau')?<div className='w-full'>
+        <p className="text-black  text-2xl font-bold mt-8">Champs pour generation de l'emploi du temps</p>
+        <div className='w-full flex justify-between m-6'>
+        <div className='drop relative' onClick={()=>{
+            setReverse5(!reverse5);
+        }}>
+            <span className='text-black'>{dureeSeance}</span>
+            <FontAwesomeIcon
+             icon={faAngleDown}
+             className={reverse5 ? 'icone rotate' : 'icone'} />
+             <ul className='list -bottom-40' style={{display:reverse5?'block':'none'}}>
+                <li onClick={()=>{
+                    setdureeSeance('1h00');
+                }} style={{borderLeft:dureeSeance==='1h00'?'3px solid #0029FF':null}}>1h00</li>
+                <li onClick={()=>{
+                    setdureeSeance('1h30');
+                }} style={{borderLeft:dureeSeance==='1h30'?'3px solid #0029FF':null}}>1h30</li>
+                <li onClick={()=>{
+                    setdureeSeance('2h00');
+                }} style={{borderLeft:dureeSeance==='2h00'?'3px solid #0029FF':null}}>2h00</li>
+             </ul>
+        </div>
+
+        <div className='drop relative' onClick={()=>{
+            setReverse6(!reverse6);
+        }}>
+            <span className='text-black'>{dureePose}</span>
+            <FontAwesomeIcon
+             icon={faAngleDown}
+             className={reverse6 ? 'icone rotate' : 'icone'} />
+             <ul className='list -bottom-40' style={{display:reverse6?'block':'none'}}>
+                <li onClick={()=>{
+                    setPose('5');
+                }} style={{borderLeft:dureePose==='5'?'3px solid #0029FF':null}}>5</li>
+                <li onClick={()=>{
+                    setPose('10');
+                }} style={{borderLeft:dureePose==='10'?'3px solid #0029FF':null}}>10</li>
+                <li onClick={()=>{
+                    setPose('20');
+                }} style={{borderLeft:dureePose==='20'?'3px solid #0029FF':null}}>20</li>
+             </ul>
+        </div>
+
+        <div className='drop relative' onClick={()=>{
+            setReverse7(!reverse7);
+        }}>
+            <span className='text-black'>{maxSeance}</span>
+            <FontAwesomeIcon
+             icon={faAngleDown}
+             className={reverse7 ? 'icone rotate' : 'icone'} />
+             <ul className='list ' style={{display:reverse7?'block':'none',bottom:'-304px'}}>
+                <li onClick={()=>{
+                    setmax(1);
+                }} style={{borderLeft:maxSeance===1?'3px solid #0029FF':null}}>1</li>
+                <li onClick={()=>{
+                    setmax(2);
+                }} style={{borderLeft:maxSeance===2?'3px solid #0029FF':null}}>2</li>
+                <li onClick={()=>{
+                    setmax(3);
+                }} style={{borderLeft:maxSeance===3?'3px solid #0029FF':null}}>3</li>
+                <li onClick={()=>{
+                    setmax(4);
+                }} style={{borderLeft:maxSeance===4?'3px solid #0029FF':null}}>4</li>
+                <li onClick={()=>{
+                    setmax(5);
+                }} style={{borderLeft:maxSeance===5?'3px solid #0029FF':null}}>5</li>
+                <li onClick={()=>{
+                    setmax(6);
+                }} style={{borderLeft:maxSeance===6?'3px solid #0029FF':null}}>6</li>
+             </ul>
+        </div>
+
+        </div>
+
+    </div>:null}
+
     <table className='mt-10 z-0 w-full ' >
         <tr className='head'>
         <td>Id</td>
@@ -216,15 +299,16 @@ function Emploi(){
 
                   {section.generated?
                   <>
-               <FontAwesomeIcon icon={faPen} className='ml-4 text-blue-700 cursor-pointer' onClick={()=>{
+                   <FontAwesomeIcon icon={faEye} className='ml-4 text-blue-700 cursor-pointer' onClick={()=>{
+                
+            }}/>
+               <FontAwesomeIcon icon={faPen} className='ml-8 text-blue-700 cursor-pointer' onClick={()=>{
                 
                 }}/>
                 <FontAwesomeIcon icon={faTrash} className='ml-8 text-red-600 cursor-pointer' onClick={()=>{
-                 axios.delete('http://localhost:3000/groupe/'+etud.id_groupe,{
-                   withCredentials: true
-                 }).then(()=>{
+                 
                    setSupprime(!supprime);
-                 });
+                 
                  
                }}/>
                   </>
@@ -232,11 +316,7 @@ function Emploi(){
                
                :<>
                <FontAwesomeIcon icon={faAdd} className=' ml-4 text-blue-700 text-xl cursor-pointer' onClick={()=>{
-                 axios.delete('http://localhost:3000/groupe/'+etud.id_groupe,{
-                   withCredentials: true
-                 }).then(()=>{
-                   setSupprime(!supprime);
-                 });
+                 
                  
                }}/>
                
