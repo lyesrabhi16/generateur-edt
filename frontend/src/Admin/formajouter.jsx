@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
+import toast from 'react-hot-toast';
 function Ajouter({onAdd,typep,modify}){
     const[nom,SetNom]=useState(modify.nom);
     const[prenom,SetPrenom]=useState(modify.prenom);
@@ -20,6 +21,7 @@ function Ajouter({onAdd,typep,modify}){
     const [code_specialite, setSpecia] = useState(modify.code_specialite ||null);
     const [nom_specialite, setNomspecia] = useState(modify.nom_specialite ||null);
     const [niveau, setNiveau] = useState(modify.niveau ||null);
+    const [semestre, setSemestre] = useState('');
     const [code_groupe, setCode_groupe] = useState(modify.code_groupe ||null);
     const [code_section, setCode_section] = useState(modify.code_section ||null);
     const [matricule, setMatricule] = useState(modify.matricule);
@@ -166,6 +168,8 @@ function Ajouter({onAdd,typep,modify}){
           }).then(respo =>{
             const seances = respo.data.Seances.filter((sc) => sc.code_module === code_module );
           setSpecia(seances[0].code_specialite);
+          setSemestre(seances[0].semestre);
+           setNiveau(seances[0].niveau);
           seances.forEach((seance) => {
             const updatedOptions = [...typeS ] ;
             updatedOptions.forEach((option,idx)=>{
@@ -192,9 +196,10 @@ function Ajouter({onAdd,typep,modify}){
         if (password.length > 8 && nom !== '' && prenom !== '' && email !== '' && typep==='Etudiant'?anneeBac:role !== '' && typep==='Etudiant'?code_specialite !== '':typep==='Enseignant'?charges !== '':true && typep==='Etudiant'?niveau !== '':true) {
             if(modify==''){
                 
-                axios.post('http://localhost:3000/personne/',personnes,{
+                axios.post('http://localhost:3000/personne',personnes,{
                     withCredentials: true
                   }).then(()=> {
+                    
                     if(typep==='Enseignant'){
                         ensModules.forEach((module)=>{
                             const code_module=module.code_module;
@@ -202,15 +207,19 @@ function Ajouter({onAdd,typep,modify}){
                             if(module.checked){
                                 axios.post('http://localhost:3000/moduleens',modules,{
                               withCredentials: true
-                        }).then(()=>onAdd());
+                        }).then(()=>{onAdd();toast.success("ajout avec succes");});
                             }
                         })
+                    }else{
+                        onAdd();
+                        toast.success("ajout avec succes");
                     }
                     
                 
                 
                 })
             .catch(err=>{
+                toast.error("ajout echoue");
                 console.log(err)
             });
             }else{
@@ -226,14 +235,18 @@ function Ajouter({onAdd,typep,modify}){
                                 const mod = { code_module:module.code_module, matricule,priorite:1 };
                                 axios.post("http://localhost:3000/moduleens",mod,{
                                     withCredentials: true
-                                  }).then(()=>{onAdd();})
-                                    .catch(err => {console.log(err);});
+                                  }).then(()=>{onAdd();toast.success("modification réussie");})
+                                    .catch(err => {console.log(err);toast.error("modification echoué");});
                             }
                         });
                       })
+                    }else{
+                        onAdd();
+                        toast.success("modification réussie");
                     }
                 })
                 .catch(err=>{
+                    toast.error("modification echoué");
                     console.log(err)
                 });
             }
@@ -248,16 +261,16 @@ function Ajouter({onAdd,typep,modify}){
             typeS.forEach((option) => {
                 if (option.checked) {
                     let type=option.label;
-                    const seance = { code_module, code_specialite,type };
+                    const seance = { code_module, code_specialite,type,niveau,semestre };
                     axios.post("http://localhost:3000/seance/",seance,{
                         withCredentials: true
-                      }).then(()=>{onAdd()})
-                        .catch(err => {console.log(err);});
+                      }).then(()=>{onAdd();})
+                        .catch(err => {console.log(err);toast.error("ajout echoué")});
                 }
             });
-        }).catch(err => console.log(err));
+        }).then(()=>toast.success("ajout avec succes")).catch(err =>{ console.log(err);toast.error("ajout echoué");});
         }else{
-           
+           let module={code_module_new:code_module, nom_module}
             axios.put('http://localhost:3000/module/'+modify.code_module,module,{
                 withCredentials: true
               }).then(()=>{
@@ -267,34 +280,43 @@ function Ajouter({onAdd,typep,modify}){
                 typeS.forEach((option) => {
                     if (option.checked) {
                         let type=option.label;
-                        const seance = { code_module, code_specialite,type };
+                        const seance = { code_module, code_specialite,type,niveau,semestre };
+                        
                         axios.post("http://localhost:3000/seance/",seance,{
                             withCredentials: true
                           }).then(()=>{onAdd();})
-                            .catch(err => {console.log(err);});
+                            .catch(err => {console.log(err);toast.error("modification echoué")});
                     }
                 });
-              })
+              }).then(()=>toast.success("modification réussie")).catch(err=>{
+                console.log(err);
+                toast.error("modification echoué");
+            });
+            }).catch(err=>{
+                console.log(err);
+                toast.error("modification echoué")
             });
         }
         
 
     }else if(typep==='Local'){
         if(modify===''){//pour savoir s'il s'agit d'une modification ou un ajout
-            axios.post('http://localhost:3000/Local/',local,{
+            axios.post('http://localhost:3000/local/',local,{
                 withCredentials: true
-              }).then(()=> onAdd())
+              }).then(()=> {onAdd();toast.success("ajout avec succés")})
             .catch(err=>{
+                toast.success("ajout echoué");
                 console.log(err)
             });
         }else{
             const code_local_new=code_local
             const lc={code_local_new,capacite,type};
-            axios.put('http://localhost:3000/Local/'+modify.code_local,lc,{
+            axios.put('http://localhost:3000/local/'+modify.code_local,lc,{
                 withCredentials: true
-              }).then(()=>onAdd())
+              }).then(()=>{onAdd();toast.success("modification réussie")})
             .catch(err=>{
                 console.log(err)
+                toast.error("modification echoué");
             });
         }
        
@@ -303,16 +325,18 @@ function Ajouter({onAdd,typep,modify}){
             
             axios.post('http://localhost:3000/specialite/',specialites,{
                 withCredentials: true
-              }).then(()=> onAdd())
+              }).then(()=> {onAdd();toast.success("ajout avec succés")})
             .catch(err=>{
+                toast.error("ajout echoué");
                 console.log(err)
             });
         }else{
             const specia={code_specialite_new:code_specialite,nom_specialite}
             axios.put('http://localhost:3000/specialite/'+modify.code_specialite,specia,{
                 withCredentials: true
-              }).then(()=>onAdd())
+              }).then(()=>{onAdd();toast.success("modification réussie")})
             .catch(err=>{
+                toast.error("modification echoué");
                 console.log(err)
             });
         }
@@ -321,15 +345,17 @@ function Ajouter({onAdd,typep,modify}){
             
             axios.post('http://localhost:3000/section/',section,{
                 withCredentials: true
-              }).then(()=> onAdd())
+              }).then(()=> {onAdd();toast.success("ajout avec succés")})
             .catch(err=>{
+                toast.error("ajout echoué");
                 console.log(err)
             });
         }else{
             axios.put('http://localhost:3000/section/'+modify.id_section,section,{
                 withCredentials: true
-              }).then(()=>onAdd())
+              }).then(()=>{onAdd();toast.success("modification réussie")})
             .catch(err=>{
+                toast.error("modification echoué");
                 console.log(err)
             });
         }
@@ -342,20 +368,16 @@ function Ajouter({onAdd,typep,modify}){
             const groupe={code_groupe,id_section:sectionsFiltres[0].id_section}
             axios.post('http://localhost:3000/groupe',groupe,{
                 withCredentials: true
-              }).then(()=> onAdd())
+              }).then(()=> {onAdd();toast.success("ajout avec succés")})
             .catch(err=>{
+                toast.success("ajout echoué");
                 console.log(err)
             });
          })
-         .catch(err => console.log(err));
+         .catch(err => {
+            toast.success("ajout echoué");
+            console.log(err)});
 
-        }else{
-            axios.put('http://localhost:3000/section/'+modify.code_groupe,section,{
-                withCredentials: true
-              }).then(()=>onAdd())
-            .catch(err=>{
-                console.log(err)
-            });
         }
     }
 
@@ -404,6 +426,26 @@ function Ajouter({onAdd,typep,modify}){
                 return <option key={index} value={spec.code_specialite}>{spec.code_specialite}</option>
                })}
                
+            </select>
+            </div>
+            <div className="flex w-full justify-between">
+            <select className='w-full  border-b border-b-gray-500' value={niveau} onChange={(e)=>{
+                setNiveau(e.target.value);
+            }}>
+               <option value="" disabled selected>Niveau</option>
+               <option value="L1">L1</option>
+               <option value="L2">L2</option>
+               <option value="L3">L3</option>
+               <option value="M1">M1</option>
+               <option value="M2">M2</option> 
+            </select>
+
+            <select className='w-full  border-b ml-4 border-b-gray-500' value={semestre} onChange={(e)=>{
+                setSemestre(e.target.value);
+            }}>
+               <option value="" disabled selected>Semestre</option>
+               <option value="1">1</option>
+               <option value="2">2</option>
             </select>
             </div>
             </>:typep==='Local'?

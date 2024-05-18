@@ -3,23 +3,29 @@ import { useState } from "react"
 import { Navigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import '../login/Login.css'
+import toast from 'react-hot-toast';
 function Form() {
  const[email,setEmail]=useState(''); 
  const[password,setPassword]=useState('');
  const personne={email,password}
- const[navige,setAdmin]=useState(false)
- const[erreur,setErreur]=useState(false)
+ const[navige,setAdmin]=useState('');
+ const[erreur,setErreur]=useState(false);
  const changer=(e)=>{
   e.preventDefault();
   axios.post('http://localhost:3000/login/',personne).then((res)=>{
+    toast.success('connexion avec succes');
     if(res.data.personne.type==='Administrateur'){
-      console.log(res);
       setAdmin('Administrateur');
-      Cookies.set('user', JSON.stringify(res.data.personne), { expires: 1/24, secure: true, sameSite: 'strict' });
-      Cookies.set('token', res.data.token, { expires: 1/24, secure: true, sameSite: 'strict' });
+    }else if(res.data.personne.type==='Enseignant'){
+      setAdmin('Enseignant')
+    }else{
+      setAdmin('Etudiant')
     }
+    Cookies.set('user', JSON.stringify(res.data.personne), { expires: 1/24, secure: true, sameSite: 'strict' });
+    Cookies.set('token', res.data.token, { expires: 1/24, secure: true, sameSite: 'strict' });
   })
             .catch(err=>{
+              toast.error("erreur");
                 console.log(err)
                 setErreur(true);
             });
@@ -68,8 +74,10 @@ function Form() {
             <button className=" text-white mt-12 px-2 py-2 rounded-lg" style={{backgroundColor:"#0029FF"}}>Se connecter</button>
         </form>
         {navige==='Administrateur'?<Navigate to="/admin"  replace={true} />:null}
+        {navige==='Etudiant'?<Navigate to="/etu"  replace={true} />:null}
+        {navige==='Enseignant'?<Navigate to="/etu"  replace={true} />:null}
       </>
     )
   }
   
-  export default Form
+  export default Form;
