@@ -25,3 +25,10 @@ export const jours = Object.freeze({
   Vendredi: "Vendredi",
   Samedi: "Samedi",
 });
+
+
+export const EnsRoles = {
+  Doctorant: "Doctorant",
+  vacataire: "vacataire",
+  Professeur: "Professeur"
+};
