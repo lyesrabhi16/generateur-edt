@@ -11,6 +11,7 @@ import Ajouter from './formajouter';
 import axios from 'axios'
 import Cookies from 'js-cookie';
 import { Navigate } from "react-router-dom";
+import toast from 'react-hot-toast'
 function Section({page}){
   const [etudiants, setEtudiants] = useState([]);
   const [chercher, setChercher] = useState("");
@@ -136,7 +137,6 @@ function Section({page}){
   className=' text-black' 
   onChange={(e) => {
     setChercher(e.target.value);
-    console.log(chercher);
   }}
 />
 
@@ -224,6 +224,9 @@ page==='Groupe'?<tr className='head'>
                       withCredentials: true
                     }).then(()=>{
                       setSupprime(!supprime);
+                      toast.success("suppression reussié");
+                    }).catch(()=>{
+                    toast.error("suppression echoué");
                     });
                 }}/>
               </div>
@@ -252,7 +255,8 @@ page==='Groupe'?<tr className='head'>
                       withCredentials: true
                     }).then(()=>{
                       setSupprime(!supprime);
-                    }).catch(err =>console.log(err));
+                      toast.success("suppression reussié");
+                    }).catch(err =>{console.log(err);toast.error("suppression echoué");});
                 }}/>
               </div>
             </td>
@@ -280,6 +284,7 @@ page==='Groupe'?<tr className='head'>
                   withCredentials: true
                 }).then(()=>{
                   setSupprime(!supprime);
+                  toast.success("suppression reussié");
                 });
                 
               }}/>
@@ -306,6 +311,7 @@ page==='Groupe'?<tr className='head'>
                    withCredentials: true
                  }).then(()=>{
                    setSupprime(!supprime);
+                   toast.success("suppression reussié");
                  });
                  
                }}/>
@@ -330,6 +336,7 @@ page==='Groupe'?<tr className='head'>
                    withCredentials: true
                  }).then(()=>{
                    setSupprime(!supprime);
+                   toast.success("suppression reussié");
                  });
                  
                }}/>
@@ -360,6 +367,7 @@ page==='Groupe'?<tr className='head'>
                     withCredentials: true
                   }).then(()=>{
                     setSupprime(!supprime);
+                    toast.success("suppression reussié");
                   });
                   
                 }}/>
