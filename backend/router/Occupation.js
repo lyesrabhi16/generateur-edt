@@ -28,7 +28,8 @@ OccupationRouter.put('/:id_occup',addOccupationValidator,updateOccupationById);
 
 OccupationRouter.post('/',addOccupationValidator,insertOneOccupation);
 
-OccupationRouter.get('/getDayHdHf' , getOccupationDayHdHf );
+OccupationRouter.get('/DayHDHf/getDayHdHf' , getOccupationDayHdHf );
+
 
 
 
