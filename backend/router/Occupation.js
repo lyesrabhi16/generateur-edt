@@ -6,7 +6,8 @@ import { getOccupationId ,
          deleteOccupationById,
          updateOccupationById,
          insertOneOccupation,
-         getAllOccupation
+         getAllOccupation,
+         getOccupationDayHdHf
                 
 } from "../controllers/OccupationController.js";
 
@@ -27,6 +28,7 @@ OccupationRouter.put('/:id_occup',addOccupationValidator,updateOccupationById);
 
 OccupationRouter.post('/',addOccupationValidator,insertOneOccupation);
 
+OccupationRouter.get('/getDayHdHf' , getOccupationDayHdHf );
 
 
 
