@@ -4,21 +4,35 @@ import {
   deleteEmploisByIdGroupe,
 } from "../DB/EmploisDuTemps.js";
 import { createEnsEtCreneau } from "../DB/EnsEtCreneaux.js";
+import { selectGroupes } from "../DB/groupe.js";
 
 export const save = async (req, res) => {
+  const { id_section } = req.params;
   const { data, semestre, annee, override } = req.body;
 
-  let saveError = false;
-  // get groupes from data
-  const groupes = Object.values(data).map((creneaux) => creneaux[0].groupe);
+
+  // get groupes
+  const groupes = await selectGroupes(id_section).catch(err => {
+    res.status(500).json({
+      error: "Failed to get groupes of section "+id_section+" from database",
+      details: err,
+    });
+    return;
+  });
   
+  let saveError = false;
   const errors = [];
   // create an emp for each groupe
   for (const groupe of groupes) {
     if (override) {
-      await deleteEmploisByIdGroupe(groupe.id_groupe).catch((err) =>
-        console.log(err)
-      );
+      await deleteEmploisByIdGroupe(groupe.id_groupe).catch((err) => {
+        errors.push({
+          groupe: groupe,
+          error: "Failed to Override Emplois Du Temps",
+          details: err,
+        });
+        console.log(err);
+      });
     }
 
     const emp = await createEmplois(
@@ -39,8 +53,19 @@ export const save = async (req, res) => {
       continue;
     }
 
-    const creneaux = data[groupe.code_groupe];
-
+    const creneaux = [];
+    for(const jour in data){
+      for(const period in data[jour]){
+        const c = data[jour][period][groupe.code_groupe];
+        if(c !== undefined){
+          c.debut = data[jour][period]["debut"];
+          c.fin = data[jour][period]["fin"];
+          c.jour = jour;
+          creneaux.push(c);
+        }
+      }
+    };
+  
     for (const creneau of creneaux) {
       const c = await createCreneau(
         creneau.debut,
@@ -48,7 +73,7 @@ export const save = async (req, res) => {
         creneau.jour,
         emp.id_emp,
         creneau.seance.id_seance,
-        creneau.local.code_local
+        creneau.locale.code_local
       ).catch((err) => {
         errors.push({
           groupe: groupe,
