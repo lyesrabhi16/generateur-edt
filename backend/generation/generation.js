@@ -40,27 +40,7 @@ export const generate = async (req, res) => {
         } = req.body;
     
 
-    if (temps_debut === undefined){
-        temps_debut = {h: 8, m: 0};
-    };
-    if (temps_fin === undefined){
-        temps_fin = {h: 18, m: 0};
-    }
-    if (duree_creneaux === undefined){
-        duree_creneaux = {h: 1, m: 30};
-    }
-    if (minutes_entre_creneaux === undefined){
-        minutes_entre_creneaux = 10;
-    }
-    if (max_seances_consecutif === undefined){
-        max_seances_consecutif = 3;
-    }
-    if (max_cours_par_jour === undefined){
-        max_cours_par_jour = 2;
-    }
-    if (shuffle === undefined){
-        shuffle = 0;
-    }
+    
 
 
     const t_d = new Date();
@@ -68,9 +48,7 @@ export const generate = async (req, res) => {
     
     const t_f = new Date();
     t_f.setUTCHours(temps_fin.h, temps_fin.m);
-    if (nbr_creneaux_par_jour === undefined){
-        nbr_creneaux_par_jour = getMaxPeriodFromConstraints(t_d, t_f, duree_creneaux, minutes_entre_creneaux);
-    }
+
 
     const contraints = {
         temps_debut: t_d,
@@ -426,17 +404,6 @@ const getLocal = (locaux, type, ocp_locales, jour, period, capacite)=>{
     return local[0];
 }
 
-const getMaxPeriodFromConstraints = (heur_debut, heur_fin, duree_creneaux, temps_entre_creneau) => {
-    let p = 0;
-    while (heur_debut <= heur_fin) {
-        heur_debut.setUTCMinutes(heur_debut.getUTCMinutes() + duree_creneaux.m + temps_entre_creneau);
-        heur_debut.setUTCHours(heur_debut.getUTCHours() + duree_creneaux.h);
-        if(heur_debut <= heur_fin){
-            p++;
-        }
-    }
-    return p;
-}
 
 const getPeriodFromHeurDebutEtHeurFin = (heur_debut, heur_fin, duree_creneaux)=>{
     const debut = new Date();
