@@ -7,6 +7,7 @@ import '../navbar.css'
 import MainSection from '../etud&ens/mainSection'
 import { useState } from "react";
 import Emploi from '../Admin/Emploi'
+import Occupation from './occupation'
 import Cookies from 'js-cookie';
 function MenuPage() {
   const [nomPage, setNomPage] = useState("L1");
@@ -99,7 +100,7 @@ function MenuPage() {
             
 
         </div>
-        {nomPage==='Occupation'?<Emploi page={nomPage}/>:<MainSection page={nomPage}/>}
+        {nomPage==='Occupation'?<Occupation page={nomPage}/>:<MainSection page={nomPage}/>}
         
     </div>
 
