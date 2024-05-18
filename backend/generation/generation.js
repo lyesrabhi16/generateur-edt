@@ -180,8 +180,12 @@ export const generate = async (req, res) => {
         creneaux[jour] = {};
         let nbr_cours = 0;
         for (let period = 0; period < contraints.nbr_creneaux_par_jour; period++) {
+            const temps = getHoursFromPeriods([period], temps_debut, contraints.duree_creneaux, contraints.temps_entre_creneaux)[0];
+            creneaux[jour][period] = {
+                debut: formatTime(temps.debut),
+                fin: formatTime(temps.fin),
+            };
             
-            creneaux[jour][period] = {};
             // check if all groupes are available, pour avoir un cours
             const all_groupes_available = groupes.every(groupe => {
                 return !ocp_groupes[groupe.id_groupe][jour][period] && checkNbrSeancesConsecutif(ocp_groupes, groupe, jour, period, contraints.max_seances_consecutif);
@@ -223,18 +227,16 @@ export const generate = async (req, res) => {
                             };
                             groupes.forEach(groupe => {
                                 ocp_groupes[groupe.id_groupe][jour][period] = true;
-                                creneaux[jour][period][groupe.code_groupe] = creneau;
                                 seance.remaining_groupes = [...seance.remaining_groupes.filter(g => g.id_groupe !== groupe.id_groupe)];
                             
-                                const temps = getHoursFromPeriods([creneau.period], temps_debut, contraints.duree_creneaux, contraints.temps_entre_creneaux)[0];
                                 const s = {...seance};
                                 delete s.remaining_groupes;
-                                const creneau_class_obj = new Creneau(temps.debut, temps.fin, jour, s, amphi, enseignant, groupe);
-                                //console.log(creneau_class_obj);
-                                if (creneaux_class_objects[groupe.code_groupe] === undefined){
-                                    creneaux_class_objects[groupe.code_groupe] = [];
-                                }
-                                creneaux_class_objects[groupe.code_groupe].push(creneau_class_obj);
+                                creneaux[jour][period][groupe.code_groupe] = {
+                                    seance: s,
+                                    locale: amphi,
+                                    enseignant: enseignant,
+                                    groupe: groupe
+                                };
                             });
                             ocp_ens[enseignant.matricule][jour][period] = true;
                             ocp_locales[amphi.code_local][jour][period] = true;
@@ -314,23 +316,20 @@ export const generate = async (req, res) => {
                                 seance.remaining_groupes = [...seance.remaining_groupes.filter(g => g.id_groupe !== groupe.id_groupe)];
                                 ocp_ens[enseignant.matricule][jour][period] = true;
                                 ocp_locales[locale.code_local][jour][period] = true;
-                                creneaux[jour][period][groupe.code_groupe] = creneau;
                                 if (seance.remaining_groupes.length === 0){
                                     seances = seances.filter(s => s.id_seance !== seance.id_seance);
                                 }
 
-                                const temps = getHoursFromPeriods([creneau.period], temps_debut, contraints.duree_creneaux, contraints.temps_entre_creneaux)[0];
                                 const s = {...seance};
                                 delete s.remaining_groupes;
-                                const creneau_class_obj = new Creneau(temps.debut, temps.fin, jour, s, locale, enseignant, groupe);
                                 //console.log(creneau_class_obj);
+                                creneaux[jour][period][groupe.code_groupe] ={
+                                    seance: s,
+                                    locale: locale,
+                                    enseignant: enseignant,
+                                    groupe: groupe
+                                };
 
-                                if (creneaux_class_objects[groupe.code_groupe] === undefined){
-                                    creneaux_class_objects[groupe.code_groupe] = [];
-                                }
-
-                                creneaux_class_objects[groupe.code_groupe].push(creneau_class_obj);
-            
                         }
                     }
                 }  
@@ -342,7 +341,7 @@ export const generate = async (req, res) => {
 
 
 
-    response.creneaux = creneaux_class_objects;
+    response.creneaux = creneaux;
     
 
 
@@ -355,7 +354,7 @@ export const generate = async (req, res) => {
         response.success = 'All seances have been scheduled';
     }
 
-    affichage(response.creneaux);
+    //affichage(response.creneaux);
 
     res.status(200).json(response);
 
@@ -476,6 +475,14 @@ const getEnseignantWithHighestPriorite = (ens)=>{
     return max;
 }
 
+
+const formatTime = (d) =>{
+
+    let t = d.toISOString().split("T")[1].split(".")[0].split(":");
+    t.pop();
+    return t.join(":");
+
+}
 
 class Creneau {
     
