@@ -10,6 +10,14 @@ export const selectOccupationById = (id_occup) => {
   };
 
 
+export const selectOccupationByDayHbHf=(jour,heur_debut,heur_fin)=>{
+
+  return db.oneOrNone("SELECT id_occup FROM Occupation WHERE jour=$1 AND heur_debut=$2 AND heur_fin=$3 ",[jour,heur_debut,heur_fin]);
+
+}
+
+
+
   export const selectAllOccupation = () => {
     return db.manyOrNone("SELECT * FROM Occupation");
   };

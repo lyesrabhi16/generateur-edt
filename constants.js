@@ -27,3 +27,9 @@ export const jours = Object.freeze({
 });
 
 export const URL_BASE = "https://agemp-projet-aie.onrender.com";
+
+export const EnsRoles = {
+  Doctorant: "Doctorant",
+  vacataire: "vacataire",
+  Professeur: "Professeur"
+};

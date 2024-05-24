@@ -96,8 +96,8 @@ export const selectAllSeanceByType=(req,res)=>{
 }
 
 export const insertOneSeance= (req,res)=>{
-  const {type, code_module, code_specialite}=req.body;
-  createSeance(type, code_module, code_specialite).then((data)=>{
+  const {type, niveau, semestre, code_module, code_specialite}=req.body;
+  createSeance(type, niveau, semestre,code_module, code_specialite).then((data)=>{
     
     const response={
         status:"Success",
@@ -118,8 +118,8 @@ export const insertOneSeance= (req,res)=>{
 
 export const putOneSeance=(req,res)=>{
   const {id_seance} = req.params;
-  const {  type,code_module,code_specialite }=req.body;
-  UpdateSeance(type,code_module,code_specialite,id_seance).then(()=>{
+  const {  type,niveau, semestre,code_module,code_specialite }=req.body;
+  UpdateSeance(type, niveau, semestre,code_module,code_specialite,id_seance).then(()=>{
     const response={
         status:"Success",
         message:"Séance mis à jour"
@@ -159,7 +159,6 @@ export const deleteOneSeance=(req,res)=>{
 
 export const deleteOneSeanceByCodeModule=(req,res)=>{
   const {code_module}=req.params;
-
   deleteSeanceByCodeModule(code_module).then(()=>{
     const response={
         status:"Success",

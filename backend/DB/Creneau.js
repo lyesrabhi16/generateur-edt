@@ -17,17 +17,20 @@ import { db } from "../server.js";
    ?--written by @lyesrabhi16
 */
 
-export const getAllCreneau =()=>{
-
-   return db.manyOrNone(`SELECT c.*, g.id_groupe, g.code_groupe, s.*, sp.nom_specialite, sc.type, m.*
-                           FROM Creneau c
-                                 join emploisdutemps emp on c.id_emp = emp.id_emp
-                                 join groupe g on emp.id_groupe = g.id_groupe
-                                 join section s on g.id_section = s.id_section
-                                 join specialite sp on s.code_specialite = sp.code_specialite
-                                 join seance sc on c.id_seance = sc.id_seance
-                                 join module m on sc.code_module = m.code_module
-                           `);
+export const getAllCreneau =(code_local)=>{
+   let sql = `SELECT c.*, g.id_groupe, g.code_groupe, s.*, sp.nom_specialite, sc.type, m.*
+               FROM Creneau c
+                     join emploisdutemps emp on c.id_emp = emp.id_emp
+                     join groupe g on emp.id_groupe = g.id_groupe
+                     join section s on g.id_section = s.id_section
+                     join specialite sp on s.code_specialite = sp.code_specialite
+                     join seance sc on c.id_seance = sc.id_seance
+                     join module m on sc.code_module = m.code_module
+               `;
+   if (code_local !== undefined){
+      sql += ` WHERE c.code_local = $1 `;
+   }
+   return db.manyOrNone(sql, [code_local]);
 
 }
 
@@ -96,7 +99,7 @@ export const updateCreneau=(id_creneau,debut, fin, jour,id_Emp,id_seance,code_lo
 export const createCreneau=(debut, fin, jour,id_Emp,id_seance,code_local)=>{
 
    return db.oneOrNone(` insert into Creneau (debut, fin, jour,id_Emp,id_seance,code_local)
-                         Values ($1,$2,$3,$4,$5,$6)`,[debut, fin, jour,id_Emp,id_seance,code_local])
+                         Values ($1,$2,$3,$4,$5,$6) returning *`,[debut, fin, jour,id_Emp,id_seance,code_local])
 }
 
 export const deleteCreneau = (id_creneau) =>{

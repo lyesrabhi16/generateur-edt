@@ -1,12 +1,14 @@
 import { db } from "../server.js";
 
-export const getAllModuleEns =() =>{
-
-    return db.manyOrNone(`SELECT ME.matricule , P.nom , P.Prenom, P.role , M.code_module,M.nom_module , ME.priorite
-                          FROM ModuleEns ME 
-                          LEFT JOIN Personne P on ME.matricule = P.matricule 
-                          LEFT JOIN Module M on ME.code_module= M.code_module
-    `);
+export const getAllModuleEns =(code_module) =>{
+    let sql = `SELECT ME.matricule , P.nom , P.Prenom, P.role , M.code_module,M.nom_module , ME.priorite
+                FROM ModuleEns ME 
+                LEFT JOIN Personne P on ME.matricule = P.matricule 
+                LEFT JOIN Module M on ME.code_module= M.code_module`;
+    if (code_module !== undefined) {
+        sql += ` WHERE ME.code_module=$1`;
+    };
+    return db.manyOrNone(sql, [code_module]);
 }
 
 export const getAllModuleEnsById=(matricule)=>{
@@ -35,4 +37,10 @@ export const deleteModuleEns =(matricule,code_module)=>{
     return db.oneOrNone('DELETE FROM ModuleEns WHERE matricule=$1 AND code_module=$2',[matricule,code_module]);
 }
 
+
+export const deleteModulebyMatricule =(matricule)=>{
+
+return db.manyOrNone('DELETE FROM ModuleEns where matricule=$1',[matricule]);
+
+}
 

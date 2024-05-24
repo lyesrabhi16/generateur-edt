@@ -3,7 +3,8 @@ import { getAllEmplois,
          getOneEmploisByGroupe,
          createEmplois,
          updateEmplois,
-         deleteEmplois
+         deleteEmplois,
+         deleteEmploisByIdGroupe
          
 } from "../DB/EmploisDuTemps.js";
 
@@ -95,15 +96,14 @@ export const selectOneEmploisByGroupe = (req,res) =>{
 
 export const insertOneEmplois = (req,res) =>{
 
-  const { id_groupe } =req.body;
-    createEmplois(id_groupe).then(()=>{
+  const { niveau, semestre, id_groupe } =req.body;
+    createEmplois(id_groupe, niveau, semestre).then(()=>{
      
         const response={
             status:"Success",
             message:"Emplois de temps créé "
            }
            res.status(200).json(response);
-
 
     }).catch((err)=>{
         const response={
@@ -118,11 +118,9 @@ export const insertOneEmplois = (req,res) =>{
 }
 
 export const updateOneEmplois =(req,res)=>{
-    const { id_groupe } = req.body;
+    const { id_groupe, niveau, semesetre } = req.body;
     const {id_emp}=req.params;
-    console.log(id_groupe);
-    console.log(id_emp);
-    updateEmplois(id_emp,id_groupe).then(()=>{
+    updateEmplois(id_emp,id_groupe, niveau, semesetre).then(()=>{
         const response={
             status:"Success",
             message:"Emplois de temps mis à jour "
@@ -153,6 +151,28 @@ export const deleteOneEmplois =(req,res)=>{
            res.status(200).json(response);
 
 
+
+    }).catch((err)=>{
+        const response={
+            status:"Error",
+            message:"Erreur pendant la suppression d'emplois de temps",
+            erreur:err
+           }
+          res.status(500).json(response);
+    
+      })
+
+}
+
+export const deleteOneEmploisByIdGroupe=(req,res)=>{
+    const {id_groupe} = req.params;
+    deleteEmploisByIdGroupe(id_groupe).then(()=>{
+
+        const response={
+            status:"Success",
+            message:"Emplois de temps supprimé  "
+           }
+           res.status(200).json(response);
 
     }).catch((err)=>{
         const response={

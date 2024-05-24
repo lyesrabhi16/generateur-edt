@@ -3,7 +3,7 @@
 create type TypePersonne as enum('Administrateur', 'Enseignant','Etudiant');
 create type TypeLocal as enum('Amphi', 'SalleTD', 'SalleTP');
 create type TypeSeance as enum('Cours', 'TD', 'TP');
-create type jour as enum('Dimanche', 'Lundi', 'Mardi', 'Merecredi', 'Jeudi', 'Vendredi', 'Samedi');
+create type jour as enum('Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi');
 
 -- Creation des Tables
 create table specialite(
@@ -107,7 +107,7 @@ create table occupation(
 );
 
 create table ensetoccup(
-	matricule integer,
+	matricule bigint,
 	id_occup integer,
 	constraint pk_ensetoccup primary key(matricule, id_occup),
 	constraint fk_personne foreign key(matricule) references personne(matricule) on update cascade on delete cascade,
@@ -117,9 +117,16 @@ create table ensetoccup(
 create table emploisdutemps(
 	id_emp serial,
 	id_groupe integer,
+	niveau varchar(10),
+	semestre varchar(3),
+	annee numeric(4),
 	constraint pk_emploisdutemps primary key(id_emp),
 	constraint fk_groupe foreign key(id_groupe) references groupe(id_groupe) on update cascade on delete cascade,
-	constraint nn_groupe check(id_groupe is not null)
+	constraint nn_groupe check(id_groupe is not null),
+	constraint nn_niveau check(niveau is not null),
+	constraint nn_semestre check(semestre is not null),
+	constraint nn_annee check ( annee is not null ),
+	constraint un_groupe_niveau_semestre_annee unique(id_groupe, niveau, semestre, annee)
 );
 
 create table module(
@@ -132,7 +139,7 @@ create table module(
 
 create table moduleens(
 	code_module varchar(10),
-	matricule integer,
+	matricule bigint,
 	priorite integer,
 	constraint pk_moduleEns primary key(code_module, matricule),
 	constraint fk_module foreign key(code_module) references module(code_module) on update cascade on delete cascade,
@@ -154,13 +161,17 @@ create table seance(
 	code_module varchar(10),
 	code_specialite varchar(10),
 	type TypeSeance,
+	niveau varchar(10),
+	semestre varchar(3),
 	constraint pk_seance primary key(id_seance),
 	constraint fk_module foreign key(code_module) references module(code_module) on update cascade on delete cascade,
 	constraint fk_specialite foreign key(code_specialite) references specialite(code_specialite) on update cascade on delete cascade,
 	constraint nn_module check(code_module is not null),
 	constraint nn_specialite check(code_specialite is not null),
 	constraint nn_type check(type is not null),
-	constraint un_specialite_module_type unique(code_specialite, code_module, type)
+	constraint nn_niveau check(niveau is not null),
+	constraint nn_semestre check(semestre is not null),
+	constraint un_specialite_module_type_niveau_semestre unique(code_specialite, code_module, type, niveau, semestre)
 );
 
 create table creneau(
@@ -184,7 +195,7 @@ create table creneau(
 );
 
 create table ensetcreneaux(
-	matricule integer,
+	matricule bigint,
 	id_creneau integer,
 	constraint pk_ensetcreneaux primary key(matricule, id_creneau),
 	constraint fk_personne foreign key(matricule) references personne(matricule) on update cascade on delete cascade,

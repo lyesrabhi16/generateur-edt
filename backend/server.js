@@ -20,6 +20,7 @@ import DB from "./DB/db.js"
 import authRouter from "./router/Auth.js";
 
 import { cookieJwtAuthentication } from "./Auth/cookieJwtAuth.js";import path from "path";
+import generateRouter from "./router/generate.js";
 
 const __dir_name = path.resolve();
 
@@ -59,7 +60,7 @@ app.use('/EnsEtOccup',cookieJwtAuthentication,EnsEtOccupRouter);
 app.use('/ModuleEns',cookieJwtAuthentication,ModuleEnsRouter);
 app.use('/EnsCreneaux',cookieJwtAuthentication,EnsEtCreneauxRouter);
 app.use('/login',authRouter);
-
+app.use('/generate', generateRouter);
 app.listen(port, () => {
   console.log("Server running on port " + port);
 });
