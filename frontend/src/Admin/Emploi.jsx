@@ -11,6 +11,7 @@ import { faPen } from '@fortawesome/free-solid-svg-icons'
 import { faEye } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from "react";
 import axios from 'axios';
+import { URL_BASE } from '../../../constants.js';
 function Emploi(){
     const [reverse,setReverse]=useState(false);
     const [reverse2,setReverse2]=useState(false);
@@ -31,7 +32,7 @@ function Emploi(){
     const [specialites, setSpecialites] = useState([]);
     const [supprime, setSupprime] = useState(false);
     useEffect(() => {
-        axios.get("http://localhost:3000/Specialite/",{
+        axios.get(URL_BASE+"/Specialite/",{
             withCredentials: true
           }).then(respo =>{
           setSpecialites(respo.data.specialites)
@@ -41,7 +42,7 @@ function Emploi(){
     },[]);
 
     useEffect(() => {
-        axios.get("http://localhost:3000/section",{
+        axios.get(URL_BASE+"/section",{
             withCredentials: true
           }).then(respo =>{
             const sectionsFiltres = respo.data.sections.filter(section => section.niveau === niveau && section.code_specialite===code_specialite);
@@ -58,14 +59,14 @@ function Emploi(){
         
         sections.map((section,index)=>{
             
-            axios.get('http://localhost:3000/groupe',{
+            axios.get(URL_BASE+'/groupe',{
                 withCredentials: true
               }).then((res)=>{                                                             
                 const grouprfilter=res.data.groupes.filter((gr)=> gr.code_section===section.code_section);
                 
                 grouprfilter.map((gr)=>{
                    
-                    axios.get('http://localhost:3000/EmploisTemps/groupes/'+gr.id_groupe,{
+                    axios.get(URL_BASE+'/EmploisTemps/groupes/'+gr.id_groupe,{
                 withCredentials: true
               }).catch(()=> {
                 updateSection[index].generated=false;

@@ -47,7 +47,7 @@ function Section({page}){
      })
      .catch(err => console.log(err));
     }else if(page==='Specialite'){
-      axios.get("http://localhost:3000/Specialite/", {
+      axios.get(URL_BASE+"/Specialite/", {
         withCredentials: true
       }).then(respo =>{
         
@@ -56,7 +56,7 @@ function Section({page}){
      .catch(err => console.log(err));
 
     }else if(page==='Section'){
-      axios.get("http://localhost:3000/section", {
+      axios.get(URL_BASE+"/section", {
         withCredentials: true
       }).then(respo =>{
         
@@ -64,7 +64,7 @@ function Section({page}){
      })
      .catch(err => console.log(err));
     }else if(page==='Groupe'){
-      axios.get("http://localhost:3000/groupe", {
+      axios.get(URL_BASE+"/groupe", {
         withCredentials: true
       }).then(respo =>{
         
@@ -281,7 +281,7 @@ page==='Groupe'?<tr className='head'>
                 setShow(!Show)
               }}/>
               <FontAwesomeIcon icon={faTrash} className='ml-4 text-red-600 cursor-pointer' onClick={()=>{
-                axios.delete('http://localhost:3000/specialite/'+etud.code_specialite,{
+                axios.delete(URL_BASE+'/specialite/'+etud.code_specialite,{
                   withCredentials: true
                 }).then(()=>{
                   setSupprime(!supprime);
@@ -308,7 +308,7 @@ page==='Groupe'?<tr className='head'>
                  setShow(!Show)
                }}/>
                <FontAwesomeIcon icon={faTrash} className='ml-4 text-red-600 cursor-pointer' onClick={()=>{
-                 axios.delete('http://localhost:3000/section/'+etud.id_section,{
+                 axios.delete(URL_BASE+'/section/'+etud.id_section,{
                    withCredentials: true
                  }).then(()=>{
                    setSupprime(!supprime);
@@ -333,7 +333,7 @@ page==='Groupe'?<tr className='head'>
            <div className='flex items-center justify-center'>
                
                <FontAwesomeIcon icon={faTrash} className='ml-4 text-red-600 cursor-pointer' onClick={()=>{
-                 axios.delete('http://localhost:3000/groupe/'+etud.id_groupe,{
+                 axios.delete(URL_BASE+'/groupe/'+etud.id_groupe,{
                    withCredentials: true
                  }).then(()=>{
                    setSupprime(!supprime);

@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import toast from 'react-hot-toast';
 import { parse, format } from 'date-fns';
+import { URL_BASE } from '../../../constants.js';
 function Ajouter({onAdd,modify}){
     const [jour,setJour]=useState('');
     const [heure_deb,setDeb]=useState('');
@@ -18,7 +19,7 @@ function Ajouter({onAdd,modify}){
         
             const occup={jour,heur_debut:heure_deb,heur_fin:heure_fin};
 
-            axios.post("http://localhost:3000/Occupation",occup,{
+            axios.post(URL_BASE+"/Occupation",occup,{
         withCredentials: true
       }).then(()=>{
         toast.success("ajout avec succes");

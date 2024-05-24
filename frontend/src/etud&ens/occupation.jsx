@@ -11,6 +11,7 @@ import { faPen } from '@fortawesome/free-solid-svg-icons'
 import '../Admin/mainsection.css'
 import Ajouter from './ajouter';
 import toast from 'react-hot-toast'
+import { URL_BASE } from '../../../constants.js';
 function Occupation({page}){
     const [occupation, setOccupation] = useState([]);
     const [chercher, setChercher] = useState("");
@@ -26,7 +27,7 @@ function Occupation({page}){
     const role=user?user.role : '';
 
     useEffect(()=>{
-        axios.get("http://localhost:3000/EnsEtOccup/"+user.matricule, {
+        axios.get(URL_BASE+"/EnsEtOccup/"+user.matricule, {
         withCredentials: true
       }).then((res)=>{
         setOccupation(res.data.EnsEtOccup);
@@ -105,7 +106,7 @@ function Occupation({page}){
                       setShow(!Show)
                     }}/>
                     <FontAwesomeIcon icon={faTrash} className='ml-4 text-red-600 cursor-pointer' onClick={()=>{
-                        axios.delete('http://localhost:3000/module/'+occ.code_module,{
+                        axios.delete(URL_BASE+'/module/'+occ.code_module,{
                           withCredentials: true
                         }).then(()=>{
                           setSupprime(!supprime);

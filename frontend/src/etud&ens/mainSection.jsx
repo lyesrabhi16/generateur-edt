@@ -5,6 +5,7 @@ import '../Admin/Emploi.css'
 import image from '../assets/download.png'
 import { useState, useEffect } from "react";
 import axios from 'axios';
+import { URL_BASE } from '../../../constants.js';
 function MainSection({page}){
     const [reverse,setReverse]=useState(false);
     const [reverse2,setReverse2]=useState(false);
@@ -14,7 +15,7 @@ function MainSection({page}){
     const [code_specialite,setCodespecialite]=useState('Choisir specialite');
     const [specialites, setSpecialites] = useState([]);
     useEffect(() => {
-        axios.get("http://localhost:3000/Specialite/",{
+        axios.get(URL_BASE+"/Specialite/",{
             withCredentials: true
           }).then(respo =>{
           setSpecialites(respo.data.specialites)
