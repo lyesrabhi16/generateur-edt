@@ -9,15 +9,16 @@ import { selectAllCreneau,
 } from "../controllers/CreneauController.js";
 
 import { addCreneauValidators } from "../validators/CreneauValidators.js";
+import { isAdmin } from "../Auth/isAdmin.js";
 
 const CreneauRouter = Router();
 
 CreneauRouter.get('/',selectAllCreneau);
 CreneauRouter.get('/:id_creneau', selectOneCreneauById  );
 CreneauRouter.get('/groupes/:id_groupe',selectAllCreneauByGroupe);
-CreneauRouter.put('/:id_creneau',addCreneauValidators,putOneCreneau);
-CreneauRouter.post('/',addCreneauValidators,insertOneCreneau);
-CreneauRouter.delete('/:id_creneau',deleteOneCreneau);
+CreneauRouter.put('/:id_creneau', isAdmin,addCreneauValidators,putOneCreneau);
+CreneauRouter.post('/', isAdmin,addCreneauValidators,insertOneCreneau);
+CreneauRouter.delete('/:id_creneau', isAdmin,deleteOneCreneau);
 
 
 export default CreneauRouter;

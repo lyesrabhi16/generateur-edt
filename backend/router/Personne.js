@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { addPersonneValidator, getPersonnesBytypeValidator } from "../validators/personneValidators.js";
 import { addPersonne, deletePersonne, getPersonne, getPersonnes, updatePersonne } from "../controllers/personneController.js";
+import { isAdmin } from "../Auth/isAdmin.js";
 
 const personneRouter = Router();
 
@@ -16,13 +17,13 @@ personneRouter.get("/type/:type", getPersonnesBytypeValidator, getPersonnes);
 personneRouter.get("/:matricule", getPersonne);
 
 //? add one
-personneRouter.post("/", addPersonneValidator, addPersonne);
+personneRouter.post("/", isAdmin, addPersonneValidator, addPersonne);
 
 //? update one
 personneRouter.put("/:matricule", addPersonneValidator, updatePersonne);
 
 //? delete one
-personneRouter.delete("/:matricule", deletePersonne);
+personneRouter.delete("/:matricule", isAdmin, deletePersonne);
 
 export default personneRouter;
 
