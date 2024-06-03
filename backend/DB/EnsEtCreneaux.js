@@ -1,21 +1,33 @@
 import { db } from "../server.js";
 
-export const getAllEnsEtCreneaux=()=>{
-
-    return db.manyOrNone(`SELECT EC.matricule , P.nom , P.Prenom, P.role , EC.id_creneau, C.jour , C.debut , C.fin
-                          FROM EnsEtCreneaux EC 
-                          left join Personne P on EC.matricule=P.matricule
-                          left join Creneau C on EC.id_creneau=C.id_creneau     
-    `)
+export const getAllEnsEtCreneaux=(id_emp)=>{
+    let sql = `SELECT EC.matricule , P.nom , P.Prenom, P.email, P.role , EC.id_creneau, C.jour , C.debut , C.fin, C.id_emp
+    FROM EnsEtCreneaux EC 
+    left join Personne P on EC.matricule=P.matricule
+    left join Creneau C on EC.id_creneau=C.id_creneau
+    `;
+    if(id_emp){
+        sql += ` WHERE C.id_emp=$1`;
+    }
+    return db.manyOrNone(sql,[id_emp]);
 }
 
-export const getAllEnsEtCreneauxById=(matricule)=>{
+export const getAllEnsEtCreneauxById=(matricule, semestre, annee)=>{
 
-    return db.manyOrNone(` SELECT EC.matricule , P.nom , P.Prenom, P.role , EC.id_creneau, C.jour , C.debut , C.fin
-                           FROM EnsEtCreneaux EC 
-                           left join Personne P on EC.matricule=P.matricule
-                           left join Creneau C on EC.id_creneau=C.id_creneau
-                           WHERE EC.matricule=$1 `,[matricule]);
+    return db.manyOrNone(` SELECT P.matricule,P.nom, P.prenom, P.email, P."password", P."type", P."role",P.charges,
+	C.*,S.type as "type_seance",M.*,G.code_groupe, SC.id_section, SC.code_section, SC.code_specialite,
+	E.id_groupe, E.niveau, E.semestre, E.annee
+	FROM EnsEtCreneaux EC 
+    left join Personne P on EC.matricule=P.matricule
+    left join Creneau C on EC.id_creneau=C.id_creneau
+    left join seance S ON S.id_seance = C.id_seance
+    left join module M ON M.code_module = S.code_module
+    left join emploisdutemps E ON E.id_emp = C.id_emp
+    left join groupe G ON G.id_groupe = E.id_groupe
+    left join section SC ON SC.id_section = G.id_section
+    
+    Where P.matricule = $1 and E.semestre = $2 and E.annee = $3 
+    `,[matricule, semestre, annee]);
 
 }
 
