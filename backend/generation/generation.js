@@ -17,7 +17,7 @@ import { affichage } from "./affichage.js";
 export const generate = async (req, res) => {
     const { id_section } = req.params;
     /*
-        l'envoi de chaque contraint est optionnel, 
+        l'envoi de qlq contraints est optionnel, 
         format et valeur par defaut:
         temps_debut: {h: 8, m: 0} (objet avec les champs h et m qui sont des entiers)
         temps_fin: {h: 18, m: 0}  (objet avec les champs h et m qui sont des entiers)
@@ -27,8 +27,9 @@ export const generate = async (req, res) => {
         max_seances_consecutif: 3 (entier)
         max_cours_par_jour : 2 (entier)
         shuffle : 0|1 (entier) (0: false, 1: true) default 0 (false)
+        ignore_charges : 0|1 (entier) (0: false, 1: true) default 1 (true)
         */ 
-    let {   semestre,
+    let {   semestre,annee,
         
             temps_debut, temps_fin, 
             nbr_creneaux_par_jour, 
@@ -36,7 +37,8 @@ export const generate = async (req, res) => {
             minutes_entre_creneaux, 
             max_seances_consecutif,
             max_cours_par_jour,
-            shuffle
+            shuffle,
+            ignore_charges
         } = req.body;
     
 
@@ -57,7 +59,8 @@ export const generate = async (req, res) => {
         temps_entre_creneaux : minutes_entre_creneaux,
         nbr_creneaux_par_jour : nbr_creneaux_par_jour,
         max_seances_consecutif: max_seances_consecutif,
-        max_cours_par_jour: max_cours_par_jour
+        max_cours_par_jour: max_cours_par_jour,
+        ignore_charges: ignore_charges
     }
 
     const response = {};
@@ -96,9 +99,15 @@ export const generate = async (req, res) => {
     for (let i = 0; i < modules.length; i++) {
         const module = modules[i];
         const EnsM = await getAllModuleEns(module);
+        // calculate how much remaining charges each ens has
+        for (let i = 0; i < EnsM.length; i++) {
+            const ens = EnsM[i];
+            const ens_c = await getAllEnsEtCreneauxById(ens.matricule, semestre, annee);
+            ens.chargesR = ens.charges - ens_c.length;
+        }
         ens[module] = EnsM;
     }
-
+    
     // get All locales
     const locales = await getAllLocal();
 
@@ -146,7 +155,7 @@ export const generate = async (req, res) => {
             });
         });
         // populate ocp_ens with data from EnsEtCreneaux
-        const creneaux = await getAllEnsEtCreneauxById(matricule);
+        const creneaux = await getAllEnsEtCreneauxById(matricule, semestre, annee);
         creneaux.forEach(creneau => {
             const {debut, fin, jour} = creneau;
             const heur_debut_f = {h: parseInt(debut.split(':')[0]), m: parseInt(debut.split(':')[1])};
@@ -246,6 +255,7 @@ export const generate = async (req, res) => {
                             if (seance.remaining_groupes.length === 0){
                                 seances = seances.filter(s => s.id_seance !== seance.id_seance);
                             }
+                            enseignant.chargesR -= 1;
 
                             nbr_cours++;
                             
@@ -328,7 +338,8 @@ export const generate = async (req, res) => {
 
                                 const s = {...seance};
                                 delete s.remaining_groupes;
-                                //console.log(creneau_class_obj);
+                                enseignant.chargesR -= 1;
+
                                 creneaux[jour][period][groupe.code_groupe] ={
                                     seance: s,
                                     locale: locale,
@@ -462,11 +473,20 @@ const buildOCPMatrix = (ids, jours, nbr_creneaux_par_jour)=>{
     return ocp;
 }
 
-const getEnseignantWithHighestPriorite = (ens, AllowedRoles)=>{
+const getEnseignantWithHighestPriorite = (ens, AllowedRoles, ignore_charges)=>{
     let d = 0;
     let f = ens.length - 1;
     let max = undefined;
     while (d<=f){
+
+        if(ignore_charges === 0 && ens[d].chargesR <= 0) {
+            d++;
+            continue;
+        };
+        if(ignore_charges === 0 && ens[f].chargesR <= 0) {
+            f--;
+            continue;
+        };
 
         if(!(AllowedRoles.includes(ens[d].role))){
             d++;

@@ -1,7 +1,7 @@
 import { db } from "../server.js";
 
 export const getAllModuleEns =(code_module) =>{
-    let sql = `SELECT ME.matricule , P.nom , P.Prenom, P.role , M.code_module,M.nom_module , ME.priorite
+    let sql = `SELECT ME.matricule , P.nom , P.Prenom, P.role, P.charges , M.code_module,M.nom_module , ME.priorite
                 FROM ModuleEns ME 
                 LEFT JOIN Personne P on ME.matricule = P.matricule 
                 LEFT JOIN Module M on ME.code_module= M.code_module`;

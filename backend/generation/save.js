@@ -5,6 +5,7 @@ import {
 } from "../DB/EmploisDuTemps.js";
 import { createEnsEtCreneau } from "../DB/EnsEtCreneaux.js";
 import { selectGroupes } from "../DB/groupe.js";
+import { getEmpGroupeFile } from "../EmpAsFile/emp_xlsx.js";
 
 export const save = async (req, res) => {
   const { id_section } = req.params;
@@ -104,6 +105,8 @@ export const save = async (req, res) => {
       }
     }
   }
+
+  getEmpGroupeFile(data, `EMP-${id_section}-${semestre}-${annee}`);
 
   const response = {};
   if (errors.length === 0) {
