@@ -8,6 +8,7 @@ import { getAllModule,
 
 } from "../controllers/ModuleController.js";
 import { insertModuleValidator, putOneModuleValidator } from "../validators/moduleValidators.js";
+import { isAdmin } from "../Auth/isAdmin.js";
 
 
 
@@ -19,9 +20,9 @@ moduleRouter.get('/',getAllModule);
 
 moduleRouter.get("/:code_module", getOneModule);
 
-moduleRouter.post('/', insertModuleValidator, insertOneModule);
-moduleRouter.put('/:code_module', putOneModuleValidator,putOneModule);
-moduleRouter.delete('/:code_module',deleteOneModule);
+moduleRouter.post('/', isAdmin, insertModuleValidator, insertOneModule);
+moduleRouter.put('/:code_module', isAdmin, putOneModuleValidator,putOneModule);
+moduleRouter.delete('/:code_module', isAdmin,deleteOneModule);
 
 
 export default moduleRouter;

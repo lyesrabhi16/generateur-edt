@@ -2,7 +2,6 @@ import jwt from 'jsonwebtoken';
 
 export const cookieJwtAuthentication = (req, res, next) => {
     const token = req.cookies.token;
-    console.log(token);
     
     try {
         /* @MassinS
@@ -16,9 +15,11 @@ export const cookieJwtAuthentication = (req, res, next) => {
         req.matricule = id;
         // Autoriser les credentials
         res.set('Access-Control-Allow-Credentials', 'true');
+        console.log(`auth success: ${id} ${email}`);
         next();
     } catch {
         res.clearCookie('token');
+        console.log(`auth failed with token: `, token);
         return res.redirect('/login');
     }
 };
