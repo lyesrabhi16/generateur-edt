@@ -10,7 +10,7 @@ export const cookieJwtAuthentication = (req, res, next) => {
                 * extracted only email and id from the token
             ?--written by @lyesrabhi16
          */
-
+        console.log(jwt.verify(token, process.env.JWTSecret));
         const { id, email } = jwt.verify(token, process.env.JWTSecret);
         req.email = email;
         req.matricule = id;
