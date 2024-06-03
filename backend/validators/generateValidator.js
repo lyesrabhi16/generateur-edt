@@ -41,6 +41,7 @@ export const saveValidator = (req, res, next) => {
 export const generateValidator = (req, res, next) => {
   const {
     semestre,
+    annee,
     temps_debut,
     temps_fin,
     nbr_creneaux_par_jour,
@@ -49,12 +50,16 @@ export const generateValidator = (req, res, next) => {
     max_seances_consecutif,
     max_cours_par_jour,
     shuffle,
+    ignore_charges
   } = req.body;
 
   const missingFields = [];
 
   if (!semestre) {
     missingFields.push("semestre");
+  }
+  if (!annee) {
+    missingFields.push("annee");
   }
 
   if (temps_debut === undefined) {
@@ -171,6 +176,27 @@ export const generateValidator = (req, res, next) => {
         status: "Type Error",
         message:
           "Failed to Parse shuffle, shuffle attribute value must be integer 0 or 1 ",
+      });
+    }
+  }
+
+  if (ignore_charges === undefined) {
+    req.body.ignore_charges = 1;
+  } else {
+    try {
+      req.body.ignore_charges = parseInt(ignore_charges);
+      if (req.body.ignore_charges !== 0 && req.body.ignore_charges !== 1) {
+        return res.status(400).json({
+          status: "Value Error",
+          message:
+            "Failed to Parse ignore_charges, ignore_charges attribute value must be integer 0 or 1 ",
+        });
+      }
+    } catch {
+      return res.status(400).json({
+        status: "Type Error",
+        message:
+          "Failed to Parse ignore_charges, ignore_charges attribute value must be integer 0 or 1 ",
       });
     }
   }
