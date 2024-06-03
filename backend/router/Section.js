@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { addSection, deleteSection, getSection, getSections, updateSection } from "../controllers/sectionController.js";
 import { addSectionValidator } from "../validators/sectionValidators.js";
+import { isAdmin } from "../Auth/isAdmin.js";
 
 const router = Router();
 
@@ -13,12 +14,12 @@ router.get("/", getSections);
 router.get("/:id_section", getSection);
 
 //? add one
-router.post("/", addSectionValidator, addSection);
+router.post("/", isAdmin, addSectionValidator, addSection);
 
 //? update one
-router.put("/:id_section", addSectionValidator, updateSection);
+router.put("/:id_section", isAdmin, addSectionValidator, updateSection);
 
 //? delete one
-router.delete("/:id_section", deleteSection);
+router.delete("/:id_section", isAdmin, deleteSection);
 
 export default router;

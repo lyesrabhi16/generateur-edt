@@ -7,6 +7,7 @@ import {
   updateGroupe,
 } from "../controllers/groupeController.js";
 import { addGroupeValidator } from "../validators/groupeValidators.js";
+import { isAdmin } from "../Auth/isAdmin.js";
 
 const router = Router();
 
@@ -19,12 +20,12 @@ router.get("/", getGroupes);
 router.get("/:id_groupe", getGroupe);
 
 //? add one
-router.post("/", addGroupeValidator, addGroupe);
+router.post("/", isAdmin, addGroupeValidator, addGroupe);
 
 //? update one
-router.put("/:id_groupe", addGroupeValidator, updateGroupe);
+router.put("/:id_groupe", isAdmin, addGroupeValidator, updateGroupe);
 
 //? delete one
-router.delete("/:id_groupe", deleteGroupe);
+router.delete("/:id_groupe", isAdmin, deleteGroupe);
 
 export default router;
