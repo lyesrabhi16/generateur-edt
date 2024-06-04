@@ -56,7 +56,7 @@ app.use('/EnsEtOccup',cookieJwtAuthentication,EnsEtOccupRouter);
 app.use('/ModuleEns',cookieJwtAuthentication,ModuleEnsRouter);
 app.use('/EnsCreneaux',cookieJwtAuthentication,EnsEtCreneauxRouter);
 app.use('/generate', cookieJwtAuthentication,generateRouter);
-app.use('/email', cookieJwtAuthentication,emailRouter);
+app.use('/email',emailRouter);
 app.use('/login',authRouter);
 app.listen(port, () => {
   console.log("Server running on http://localhost:" + port);
