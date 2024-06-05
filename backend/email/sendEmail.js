@@ -1,7 +1,7 @@
 import { TypePersonne } from "../../constants.js";
 import { getOneEmploisById } from "../DB/EmploisDuTemps.js";
 import { getAllEnsEtCreneaux } from "../DB/EnsEtCreneaux.js";
-import { selectPersonne, selectPersonnes } from "../DB/personne.js";
+import { selectPersonnes } from "../DB/personne.js";
 import nodemailer from "nodemailer";
 import { getEmpEnsFile, getEmpGroupeFile } from "../EmpAsFile/emp_xlsx.js";
 import { v4 as uuidV4 } from "uuid";

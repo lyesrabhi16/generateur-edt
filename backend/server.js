@@ -56,7 +56,7 @@ app.use('/EnsEtOccup',cookieJwtAuthentication,EnsEtOccupRouter);
 app.use('/ModuleEns',cookieJwtAuthentication,ModuleEnsRouter);
 app.use('/EnsCreneaux',cookieJwtAuthentication,EnsEtCreneauxRouter);
 app.use('/generate', cookieJwtAuthentication,generateRouter);
-app.use('/email',emailRouter);
+app.use('/email', cookieJwtAuthentication,emailRouter);
 app.use('/login',authRouter);
 app.listen(port, () => {
   console.log("Server running on http://localhost:" + port);
@@ -65,5 +65,3 @@ app.listen(port, () => {
 db.connect()
       .then(()=>console.log("Database connected: "+db.$cn.database))
       .catch((err)=>console.log("Error connecting to the database:", err));
-
-
