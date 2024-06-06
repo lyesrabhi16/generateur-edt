@@ -2,6 +2,7 @@ import { createCreneau } from "../DB/Creneau.js";
 import {
   createEmplois,
   deleteEmploisByIdGroupe,
+  getOneEmploisByGroupe,
 } from "../DB/EmploisDuTemps.js";
 import { createEnsEtCreneau } from "../DB/EnsEtCreneaux.js";
 import { selectGroupes } from "../DB/groupe.js";
@@ -25,30 +26,47 @@ export const save = async (req, res) => {
   const errors = [];
   // create an emp for each groupe
   for (const groupe of groupes) {
+    let emp;
     if (override) {
-      await deleteEmploisByIdGroupe(groupe.id_groupe).catch((err) => {
+      emp = await getOneEmploisByGroupe(groupe.id_groupe, semestre, annee).catch((err) => {
         errors.push({
           groupe: groupe,
-          error: "Failed to Override Emplois Du Temps",
+          error: "Failed to get Groupe existing Emplois Du Temps",
           details: err,
         });
         console.log(err);
       });
-    }
-
-    const emp = await createEmplois(
-      groupe.id_groupe,
-      groupe.niveau,
-      semestre,
-      annee
-    ).catch((err) => {
-      errors.push({
-        groupe: groupe,
-        error: "Error While Creating Emplois Du Temps",
-        details: err,
+      if(emp === null || emp === undefined){
+        console.log("Failed to get existing Emp, creating a new One...");
+        emp = await createEmplois(
+          groupe.id_groupe,
+          groupe.niveau,
+          semestre,
+          annee
+        ).catch((err) => {
+          errors.push({
+            groupe: groupe,
+            error: "Error While Creating Emplois Du Temps",
+            details: err,
+          });
+          saveError = true;
+        });
+      }
+    }else{
+      emp = await createEmplois(
+        groupe.id_groupe,
+        groupe.niveau,
+        semestre,
+        annee
+      ).catch((err) => {
+        errors.push({
+          groupe: groupe,
+          error: "Error While Creating Emplois Du Temps",
+          details: err,
+        });
+        saveError = true;
       });
-      saveError = true;
-    });
+    }
 
     if (saveError) {
       continue;
@@ -106,7 +124,6 @@ export const save = async (req, res) => {
     }
   }
 
-  getEmpGroupeFile(data, `EMP-${id_section}-${semestre}-${annee}`);
 
   const response = {};
   if (errors.length === 0) {
