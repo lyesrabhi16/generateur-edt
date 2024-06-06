@@ -8,22 +8,23 @@ import { env } from 'node:process';
     const {email,password}=req.body;
     let { rememberMe } = req.body;
 
-    if (rememberMe === undefined) {
-      rememberMe = false;
+    if(rememberMe !== true && rememberMe !== false){
+      if (rememberMe === undefined) {
+        rememberMe = false;
+      }
+      else if (rememberMe === "true") {
+        rememberMe = true;
+      }
+      else if (rememberMe === "false") {
+        rememberMe = false;
+      }
+      else{
+        return res.status(400).json({
+          status: "Value Error",
+          message: "value of rememeberMe must be either: true or false"
+        })
+      }
     }
-    else if (rememberMe === "true") {
-      rememberMe = true;
-    }
-    else if (rememberMe === "false") {
-      rememberMe = false;
-    }
-    else{
-      return res.status(400).json({
-        status: "Value Error",
-        message: "value of rememeberMe must be either: true or false"
-      })
-    }
-
 
       selectPersonneByEmail(email).then( async (data)=>{
         const response = {
@@ -49,6 +50,7 @@ import { env } from 'node:process';
         res.status(401).json(response); // 401 Unauthorized pour indiquer une erreur d'authentification
         return;
     }
+    console.log("Creating JWT With RememberMe SetTo: "+rememberMe+ ` expires in: ${rememberMe? '1d':'1h' }`);
     const token = jwt.sign({ id: data.matricule, email: data.email }, process.env.JWTSecret , { expiresIn: rememberMe? '1d':'1h' }); // Modifier 'votre_clé_secrète' selon votre clé secrète
     response.token = token;
     
