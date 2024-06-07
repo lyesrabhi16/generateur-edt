@@ -22,6 +22,7 @@ import authRouter from "./router/Auth.js";
 
 import { cookieJwtAuthentication } from "./Auth/cookieJwtAuth.js";
 import generateRouter from "./router/generate.js";
+import emailRouter from "./router/email.js";
 dotEnv.config();
 
 const app = new Express();
@@ -54,8 +55,9 @@ app.use('/EmploisTemps',cookieJwtAuthentication,EmploisRouter);
 app.use('/EnsEtOccup',cookieJwtAuthentication,EnsEtOccupRouter);
 app.use('/ModuleEns',cookieJwtAuthentication,ModuleEnsRouter);
 app.use('/EnsCreneaux',cookieJwtAuthentication,EnsEtCreneauxRouter);
+app.use('/generate', cookieJwtAuthentication,generateRouter);
+app.use('/email', cookieJwtAuthentication,emailRouter);
 app.use('/login',authRouter);
-app.use('/generate', generateRouter);
 app.listen(port, () => {
   console.log("Server running on http://localhost:" + port);
 });
@@ -63,5 +65,3 @@ app.listen(port, () => {
 db.connect()
       .then(()=>console.log("Database connected: "+db.$cn.database))
       .catch((err)=>console.log("Error connecting to the database:", err));
-
-
