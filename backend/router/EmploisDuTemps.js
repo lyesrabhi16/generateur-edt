@@ -17,7 +17,7 @@ const EmploisRouter = Router();
 EmploisRouter.get('/',selectAllEmplois);
 EmploisRouter.get('/:id_Emp',selectOneEmploisById);
 
-EmploisRouter.get('/groupes/:id_groupe',selectOneEmploisByGroupe);
+EmploisRouter.get('/groupes/:id_groupe/:semestre/:annee/:niveau',selectOneEmploisByGroupe);
 
 EmploisRouter.post('/', insertOneEmploisValidator,insertOneEmplois);
 EmploisRouter.delete('/:id_emp',deleteOneEmplois);

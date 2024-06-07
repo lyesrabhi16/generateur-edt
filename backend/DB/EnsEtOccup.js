@@ -27,7 +27,8 @@ if (jour !== undefined){
     sql += ` AND jour = $2 `;
 }
 if (debut !== undefined && fin !== undefined){
-    sql += ` AND ((heur_debut <= $4 and heur_fin >= $4)  OR (heur_debut <= $3 and heur_fin >= $3))`;
+    sql += ` AND ((heur_debut <= $4 and heur_fin >= $4)  OR (heur_debut <= $3 and heur_fin >= $3) OR (heur_debut <= $3 and heur_fin >= $4)
+	OR (heur_debut >= $3 and heur_fin <= $4))`;
 }    
 return db.manyOrNone(sql,[matricule, jour, debut, fin]);
                      
