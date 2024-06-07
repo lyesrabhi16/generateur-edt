@@ -4,8 +4,11 @@ import { getAllCreneau,
          updateCreneau,
          createCreneau,
          deleteCreneau,
-         getAllCreneauBySection
+         getAllCreneauBySection,
+         getCreneaux
 } from "../DB/Creneau.js";
+import { getAllCreneauEns } from "../DB/EnsEtCreneaux.js";
+import { getAllEnsetOccupByMatricule } from "../DB/EnsEtOccup.js";
 import { correctTimeFormat } from "../EmpAsFile/emp_xlsx.js";
 
 export const selectAllCreneau = (req,res) =>{
@@ -209,4 +212,67 @@ export const deleteOneCreneau =(req,res)=>{
            }
           res.status(500).json(response);
     })
+}
+
+export const verificationCreneau = async (req, res) => {
+    const { debut, fin, jour, matricule, code_local, annee, semestre } = req.body;
+    const messages = [];
+    const local = await getCreneaux(debut, fin, jour, code_local).catch(err => {
+        console.log(err);
+        return res.status(500).json({
+            status: "Error",
+            message: "Erreur pendant la recherche des creneaux",
+            erreur: err,
+        });
+    });
+    if (local.length > 0){
+        console.log(local);
+        messages.push("Local déjà occupé");
+    }
+    const ensO = await getAllEnsetOccupByMatricule(matricule, jour, debut, fin).catch(err => {
+        console.log(err);
+        return res.status(500).json({
+            status: "Error",
+            message: "Erreur pendant la recherche d'occupations de l'enseignant",
+            erreur: err,
+        });
+    });
+    if (ensO.length > 0){
+        console.log(ensO);
+
+        messages.push("Enseignant déjà occupé");
+    }
+
+    const ensCs = await getAllCreneauEns(matricule, annee, semestre, jour).catch(err =>{
+        console.log(err);
+        return res.status(500).json({
+            status: "Error",
+            message: "Erreur pendant la recherche des creneaux de l'enseignant",
+            erreur: err,
+        });
+    })
+
+    let ensCO = false;
+    for (let index = 0; index < ensCs.length; index++) {
+        const c = ensCs[index];
+        if ((c.debut <= debut && c.fin >= debut) || (c.debut <= fin && c.fin >= fin) ){
+            console.log(c);
+            ensCO = true;
+            break;
+        }
+    }
+
+    if(ensCO){
+        messages.push("Enseignant déjà occupé");
+    }
+    if (messages.length > 0){
+        return res.status(400).json({
+            status: "Error",
+            message: messages,
+        });
+    }
+    return res.status(200).json({
+        status: "Success",
+        message: "Créneau disponible",
+    });
 }

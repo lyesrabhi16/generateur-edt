@@ -5,15 +5,17 @@ import { selectAllCreneau,
          putOneCreneau,
          insertOneCreneau,
          deleteOneCreneau,
-         selectAllCreneauBySection
+         selectAllCreneauBySection,
+         verificationCreneau
 
 } from "../controllers/CreneauController.js";
 
-import { addCreneauValidators } from "../validators/CreneauValidators.js";
+import { addCreneauValidators, verificationCreneauValidator } from "../validators/CreneauValidators.js";
 
 const CreneauRouter = Router();
 
 CreneauRouter.get('/',selectAllCreneau);
+CreneauRouter.post('/verification', verificationCreneauValidator,verificationCreneau);
 CreneauRouter.get('/:id_creneau', selectOneCreneauById  );
 
 CreneauRouter.get('/groupes/:id_groupe',selectAllCreneauByGroupe);
@@ -21,6 +23,7 @@ CreneauRouter.get('/section/:id_section/:semestre/:annee',selectAllCreneauBySect
 CreneauRouter.put('/:id_creneau',addCreneauValidators,putOneCreneau);
 CreneauRouter.post('/',addCreneauValidators,insertOneCreneau);
 CreneauRouter.delete('/:id_creneau',deleteOneCreneau);
+
 
 
 export default CreneauRouter;
