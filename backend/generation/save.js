@@ -1,4 +1,4 @@
-import { createCreneau } from "../DB/Creneau.js";
+import { createCreneau, deleteCreneau, deleteCreneauByEmp } from "../DB/Creneau.js";
 import {
   createEmplois,
   deleteEmploisByIdGroupe,
@@ -52,6 +52,14 @@ export const save = async (req, res) => {
           saveError = true;
         });
       }
+      await deleteCreneauByEmp(emp.id_emp).catch(err => {
+        errors.push({
+          groupe: groupe,
+          error: "Failed to delete existing Creneaux",
+          details: err,
+        });
+        saveError = true;
+      });
     }else{
       emp = await createEmplois(
         groupe.id_groupe,
