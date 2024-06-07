@@ -10,7 +10,9 @@ import { faAdd } from '@fortawesome/free-solid-svg-icons'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import { faEye } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from "react";
+import Afficher from '../Admin/afficherEmploi'
 import axios from 'axios';
+import toast from 'react-hot-toast';
 function Emploi(){
     const [reverse,setReverse]=useState(false);
     const [reverse2,setReverse2]=useState(false);
@@ -18,18 +20,23 @@ function Emploi(){
     const [reverse4,setReverse4]=useState(false);
     const [reverse5,setReverse5]=useState(false);
     const [reverse6,setReverse6]=useState(false);
-    const [reverse7,setReverse7]=useState(false);
-    const [selected,setSelected]=useState('Selectionner une annee');
-    const [selected2,setSelected2]=useState('Choisir semestre');
+    const [reverse8,setReverse8]=useState(false);
+    const [reverse9,setReverse9]=useState(false);
+    const [annee,setAnnee]=useState('Selectionner une annee');
+    const [semestre,setSemestre]=useState('Choisir semestre');
     const [niveau,setNiveau]=useState('Choisir niveau');
     const [code_specialite,setCodespecialite]=useState('Choisir specialite');
     const [dureeSeance,setdureeSeance]=useState('durée seance');
+    const [debut,setDebut]=useState('Heure de début');
+    const [fin,setFin]=useState('Heure de fin');
     const [dureePose,setPose]=useState('durée pose');
-    const [maxSeance,setmax]=useState('nombre seance');
     const [sections, setSections] = useState([]);
     const [newsections, setNewsections] = useState(sections);
     const [specialites, setSpecialites] = useState([]);
     const [supprime, setSupprime] = useState(false);
+    const [emploi,setEmploi]=useState([]);
+    const [Show,setShow]=useState(false);
+    const [groupes,setGroupes]=useState(0);
     useEffect(() => {
         axios.get("http://localhost:3000/Specialite/",{
             withCredentials: true
@@ -48,6 +55,7 @@ function Emploi(){
             const updatesection = sectionsFiltres.map(section => ({ ...section, generated: true }));
           setSections(updatesection);
           
+          
          })
          .catch(err => console.log(err));
      
@@ -55,33 +63,39 @@ function Emploi(){
 
     useEffect(() => {
         const updateSection=[... sections];
-        
-        sections.map((section,index)=>{
+       
+        if(sections.length>0){
+            sections.map((section,index)=>{
             
-            axios.get('http://localhost:3000/groupe',{
-                withCredentials: true
-              }).then((res)=>{                                                             
-                const grouprfilter=res.data.groupes.filter((gr)=> gr.code_section===section.code_section);
-                
-                grouprfilter.map((gr)=>{
-                   
-                    axios.get('http://localhost:3000/EmploisTemps/groupes/'+gr.id_groupe,{
-                withCredentials: true
-              }).catch(()=> {
-                updateSection[index].generated=false;
-                console.log(updateSection)
-                setNewsections(updateSection);
-            })
+                axios.get('http://localhost:3000/groupe',{
+                    withCredentials: true
+                  }).then((res)=>{                                                             
+                    const grouprfilter=res.data.groupes.filter((gr)=> gr.code_section===section.code_section);
+                    setGroupes(grouprfilter.length);
+                    grouprfilter.map((gr)=>{
+                       const id_groupe=gr.id_groupe
+                        axios.get('http://localhost:3000/EmploisTemps/groupes/'+id_groupe,{
+                    withCredentials: true
+                  }).then((res)=>{
+                    console.log(res);
+                  }).catch(()=> {
+                    updateSection[index].generated=false;
+                    setNewsections(updateSection);
                 })
-               
-    
-              })
-            .catch(err=>{
-                console.log(err)
-            });
-        })}
+                    })
+                   
+        
+                  })
+                .catch(err=>{
+                    console.log(err)
+                });
+            })
+        }else{
+            setNewsections([]);//refresh le tableau d'affichage et afficher rien s'il n'existe pas de section pour niveau et la specialite choisie
+        }
+        }
      
-    ,[sections,supprime]);
+    ,[sections]);
     
     
     let user=Cookies.get('user');
@@ -90,8 +104,44 @@ function Emploi(){
   }
   const np=user?user.nom+' '+user.prenom:'';
   const role=user?user.role : '';
+
+  const generer=(id_section)=>{
+    
+        const duree=dureeSeance.split('h');
+        const db=debut.split('h');
+        const fn=fin.split('h');
+        
+        const data={
+            semestre:semestre[semestre.length-1],
+            temps_debut:JSON.stringify({
+                h:parseInt(db[0]),
+                m:parseInt(db[1])
+            }),
+            
+            duree_creneaux:JSON.stringify({
+                h:parseInt(duree[0]),
+                m:parseInt(duree[1])
+            }),
+            minutes_entre_creneaux:parseInt(dureePose)
+        }
+    axios.post("http://localhost:3000/generate/"+id_section,data,{
+                withCredentials: true
+              }).then((res)=>{
+                setEmploi(res.data.creneaux);
+                setShow(true);
+              }).catch((err)=>{
+                console.log(err)
+              })
+    
+   
+  }
+  const handleAdd = () => {
+    
+    setShow(false);//fermer le formulaire
+  };
     return(
-        <div className='flex flex-col w-full h-full main px-10'>
+        <div className='flex flex-col w-full h-full main px-10 z-0 relative' id={Show ? 'mainflou' : undefined}>
+            {Show?<Afficher onAdd={handleAdd} data={emploi} taille={groupes} db={debut} dr={dureeSeance} fn={fin} ps={dureePose} />:null /*formulaire d'ajout*/}
             <header className="flex w-full  justify-between  mt-8 h-fit">
     <div className="">
     <p className="text-black  text-3xl font-bold">Emploi du temps</p>
@@ -109,43 +159,43 @@ function Emploi(){
         <div className='drop relative' onClick={()=>{
             setReverse(!reverse);
         }}>
-            <span className='text-black'>{selected}</span>
+            <span className='text-black'>{annee}</span>
             <FontAwesomeIcon
              icon={faAngleDown}
              className={reverse ? 'icone rotate' : 'icone'} />
              <ul className='list -bottom-64' style={{display:reverse?'block':'none'}}>
                 <li onClick={()=>{
-                    setSelected('2023/2024');
-                }} style={{borderLeft:selected==='2023/2024'?'3px solid #0029FF':null}}>2023/2024</li>
+                    setAnnee(2024);
+                }} style={{borderLeft:annee===2024?'3px solid #0029FF':null}}>2023/2024</li>
                 <li onClick={()=>{
-                    setSelected('2022/2023');
-                }} style={{borderLeft:selected==='2022/2023'?'3px solid #0029FF':null}}>2022/2023</li>
+                    setAnnee(2023);
+                }} style={{borderLeft:annee===2023?'3px solid #0029FF':null}}>2022/2023</li>
                 <li onClick={()=>{
-                    setSelected('2021/2022');
-                }} style={{borderLeft:selected==='2021/2022'?'3px solid #0029FF':null}}>2021/2022</li>
+                    setAnnee(2022);
+                }} style={{borderLeft:annee===2022?'3px solid #0029FF':null}}>2021/2022</li>
                 <li onClick={()=>{
-                    setSelected('2020/2021');
-                }} style={{borderLeft:selected==='2020/2021'?'3px solid #0029FF':null}}>2020/2021</li>
+                    setAnnee(2021);
+                }} style={{borderLeft:annee===2021?'3px solid #0029FF':null}}>2020/2021</li>
                 <li onClick={()=>{
-                    setSelected('2019/2020');
-                }} style={{borderLeft:selected==='2019/2020'?'3px solid #0029FF':null}}>2019/2020</li>
+                    setAnnee(2020);
+                }} style={{borderLeft:annee===2020?'3px solid #0029FF':null}}>2019/2020</li>
              </ul>
         </div>
 
         <div className='drop relative' onClick={()=>{
             setReverse2(!reverse2);
         }}>
-            <span className='text-black'>{selected2}</span>
+            <span className='text-black'>{semestre}</span>
             <FontAwesomeIcon
              icon={faAngleDown}
              className={reverse2 ? 'icone rotate' : 'icone'} />
              <ul className='list -bottom-28' style={{display:reverse2?'block':'none'}}>
                 <li onClick={()=>{
-                    setSelected2('semestre 1');
-                }} style={{borderLeft:selected2==='semestre 1'?'3px solid #0029FF':null}}>semestre 1</li>
+                    setSemestre('semestre 1');
+                }} style={{borderLeft:semestre==='semestre 1'?'3px solid #0029FF':null}}>semestre 1</li>
                 <li onClick={()=>{
-                    setSelected2('semestre 2');
-                }} style={{borderLeft:selected2==='semestre 2'?'3px solid #0029FF':null}}>semestre 2</li>
+                    setSemestre('semestre 2');
+                }} style={{borderLeft:semestre==='semestre 2'?'3px solid #0029FF':null}}>semestre 2</li>
              </ul>
         </div>
 
@@ -195,9 +245,51 @@ function Emploi(){
 
     </div>
 
-    {(code_specialite!='Choisir specialite' && niveau!='Choisir niveau')?<div className='w-full'>
-        <p className="text-black  text-2xl font-bold mt-8">Champs pour generation de l'emploi du temps</p>
-        <div className='w-full flex justify-between m-6'>
+    {(code_specialite!='Choisir specialite' && niveau!='Choisir niveau' && annee!='Selectionner une annee' && semestre!='Choisir semestre')?
+    <>
+    <div className='w-full'>
+        <p className="text-black  text-2xl font-bold mt-8">Champs pour generation d&apos;emploi du temps</p>
+        <div className='w-full flex justify-between mt-6'>
+
+        <div className='drop relative' onClick={()=>{
+            setReverse8(!reverse8);
+        }}>
+            <span className='text-black'>{debut}</span>
+            <FontAwesomeIcon
+             icon={faAngleDown}
+             className={reverse8 ? 'icone rotate' : 'icone'} />
+             <ul className='list -bottom-28' style={{display:reverse8?'block':'none'}}>
+                <li onClick={()=>{
+                    setDebut('8h00');
+                }} style={{borderLeft:debut==='8h00'?'3px solid #0029FF':null}}>8h00</li>
+                <li onClick={()=>{
+                    setDebut('8h30');
+                }} style={{borderLeft:debut==='8h30'?'3px solid #0029FF':null}}>8h30</li>
+                
+             </ul>
+        </div>
+
+        <div className='drop relative' onClick={()=>{
+            setReverse9(!reverse9);
+        }}>
+            <span className='text-black'>{fin}</span>
+            <FontAwesomeIcon
+             icon={faAngleDown}
+             className={reverse9 ? 'icone rotate' : 'icone'} />
+             <ul className='list -bottom-40' style={{display:reverse9?'block':'none'}}>
+                <li onClick={()=>{
+                    setFin('15h00');
+                }} style={{borderLeft:fin==='15h00'?'3px solid #0029FF':null}}>15h00</li>
+                <li onClick={()=>{
+                    setFin('16h00');
+                }} style={{borderLeft:fin==='16h00'?'3px solid #0029FF':null}}>16h00</li>
+                <li onClick={()=>{
+                    setFin('17h00');
+                }} style={{borderLeft:fin==='17h00'?'3px solid #0029FF':null}}>17h00</li>
+                
+             </ul>
+        </div>
+
         <div className='drop relative' onClick={()=>{
             setReverse5(!reverse5);
         }}>
@@ -238,40 +330,12 @@ function Emploi(){
              </ul>
         </div>
 
-        <div className='drop relative' onClick={()=>{
-            setReverse7(!reverse7);
-        }}>
-            <span className='text-black'>{maxSeance}</span>
-            <FontAwesomeIcon
-             icon={faAngleDown}
-             className={reverse7 ? 'icone rotate' : 'icone'} />
-             <ul className='list ' style={{display:reverse7?'block':'none',bottom:'-304px'}}>
-                <li onClick={()=>{
-                    setmax(1);
-                }} style={{borderLeft:maxSeance===1?'3px solid #0029FF':null}}>1</li>
-                <li onClick={()=>{
-                    setmax(2);
-                }} style={{borderLeft:maxSeance===2?'3px solid #0029FF':null}}>2</li>
-                <li onClick={()=>{
-                    setmax(3);
-                }} style={{borderLeft:maxSeance===3?'3px solid #0029FF':null}}>3</li>
-                <li onClick={()=>{
-                    setmax(4);
-                }} style={{borderLeft:maxSeance===4?'3px solid #0029FF':null}}>4</li>
-                <li onClick={()=>{
-                    setmax(5);
-                }} style={{borderLeft:maxSeance===5?'3px solid #0029FF':null}}>5</li>
-                <li onClick={()=>{
-                    setmax(6);
-                }} style={{borderLeft:maxSeance===6?'3px solid #0029FF':null}}>6</li>
-             </ul>
-        </div>
+        
 
         </div>
 
-    </div>:null}
-
-    <table className='mt-10 z-0 w-full ' >
+    </div>
+    <table className='mt-10 z-0 w-full aks' >
         <tr className='head'>
         <td>Id</td>
         <td>specialite</td>
@@ -315,10 +379,7 @@ function Emploi(){
                   
                
                :<>
-               <FontAwesomeIcon icon={faAdd} className=' ml-4 text-blue-700 text-xl cursor-pointer' onClick={()=>{
-                 
-                 
-               }}/>
+               <FontAwesomeIcon icon={faAdd} className=' ml-4 text-blue-700 text-xl cursor-pointer' onClick={()=>{generer(section.id_section)}}/>
                
                </>}
                   </td>
@@ -330,6 +391,10 @@ function Emploi(){
         })}
         
     </table>
+    </>
+    :null}
+
+    
 </main>
         </div>
     )

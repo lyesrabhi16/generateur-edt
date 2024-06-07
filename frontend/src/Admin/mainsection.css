@@ -66,10 +66,10 @@
     color:#193BEF;
     transition: all 0.3s;
 }
-table td{
+.table td{
     height: 72px;
 }
-table{
+.table{
     border: 1px solid #D8DDE2;
 }
 .head{
@@ -79,10 +79,10 @@ table{
     color: black;
     font-weight:600 ;
 }
-table tr td{
+.table tr td{
     padding-left: 16px;
 }
-table tr:not(:first-child):hover{
+.table tr:not(:first-child):hover{
     background-color: #094BC1;
     transform: scale(1.03);
     transition: all 0.3s;
@@ -90,16 +90,16 @@ table tr:not(:first-child):hover{
     border-radius: 30px;
     
 }
-table tr:hover :first-child{
+.table tr:hover :first-child{
     border-top-left-radius: 30px;
     border-bottom-left-radius: 30px;
 }
-table tr:hover :last-child{
+.table tr:hover :last-child{
     border-top-right-radius: 30px;
     border-bottom-right-radius: 30px;
 }
 
-table tr{
+.table tr{
     transition: all 0.3s;
 }
 .pages{

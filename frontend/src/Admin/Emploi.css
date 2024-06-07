@@ -58,10 +58,10 @@
 .list li{
     padding: 12px;
 }
-table td{
+.aks td{
     height: 72px;
 }
-table{
+.aks{
     border: 1px solid #D8DDE2;
 }
 .head{
@@ -71,10 +71,10 @@ table{
     color: black;
     font-weight:600 ;
 }
-table tr td{
+.aks tr td{
     padding-left: 16px;
 }
-table tr:not(:first-child):hover{
+.aks tr:not(:first-child):hover{
     background-color: #094BC1;
     transform: scale(1.03);
     transition: all 0.3s;
@@ -82,15 +82,15 @@ table tr:not(:first-child):hover{
     border-radius: 30px;
     
 }
-table tr:hover :first-child{
+.aks tr:hover :first-child{
     border-top-left-radius: 30px;
     border-bottom-left-radius: 30px;
 }
-table tr:hover :last-child{
+.aks tr:hover :last-child{
     border-top-right-radius: 30px;
     border-bottom-right-radius: 30px;
 }
 
-table tr{
+.aks tr{
     transition: all 0.3s;
 }

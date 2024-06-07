@@ -159,7 +159,7 @@ function Section({page}){
 
 
 </div>
-<table className='mt-10 z-0 ' >
+<table className='mt-10 z-0 table' >
   {
     page==="Modules"?<tr className='head'> 
     <td>Id</td>
