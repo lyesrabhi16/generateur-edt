@@ -3,8 +3,10 @@ import { getAllCreneau,
          getAllCreneauByGroupe,
          updateCreneau,
          createCreneau,
-         deleteCreneau
+         deleteCreneau,
+         getAllCreneauBySection
 } from "../DB/Creneau.js";
+import { correctTimeFormat } from "../EmpAsFile/emp_xlsx.js";
 
 export const selectAllCreneau = (req,res) =>{
 
@@ -65,6 +67,79 @@ export const selectAllCreneauByGroupe =(req,res)=>{
            }
     
     
+           res.status(200).json(response);
+     }).catch((err)=>{
+        const response={
+            status:"Error",
+            message:"Erreur pendant la recherche des creneaux",
+            erreur:err
+           }
+          res.status(500).json(response);
+    })
+
+}
+
+export const selectAllCreneauBySection =(req,res)=>{
+    const { id_section, semestre, annee } = req.params;
+    console.log(`GET ALL CRENEAUX ${id_section} ${semestre} ${annee}`);
+     getAllCreneauBySection(id_section, semestre, annee).then((data)=>{
+
+        const creneaux = {};
+
+        data.forEach(creneau => {
+            if(creneaux[creneau.jour] !== undefined){
+                return;
+            }
+            creneaux[creneau.jour] = {};
+            const creneauxJour = data.filter(c => c.jour === creneau.jour);
+            for (let index = 0; index < creneauxJour.length; index++) {
+                const c = creneauxJour[index];
+                if(creneaux[creneau.jour][`${correctTimeFormat(c.debut)}-${correctTimeFormat(c.fin)}`] === undefined){
+                    creneaux[creneau.jour][`${correctTimeFormat(c.debut)}-${correctTimeFormat(c.fin)}`] = {
+                        debut: correctTimeFormat(c.debut),
+                        fin: correctTimeFormat(c.fin),
+                    };
+                }
+                if(creneaux[creneau.jour][`${correctTimeFormat(c.debut)}-${correctTimeFormat(c.fin)}`][c.code_groupe] === undefined){
+                    creneaux[creneau.jour][`${correctTimeFormat(c.debut)}-${correctTimeFormat(c.fin)}`][c.code_groupe] = {};
+                }
+                creneaux[creneau.jour][`${correctTimeFormat(c.debut)}-${correctTimeFormat(c.fin)}`][c.code_groupe]["seance"] = {
+                    "id_seance": c.id_seance,
+                    "type": c.type_seance,
+                    "niveau": c.niveau,
+                    "semestre": c.semestre,
+                    "nom_module": c.nom_module,
+                    "nom_specialite": c.nom_specialite,
+                    "code_module": c.code_module,
+                    "code_specialite": c.code_specialite
+                }
+                creneaux[creneau.jour][`${correctTimeFormat(c.debut)}-${correctTimeFormat(c.fin)}`][c.code_groupe]["locale"] = {
+                    "code_local": c.code_local
+                }
+                creneaux[creneau.jour][`${correctTimeFormat(c.debut)}-${correctTimeFormat(c.fin)}`][c.code_groupe]["enseignant"] = {
+                    "matricule": c.matricule,
+                    "nom": c.nom,
+                    "prenom": c.prenom,
+                    "role": c.role,
+                    "charges": c.charges,
+                }
+                creneaux[creneau.jour][`${correctTimeFormat(c.debut)}-${correctTimeFormat(c.fin)}`][c.code_groupe]["groupe"] = {
+                    "id_groupe": c.id_groupe,
+                    "code_groupe": c.code_groupe,
+                    "id_section": c.id_section,
+                    "code_section": c.code_section,
+                    "niveau": c.niveau,
+                    "code_specialite": c.code_specialite,
+                    "nom_specialite": c.nom_specialite,
+                }
+            }
+        });
+
+        const response={
+            status:"Success",
+            message:"Tout les creneaux sont trouvés de la section: "+ id_section ,
+            Creneaux: creneaux
+           }
            res.status(200).json(response);
      }).catch((err)=>{
         const response={

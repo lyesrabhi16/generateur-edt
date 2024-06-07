@@ -789,6 +789,6 @@ const randomARGBColor = () => {
   return hr + hg + hb;
 }
 
-const correctTimeFormat=(hh_mm_ss) => {
+export const correctTimeFormat=(hh_mm_ss) => {
   return hh_mm_ss.split(":", 2).join("H");
 }
