@@ -255,7 +255,7 @@ export const verificationCreneau = async (req, res) => {
     let ensCO = false;
     for (let index = 0; index < ensCs.length; index++) {
         const c = ensCs[index];
-        if ((c.debut <= debut && c.fin >= debut) || (c.debut <= fin && c.fin >= fin) ){
+        if ((c.debut <= debut && c.fin >= debut) || (c.debut <= fin && c.fin >= fin) ||  (c.debut >= debut && c.fin <= fin) || (c.debut <= debut && c.fin >= fin)){
             console.log(c);
             ensCO = true;
             break;
