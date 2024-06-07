@@ -7,7 +7,8 @@ import toast from 'react-hot-toast';
 function Form() {
  const[email,setEmail]=useState(''); 
  const[password,setPassword]=useState('');
- const personne={email,password}
+ const[rememberMe,setRememberMe]=useState(false);
+ const personne={email, password, rememberMe}
  const[navige,setAdmin]=useState('');
  const[erreur,setErreur]=useState(false);
  const changer=(e)=>{
@@ -55,7 +56,7 @@ function Form() {
             <div className=" flex items-center
              
              ">
-              <input type="checkbox" className="
+              <input type="checkbox" onClick={(e) => setRememberMe(e.target.checked)} className="
              flex 
              h-4 
              w-4

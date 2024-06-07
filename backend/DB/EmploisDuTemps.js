@@ -14,7 +14,7 @@ export const getAllEmplois = () => {
 
 export const getOneEmploisById = (id_Emp) => {
 
-    return db.oneOrNone(`SELECT E.id_emp, E.niveau, E.semestre, g.id_groupe, g.code_groupe, 
+    return db.oneOrNone(`SELECT E.id_emp, E.niveau, E.semestre, E.annee, g.id_groupe, g.code_groupe, 
                                 s.id_section, s.code_section, s.code_specialite, sp.nom_specialite
                             FROM emploisdutemps E 
                             left join groupe G on E.id_groupe=G.id_groupe
@@ -23,15 +23,15 @@ export const getOneEmploisById = (id_Emp) => {
                             where E.id_emp = $1;` , [id_Emp]);
 }
 
-export const getOneEmploisByGroupe = (id_groupe) =>{
+export const getOneEmploisByGroupe = (id_groupe, semesetre, annee) =>{
    
-   return db.oneOrNone(`SELECT E.id_emp, E.niveau, E.semestre, g.id_groupe, g.code_groupe, 
+   return db.oneOrNone(`SELECT E.id_emp, E.niveau, E.semestre, E.annee, g.id_groupe, g.code_groupe, 
                                 s.id_section, s.code_section, s.code_specialite, sp.nom_specialite
                         FROM emploisdutemps E 
                         left join groupe G on E.id_groupe=G.id_groupe
                         join section s on G.id_section = s.id_section
                         join specialite sp on s.code_specialite = sp.code_specialite
-                        where G.id_groupe = $1;` ,[id_groupe]);
+                        where G.id_groupe = $1 and E.semestre = $2 and E.annee = $3;` ,[id_groupe, semesetre, annee]);
    
 }
 
