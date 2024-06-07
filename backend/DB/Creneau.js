@@ -99,7 +99,8 @@ export const getAllCreneauBySection = (id_section, semestre, annee) =>{
 }
 
 export const getCreneaux = (debut, fin, jour, local) => {
-   return db.manyOrNone("select * from creneau c where ((c.debut <= $2 and c.fin >= $2)  OR (c.debut <= $1 and c.fin >= $1)) and c.jour = $3 and c.code_local = $4", [debut, fin, jour, local]);
+   return db.manyOrNone(`select * from creneau c where ((c.debut <= $2 and c.fin >= $2)  OR (c.debut <= $1 and c.fin >= $1) OR (c.debut <= $1 and c.fin >= $2)
+	OR (c.debut >= $1 and c.fin <= $2) ) and c.jour = $3 and c.code_local = $4`, [debut, fin, jour, local]);
 }
 /**
  * 
