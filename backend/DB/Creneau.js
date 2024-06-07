@@ -134,3 +134,8 @@ export const createCreneau=(debut, fin, jour,id_Emp,id_seance,code_local)=>{
 export const deleteCreneau = (id_creneau) =>{
   return db.oneOrNone(`DELETE FROM Creneau where id_creneau=$1 `,[id_creneau])  
 }
+
+export const deleteCreneauByEmp = (id_emp) =>{
+   console.log("DELETE FROM Creneau Where id_emp =  ", id_emp);
+   return db.oneOrNone(`DELETE FROM Creneau Where id_emp = $1 `,[id_emp])  
+ }
