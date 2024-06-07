@@ -87,3 +87,37 @@ if ( !typeJourValidator(jour) ) {
 next();
 
 };
+
+export const verificationCreneauValidator = (req, res, next) => {
+    const { debut, fin, jour, matricule, code_local, annee, semestre } = req.body;
+    const messages = [];
+    if (!TimeFormatValidator(debut)) {
+        messages.push("debut");
+    }
+    if (!TimeFormatValidator(fin)) {
+        messages.push("fin");
+    }
+    if (!typeJourValidator(jour)) {
+        messages.push("jour");
+    }
+    if(matricule === undefined){
+        messages.push("matricule");
+    }
+    if(code_local === undefined){
+        messages.push("code_local");
+    }
+    if(annee === undefined){
+        messages.push("annee");
+    }
+    if(semestre === undefined){
+        messages.push("semestre");
+    }
+    
+    if (messages.length > 0) {
+        return res.status(400).json({
+            status: "Error",
+            message: "Attributs manquants ou invalides: " + messages,
+        });
+    }
+    next();
+}
