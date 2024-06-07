@@ -69,6 +69,35 @@ export const getAllCreneauByGroupe = (id_groupe) =>{
                           WHERE g.id_groupe=$1 `, [id_groupe] );
     
 }
+export const getAllCreneauByEmp = (id_emp) =>{
+   return db.manyOrNone(`SELECT c.*, g.id_groupe, g.code_groupe, s.*, sp.nom_specialite, sc.type as type_seance, m.*, p.*
+   FROM Creneau c
+         join emploisdutemps emp on c.id_emp = emp.id_emp
+         join groupe g on emp.id_groupe = g.id_groupe
+         join section s on g.id_section = s.id_section
+         join specialite sp on s.code_specialite = sp.code_specialite
+         join seance sc on c.id_seance = sc.id_seance
+         join module m on sc.code_module = m.code_module
+ join ensEtcreneaux ensc on c.id_creneau = ensc.id_creneau
+ join personne p on ensc.matricule = p.matricule
+  WHERE c.id_emp=$1 order by jour`, [id_emp] );
+   
+}
+
+export const getAllCreneauBySection = (id_section, semestre, annee) =>{
+   return db.manyOrNone(`SELECT c.*, g.id_groupe, g.code_groupe, s.*, sp.nom_specialite, sc.type as type_seance, m.*, p.*, emp.semestre, emp.annee
+   FROM Creneau c
+         join emploisdutemps emp on c.id_emp = emp.id_emp
+         join groupe g on emp.id_groupe = g.id_groupe
+         join section s on g.id_section = s.id_section
+         join specialite sp on s.code_specialite = sp.code_specialite
+         join seance sc on c.id_seance = sc.id_seance
+         join module m on sc.code_module = m.code_module
+ join ensEtcreneaux ensc on c.id_creneau = ensc.id_creneau
+ join personne p on ensc.matricule = p.matricule
+  WHERE s.id_section=$1 and emp.semestre=$2 and emp.annee=$3 order by jour`, [id_section, semestre, annee] );   
+}
+
 /**
  * 
  * @param {string} id_creneau 
@@ -105,3 +134,8 @@ export const createCreneau=(debut, fin, jour,id_Emp,id_seance,code_local)=>{
 export const deleteCreneau = (id_creneau) =>{
   return db.oneOrNone(`DELETE FROM Creneau where id_creneau=$1 `,[id_creneau])  
 }
+
+export const deleteCreneauByEmp = (id_emp) =>{
+   console.log("DELETE FROM Creneau Where id_emp =  ", id_emp);
+   return db.oneOrNone(`DELETE FROM Creneau Where id_emp = $1 `,[id_emp])  
+ }
