@@ -228,9 +228,9 @@ export const deleteOneCreneau =(req,res)=>{
 }
 
 export const verificationCreneau = async (req, res) => {
-    const { debut, fin, jour, matricule, code_local, annee, semestre } = req.body;
+    const { debut, fin, jour, matricule, code_local, annee, semestre, id_creneau1, id_creneau2 } = req.body;
     const messages = [];
-    const local = await getCreneaux(debut, fin, jour, code_local).catch(err => {
+    const local = await getCreneaux(debut, fin, jour, code_local, id_creneau1, id_creneau2).catch(err => {
         console.log(err);
         return res.status(500).json({
             status: "Error",
@@ -256,7 +256,7 @@ export const verificationCreneau = async (req, res) => {
         messages.push("Enseignant occupé");
     }
 
-    const ensCs = await getAllCreneauEns(matricule, annee, semestre, jour, debut, fin).catch(err =>{
+    const ensCs = await getAllCreneauEns(matricule, annee, semestre, jour, debut, fin, id_creneau1, id_creneau2).catch(err =>{
         console.log(err);
         return res.status(500).json({
             status: "Error",
