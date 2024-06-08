@@ -2,7 +2,9 @@ import './afficherEmploi.css'
 import Modify from './modifierEmp'
 import './modifierEmp.css'
 import { useState, useEffect } from "react";
-function Afficher({onAdd,data,taille,db,dr,fn,ps}){
+import axios from 'axios';
+import toast from 'react-hot-toast';
+function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
     const [Show, setShow] = useState(false);
     const [emploi, setEmploi] = useState(data);
     const handleAdd = (emp) => {
@@ -366,7 +368,22 @@ function Afficher({onAdd,data,taille,db,dr,fn,ps}){
                 <button className='emploimodifier text-white rounded-2xl px-3 py-2 w-28 transition-all delay-100' onClick={()=>{
                     setShow(!Show);
                 }}>Modifier</button>
-                <button className='emploimodifier text-white rounded-2xl px-3 py-2 w-28 transition-all delay-100'>Approuver</button>
+                <button className='emploimodifier text-white rounded-2xl px-3 py-2 w-28 transition-all delay-100' onClick={()=>{
+                    const info={
+                        data:emploi,
+                        semestre:sm[sm.length-1],
+                        annee:an,
+                    }
+                    axios.post("http://localhost:3000/generate/save/"+section,info,{
+                        withCredentials: true
+                      }).then(()=>{
+                        toast.success('emploi du temps enregistré');
+                        onAdd();
+                      }).catch((err)=>{
+                        console.log(err);
+                        toast.error('enregistrement echoué');
+                      })
+                }}>Approuver</button>
 
             </div>
         </div>
