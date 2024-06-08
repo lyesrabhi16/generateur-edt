@@ -24,6 +24,13 @@ export const saveValidator = (req, res, next) => {
     req.body.override = true;
   } else if (override === "false") {
     req.body.override = false;
+  }else if (override === undefined){
+    req.body.override = false;
+  }else{
+    return res.status(400).json({
+      status: "Value Error",
+      message: "override attribute value must be either true or false",
+    })
   }
 
   try {
