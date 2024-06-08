@@ -98,6 +98,17 @@ export const getAllCreneauBySection = (id_section, semestre, annee) =>{
   WHERE s.id_section=$1 and emp.semestre=$2 and emp.annee=$3 order by jour`, [id_section, semestre, annee] );   
 }
 
+export const getCreneaux = (debut, fin, jour, local) => {
+   return db.manyOrNone(`
+   select * from creneau c where
+   (
+      ($2 between c.debut and c.fin)
+      OR ($1 between c.debut and c.fin)
+      OR (c.fin between $1 and $2)
+      OR (c.debut between $1 and $2)
+   )
+   and c.jour = $3 and c.code_local = $4`, [debut, fin, jour, local]);
+}
 /**
  * 
  * @param {string} id_creneau 

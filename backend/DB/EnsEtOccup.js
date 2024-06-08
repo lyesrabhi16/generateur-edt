@@ -17,13 +17,25 @@ export const  getAllEnsetOccup =()=>{
 
     --written by @lyesrabhi16
 */
-export const getAllEnsetOccupByMatricule=(matricule)=>{
-return db.manyOrNone(`SELECT E.matricule,nom,prenom,E.id_occup,jour,heur_debut, heur_fin 
-                      FROM EnsEtOccup E 
-                      left join Personne P on E.matricule=P.matricule
-                      left join Occupation O ON E.id_occup=O.id_occup 
-                      WHERE E.matricule = $1
-                      `,[matricule]);
+export const getAllEnsetOccupByMatricule=(matricule, jour, debut, fin)=>{
+let sql = `SELECT E.matricule,nom,prenom,E.id_occup,jour,heur_debut, heur_fin 
+            FROM EnsEtOccup E 
+            left join Personne P on E.matricule=P.matricule
+            left join Occupation O ON E.id_occup=O.id_occup 
+            WHERE E.matricule = $1`;
+if (jour !== undefined){
+    sql += ` AND jour = $2 `;
+}
+if (debut !== undefined && fin !== undefined){
+    sql += ` AND 
+    (
+        ($4 between heur_debut and heur_fin)
+        OR ($3 between heur_debut and heur_fin)
+        OR (heur_fin between $3 and $4)
+        OR (heur_debut between $3 and $4)    
+    )`;
+}    
+return db.manyOrNone(sql,[matricule, jour, debut, fin]);
                      
 }
 

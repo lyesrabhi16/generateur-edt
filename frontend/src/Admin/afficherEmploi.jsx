@@ -370,7 +370,7 @@ function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
                 }}>Modifier</button>
                 <button className='emploimodifier text-white rounded-2xl px-3 py-2 w-28 transition-all delay-100' onClick={()=>{
                     const info={
-                        data:emploi,
+                        data:JSON.stringify(emploi),
                         semestre:sm[sm.length-1],
                         annee:an,
                     }

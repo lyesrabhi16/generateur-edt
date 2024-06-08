@@ -9,6 +9,6 @@ const generateRouter = Router();
 
 
 generateRouter.post('/:id_section', generateValidator, generate);
-generateRouter.post('/save', saveValidator, save);
+generateRouter.post('/save/:id_section', saveValidator, save);
 
 export default generateRouter;
