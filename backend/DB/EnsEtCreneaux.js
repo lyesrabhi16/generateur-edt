@@ -60,9 +60,12 @@ export const getAllCreneauEns = (matricule,annee,semestre, jour, debut, fin, id_
     left join groupe g on g.id_groupe= Emp.id_groupe
     left join section sn on sn.id_section=g.id_section
     WHERE E.matricule=$1 and Emp.annee=$2 and Emp.semestre=$3`;
-    if(id_creneau !== undefined){
+    let i = 7;
+    while (i < (id_creneau.length+7)){
         sql += " and not (C.id_creneau=$7)";
+        i++;
     }
+    
     if(jour !== undefined && debut!==undefined && fin !== undefined){
         sql += `
         and jour = $4
@@ -77,7 +80,7 @@ export const getAllCreneauEns = (matricule,annee,semestre, jour, debut, fin, id_
     }
 
 
-    return db.manyOrNone(sql,[matricule,annee,semestre, jour, debut, fin, id_creneau]);
+    return db.manyOrNone(sql,[matricule,annee,semestre, jour, debut, fin, ...id_creneau]);
 
     
 }
