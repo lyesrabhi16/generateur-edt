@@ -49,7 +49,7 @@ export const deleteEnsEtCreneau=(matricule,id_creneau)=>{
 }
 
 
-export const getAllCreneauEns = (matricule,annee,semestre, jour, debut, fin)=>{
+export const getAllCreneauEns = (matricule,annee,semestre, jour, debut, fin, id_creneau)=>{
     let sql = `SELECT E.matricule, P.nom , P.prenom ,C.jour, C.debut,C.fin , S.type,S.niveau , S.code_specialite  , g.id_section , Emp.semestre ,L.code_Local , L.type  from ensetcreneaux E  
     left join personne P on E.matricule=P.matricule
     left join Creneau C on E.id_creneau=C.id_creneau 
@@ -60,6 +60,9 @@ export const getAllCreneauEns = (matricule,annee,semestre, jour, debut, fin)=>{
     left join groupe g on g.id_groupe= Emp.id_groupe
     left join section sn on sn.id_section=g.id_section
     WHERE E.matricule=$1 and Emp.annee=$2 and Emp.semestre=$3`;
+    if(id_creneau !== undefined){
+        sql += " and not (C.id_creneau=$7)";
+    }
     if(jour !== undefined && debut!==undefined && fin !== undefined){
         sql += `
         and jour = $4
@@ -73,7 +76,8 @@ export const getAllCreneauEns = (matricule,annee,semestre, jour, debut, fin)=>{
         order by debut`;
     }
 
-    return db.manyOrNone(sql,[matricule,annee,semestre, jour, debut, fin]);
+
+    return db.manyOrNone(sql,[matricule,annee,semestre, jour, debut, fin, id_creneau]);
 
     
 }
