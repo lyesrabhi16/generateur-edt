@@ -49,19 +49,31 @@ export const deleteEnsEtCreneau=(matricule,id_creneau)=>{
 }
 
 
-export const getAllCreneauEns = (matricule,annee,semestre)=>{
+export const getAllCreneauEns = (matricule,annee,semestre, jour, debut, fin)=>{
+    let sql = `SELECT E.matricule, P.nom , P.prenom ,C.jour, C.debut,C.fin , S.type,S.niveau , S.code_specialite  , g.id_section , Emp.semestre ,L.code_Local , L.type  from ensetcreneaux E  
+    left join personne P on E.matricule=P.matricule
+    left join Creneau C on E.id_creneau=C.id_creneau 
+    left join Seance S on C.id_seance = S.id_seance
+    left join Local L on C.code_local=L.code_local
+    left join Specialite Sp on Sp.code_specialite = S.code_specialite
+    left join emploisdutemps Emp on Emp.id_emp =C.id_emp
+    left join groupe g on g.id_groupe= Emp.id_groupe
+    left join section sn on sn.id_section=g.id_section
+    WHERE E.matricule=$1 and Emp.annee=$2 and Emp.semestre=$3`;
+    if(jour !== undefined && debut!==undefined && fin !== undefined){
+        sql += `
+        and jour = $4
+        and 
+            (
+                ($6 between c.debut and c.fin)
+                OR ($5 between c.debut and c.fin)
+                OR (c.fin between $5 and $6)
+                OR (c.debut between $5 and $6)
+            )    
+        order by debut`;
+    }
 
-    return db.manyOrNone(`SELECT E.matricule, P.nom , P.prenom ,C.jour, C.debut,C.fin , S.type,S.niveau , S.code_specialite  , g.id_section , Emp.semestre ,L.code_Local , L.type  from ensetcreneaux E  
-                          left join personne P on E.matricule=P.matricule
-                          left join Creneau C on E.id_creneau=C.id_creneau 
-                          left join Seance S on C.id_seance = S.id_seance
-                          left join Local L on C.code_local=L.code_local
-                          left join Specialite Sp on Sp.code_specialite = S.code_specialite
-                          left join emploisdutemps Emp on Emp.id_emp =C.id_emp
-                          left join groupe g on g.id_groupe= Emp.id_groupe
-                          left join section sn on sn.id_section=g.id_section
-                          WHERE E.matricule=$1 and Emp.annee=$2 and Emp.semestre=$3
-    `,[matricule,annee,semestre]);
+    return db.manyOrNone(sql,[matricule,annee,semestre, jour, debut, fin]);
 
     
 }
