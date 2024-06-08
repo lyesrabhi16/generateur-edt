@@ -89,7 +89,7 @@ next();
 };
 
 export const verificationCreneauValidator = (req, res, next) => {
-    const { debut, fin, jour, matricule, code_local, annee, semestre } = req.body;
+    const { debut, fin, jour, matricule, code_local, annee, semestre, id_creneau } = req.body;
     const messages = [];
     if (!TimeFormatValidator(debut)) {
         messages.push("debut");
@@ -111,6 +111,9 @@ export const verificationCreneauValidator = (req, res, next) => {
     }
     if(semestre === undefined){
         messages.push("semestre");
+    }
+    if(id_creneau !== undefined){
+        req.body.id_creneau = id_creneau.split(",");
     }
     
     if (messages.length > 0) {
