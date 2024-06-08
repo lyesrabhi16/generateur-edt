@@ -108,10 +108,12 @@ export const getCreneaux = (debut, fin, jour, local, id_creneau) => {
                   OR (c.debut between $1 and $2)
                )
                and c.jour = $3 and c.code_local = $4`;
-   if(id_creneau !== undefined){
-      sql += " and not(id_creneau = $5)";
+   let i = 5;
+   while( i < (id_creneau.length+5)){
+      sql += ` and not(id_creneau = $${i})`;
+      i++;
    }
-   return db.manyOrNone(sql, [debut, fin, jour, local, id_creneau]);
+   return db.manyOrNone(sql, [debut, fin, jour, local, ...id_creneau]);
 }
 /**
  * 
