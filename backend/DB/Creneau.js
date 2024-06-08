@@ -99,6 +99,7 @@ export const getAllCreneauBySection = (id_section, semestre, annee) =>{
 }
 
 export const getCreneaux = (debut, fin, jour, local, id_creneau) => {
+   const values = [debut, fin, jour, local];
    let sql = `
                select * from creneau c where
                (
@@ -108,12 +109,15 @@ export const getCreneaux = (debut, fin, jour, local, id_creneau) => {
                   OR (c.debut between $1 and $2)
                )
                and c.jour = $3 and c.code_local = $4`;
-   let i = 5;
-   while( i < (id_creneau.length+5)){
-      sql += ` and not(id_creneau = $${i})`;
-      i++;
+   if(id_creneau !== undefined){
+      let i = 5;
+      while( i < (id_creneau.length+5)){
+         sql += ` and not(id_creneau = $${i})`;
+         i++;
+         values.push(id_creneau[i-5]);
+      }
    }
-   return db.manyOrNone(sql, [debut, fin, jour, local, ...id_creneau]);
+   return db.manyOrNone(sql, values);
 }
 /**
  * 
