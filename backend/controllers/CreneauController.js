@@ -87,26 +87,38 @@ export const selectAllCreneauBySection =(req,res)=>{
     console.log(`GET ALL CRENEAUX ${id_section} ${semestre} ${annee}`);
      getAllCreneauBySection(id_section, semestre, annee).then((data)=>{
 
-        const creneaux = {};
 
+        let horaires = [];
+        let groupes = [];
         data.forEach(creneau => {
-            if(creneaux[creneau.jour] !== undefined){
-                return;
+            if(!horaires.find((h) => h===`${correctTimeFormat(creneau.debut)}-${correctTimeFormat(creneau.fin)}` )){
+                horaires.push(`${correctTimeFormat(creneau.debut)}-${correctTimeFormat(creneau.fin)}`);
             }
-            creneaux[creneau.jour] = {};
-            const creneauxJour = data.filter(c => c.jour === creneau.jour);
-            for (let index = 0; index < creneauxJour.length; index++) {
-                const c = creneauxJour[index];
-                if(creneaux[creneau.jour][`${correctTimeFormat(c.debut)}-${correctTimeFormat(c.fin)}`] === undefined){
-                    creneaux[creneau.jour][`${correctTimeFormat(c.debut)}-${correctTimeFormat(c.fin)}`] = {
-                        debut: correctTimeFormat(c.debut),
-                        fin: correctTimeFormat(c.fin),
-                    };
-                }
-                if(creneaux[creneau.jour][`${correctTimeFormat(c.debut)}-${correctTimeFormat(c.fin)}`][c.code_groupe] === undefined){
-                    creneaux[creneau.jour][`${correctTimeFormat(c.debut)}-${correctTimeFormat(c.fin)}`][c.code_groupe] = {};
-                }
-                creneaux[creneau.jour][`${correctTimeFormat(c.debut)}-${correctTimeFormat(c.fin)}`][c.code_groupe]["seance"] = {
+            if(!groupes.find((g) => g===creneau.code_groupe)){
+                groupes.push(creneau.code_groupe);
+            }
+        });
+        horaires.sort();
+        groupes.sort();
+        const jours = ['Samedi','Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi'];
+        const creneaux = {};
+        jours.forEach(jour => {
+            creneaux[jour] = {};
+            horaires.forEach((h,i) => {
+                const h_split = h.split("-", 2);
+                creneaux[jour][""+i] = {
+                    debut: h_split[0],
+                    fin  : h_split[1]
+                };
+                groupes.forEach(g => {
+                    creneaux[jour][i][g] = {};
+                });
+            })
+        });
+
+        data.forEach(c => {        
+            creneaux[c.jour][horaires.findIndex(h => h === `${correctTimeFormat(c.debut)}-${correctTimeFormat(c.fin)}`)][c.code_groupe] = {
+                "seance" : {
                     "id_seance": c.id_seance,
                     "type": c.type_seance,
                     "niveau": c.niveau,
@@ -115,18 +127,18 @@ export const selectAllCreneauBySection =(req,res)=>{
                     "nom_specialite": c.nom_specialite,
                     "code_module": c.code_module,
                     "code_specialite": c.code_specialite
-                }
-                creneaux[creneau.jour][`${correctTimeFormat(c.debut)}-${correctTimeFormat(c.fin)}`][c.code_groupe]["locale"] = {
+                },
+                "locale": {
                     "code_local": c.code_local
-                }
-                creneaux[creneau.jour][`${correctTimeFormat(c.debut)}-${correctTimeFormat(c.fin)}`][c.code_groupe]["enseignant"] = {
+                },
+                "enseignant": {
                     "matricule": c.matricule,
                     "nom": c.nom,
                     "prenom": c.prenom,
                     "role": c.role,
                     "charges": c.charges,
-                }
-                creneaux[creneau.jour][`${correctTimeFormat(c.debut)}-${correctTimeFormat(c.fin)}`][c.code_groupe]["groupe"] = {
+                },
+                "groupe": {
                     "id_groupe": c.id_groupe,
                     "code_groupe": c.code_groupe,
                     "id_section": c.id_section,
@@ -135,7 +147,8 @@ export const selectAllCreneauBySection =(req,res)=>{
                     "code_specialite": c.code_specialite,
                     "nom_specialite": c.nom_specialite,
                 }
-            }
+            };
+        
         });
 
         const response={
@@ -215,9 +228,9 @@ export const deleteOneCreneau =(req,res)=>{
 }
 
 export const verificationCreneau = async (req, res) => {
-    const { debut, fin, jour, matricule, code_local, annee, semestre } = req.body;
+    const { debut, fin, jour, matricule, code_local, annee, semestre, id_creneau1, id_creneau2 } = req.body;
     const messages = [];
-    const local = await getCreneaux(debut, fin, jour, code_local).catch(err => {
+    const local = await getCreneaux(debut, fin, jour, code_local, id_creneau1, id_creneau2).catch(err => {
         console.log(err);
         return res.status(500).json({
             status: "Error",
@@ -243,7 +256,7 @@ export const verificationCreneau = async (req, res) => {
         messages.push("Enseignant occupé");
     }
 
-    const ensCs = await getAllCreneauEns(matricule, annee, semestre, jour, debut, fin).catch(err =>{
+    const ensCs = await getAllCreneauEns(matricule, annee, semestre, jour, debut, fin, id_creneau1, id_creneau2).catch(err =>{
         console.log(err);
         return res.status(500).json({
             status: "Error",
