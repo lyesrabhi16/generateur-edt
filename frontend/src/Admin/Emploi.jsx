@@ -11,6 +11,7 @@ import { faPen } from '@fortawesome/free-solid-svg-icons'
 import { faEye } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from "react";
 import Afficher from '../Admin/afficherEmploi'
+import AfficherEmp from '../Admin/Afficher'
 import axios from 'axios';
 import toast from 'react-hot-toast';
 function Emploi(){
@@ -35,7 +36,9 @@ function Emploi(){
     const [specialites, setSpecialites] = useState([]);
     const [supprime, setSupprime] = useState(false);
     const [emploi,setEmploi]=useState([]);
+    const [emploi2,setEmploi2]=useState([]);
     const [Show,setShow]=useState(false);
+    const [Show2,setShow2]=useState(false);
     const [groupes,setGroupes]=useState(0);
     const [id_sec,setIdsec]=useState(0);
     useEffect(() => {
@@ -74,11 +77,13 @@ function Emploi(){
                     const grouprfilter=res.data.groupes.filter((gr)=> gr.code_section===section.code_section);
                     setGroupes(grouprfilter.length);
                     grouprfilter.map((gr)=>{
-                       const id_groupe=gr.id_groupe
-                        axios.get('http://localhost:3000/EmploisTemps/groupes/'+id_groupe,{
+                       const id_groupe=parseInt(gr.id_groupe);
+                       const sem=semestre[semestre.length-1]
+                        axios.get('http://localhost:3000/EmploisTemps/groupes/'+id_groupe+"/"+sem+"/"+annee+"/"+niveau,{
                     withCredentials: true
-                  }).then((res)=>{
-                    console.log(res);
+                  }).then(()=>{
+                    updateSection[index].generated=true;
+                    setNewsections(updateSection);
                   }).catch(()=> {
                     updateSection[index].generated=false;
                     setNewsections(updateSection);
@@ -96,7 +101,7 @@ function Emploi(){
         }
         }
      
-    ,[sections]);
+    ,[sections,semestre,niveau,annee]);
     
     
     let user=Cookies.get('user');
@@ -137,13 +142,30 @@ function Emploi(){
     
    
   }
+  const affiche=(id_section)=>{
+                const sem=semestre[semestre.length-1];
+                axios.get("http://localhost:3000/creneau/section/"+id_section+'/'+sem+'/'+annee,{
+                    withCredentials: true
+                  }).then((res)=>{
+                    setEmploi2(res.data.Creneaux);
+                    console.log(emploi2)
+                    if(emploi2.Dimanche || emploi2.Samedi){
+                        setShow2(!Show2);
+                    }
+                  }).catch((err)=>{
+                    console.log(err)
+                  })
+  }
+  
+
   const handleAdd = () => {
     
     setShow(false);//fermer le formulaire
   };
     return(
-        <div className='flex flex-col w-full h-full main px-10 z-0 relative' id={Show ? 'mainflou' : undefined}>
+        <div className='flex flex-col w-full h-full main px-10 z-0 relative' id={(Show || Show2) ? 'mainflou' : undefined}>
             {Show?<Afficher onAdd={handleAdd} data={emploi} taille={groupes} db={debut} dr={dureeSeance} fn={fin} ps={dureePose} sm={semestre} an={annee} section={id_sec} />:null /*formulaire d'ajout*/}
+            {Show2?<AfficherEmp emploie={emploi2}/>:null}
             <header className="flex w-full  justify-between  mt-8 h-fit">
     <div className="">
     <p className="text-black  text-3xl font-bold">Emploi du temps</p>
@@ -366,7 +388,7 @@ function Emploi(){
                   {section.generated?
                   <>
                    <FontAwesomeIcon icon={faEye} className='ml-4 text-blue-700 cursor-pointer' onClick={()=>{
-                
+                    affiche(section.id_section);
             }}/>
                <FontAwesomeIcon icon={faPen} className='ml-8 text-blue-700 cursor-pointer' onClick={()=>{
                 
