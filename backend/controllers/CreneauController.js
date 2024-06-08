@@ -240,10 +240,10 @@ export const verificationCreneau = async (req, res) => {
     if (ensO.length > 0){
         console.log(ensO);
 
-        messages.push("Enseignant déjà occupé");
+        messages.push("Enseignant occupé");
     }
 
-    const ensCs = await getAllCreneauEns(matricule, annee, semestre, jour).catch(err =>{
+    const ensCs = await getAllCreneauEns(matricule, annee, semestre, jour, debut, fin).catch(err =>{
         console.log(err);
         return res.status(500).json({
             status: "Error",
@@ -252,18 +252,9 @@ export const verificationCreneau = async (req, res) => {
         });
     })
 
-    let ensCO = false;
-    for (let index = 0; index < ensCs.length; index++) {
-        const c = ensCs[index];
-        if ((c.debut <= debut && c.fin >= debut) || (c.debut <= fin && c.fin >= fin) ||  (c.debut >= debut && c.fin <= fin) || (c.debut <= debut && c.fin >= fin)){
-            console.log(c);
-            ensCO = true;
-            break;
-        }
-    }
-
-    if(ensCO){
-        messages.push("Enseignant déjà occupé");
+    if(ensCs.length > 0){
+        console.log(ensCs);
+        messages.push("Enseignant déjà affecté");
     }
     if (messages.length > 0){
         return res.status(400).json({
