@@ -37,6 +37,7 @@ function Emploi(){
     const [emploi,setEmploi]=useState([]);
     const [Show,setShow]=useState(false);
     const [groupes,setGroupes]=useState(0);
+    const [id_sec,setIdsec]=useState(0);
     useEffect(() => {
         axios.get("http://localhost:3000/Specialite/",{
             withCredentials: true
@@ -122,7 +123,8 @@ function Emploi(){
                 h:parseInt(duree[0]),
                 m:parseInt(duree[1])
             }),
-            minutes_entre_creneaux:parseInt(dureePose)
+            minutes_entre_creneaux:parseInt(dureePose),
+            annee
         }
     axios.post("http://localhost:3000/generate/"+id_section,data,{
                 withCredentials: true
@@ -141,7 +143,7 @@ function Emploi(){
   };
     return(
         <div className='flex flex-col w-full h-full main px-10 z-0 relative' id={Show ? 'mainflou' : undefined}>
-            {Show?<Afficher onAdd={handleAdd} data={emploi} taille={groupes} db={debut} dr={dureeSeance} fn={fin} ps={dureePose} />:null /*formulaire d'ajout*/}
+            {Show?<Afficher onAdd={handleAdd} data={emploi} taille={groupes} db={debut} dr={dureeSeance} fn={fin} ps={dureePose} sm={semestre} an={annee} section={id_sec} />:null /*formulaire d'ajout*/}
             <header className="flex w-full  justify-between  mt-8 h-fit">
     <div className="">
     <p className="text-black  text-3xl font-bold">Emploi du temps</p>
@@ -191,11 +193,11 @@ function Emploi(){
              className={reverse2 ? 'icone rotate' : 'icone'} />
              <ul className='list -bottom-28' style={{display:reverse2?'block':'none'}}>
                 <li onClick={()=>{
-                    setSemestre('semestre 1');
-                }} style={{borderLeft:semestre==='semestre 1'?'3px solid #0029FF':null}}>semestre 1</li>
+                    setSemestre("semestre 1");
+                }} style={{borderLeft:semestre==="semestre 1" ?'3px solid #0029FF':null}}>semestre 1</li>
                 <li onClick={()=>{
-                    setSemestre('semestre 2');
-                }} style={{borderLeft:semestre==='semestre 2'?'3px solid #0029FF':null}}>semestre 2</li>
+                    setSemestre("semestre 2");
+                }} style={{borderLeft:semestre==="semestre 2"?'3px solid #0029FF':null}}>semestre 2</li>
              </ul>
         </div>
 
@@ -379,7 +381,10 @@ function Emploi(){
                   
                
                :<>
-               <FontAwesomeIcon icon={faAdd} className=' ml-4 text-blue-700 text-xl cursor-pointer' onClick={()=>{generer(section.id_section)}}/>
+               <FontAwesomeIcon icon={faAdd} className=' ml-4 text-blue-700 text-xl cursor-pointer' onClick={()=>{
+                generer(section.id_section);
+                setIdsec(section.id_section);
+                }}/>
                
                </>}
                   </td>
