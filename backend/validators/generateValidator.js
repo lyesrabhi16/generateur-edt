@@ -22,9 +22,7 @@ export const saveValidator = (req, res, next) => {
 
   if (override === "true") {
     req.body.override = true;
-  } else if (override === "false") {
-    req.body.override = false;
-  }else if (override === undefined){
+  } else if (override === undefined || override === "false" ) {
     req.body.override = false;
   }else{
     return res.status(400).json({
