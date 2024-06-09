@@ -6,7 +6,8 @@ import { selectAllCreneau,
          insertOneCreneau,
          deleteOneCreneau,
          selectAllCreneauBySection,
-         verificationCreneau
+         verificationCreneau,
+         selectAllCreneauOfEnseignant
 
 } from "../controllers/CreneauController.js";
 
@@ -20,6 +21,7 @@ CreneauRouter.get('/:id_creneau', selectOneCreneauById  );
 
 CreneauRouter.get('/groupes/:id_groupe',selectAllCreneauByGroupe);
 CreneauRouter.get('/section/:id_section/:semestre/:annee',selectAllCreneauBySection);
+CreneauRouter.get('/enseignant/:matricule/:semestre/:annee',selectAllCreneauOfEnseignant);
 CreneauRouter.put('/:id_creneau',addCreneauValidators,putOneCreneau);
 CreneauRouter.post('/',addCreneauValidators,insertOneCreneau);
 CreneauRouter.delete('/:id_creneau',deleteOneCreneau);
