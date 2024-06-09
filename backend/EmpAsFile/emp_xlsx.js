@@ -893,6 +893,6 @@ const WhiteOrBlackFont = (bg_color) => {
 }
 
 
-export const correctTimeFormat=(hh_mm_ss) => {
-  return hh_mm_ss.split(":", 2).join("H");
+export const correctTimeFormat=(hh_mm_ss, sep = "H") => {
+  return hh_mm_ss.split(":", 2).join(sep);
 }
