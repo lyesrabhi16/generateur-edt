@@ -4,6 +4,7 @@ import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
 import '../Admin/Emploi.css'
 import image from '../assets/download.png'
 import { useState, useEffect } from "react";
+import { Navigate } from "react-router-dom";
 import axios from 'axios';
 function MainSection({page}){
     const [reverse,setReverse]=useState(false);
@@ -13,6 +14,13 @@ function MainSection({page}){
     const [selected2,setSelected2]=useState('Choisir semestre');
     const [code_specialite,setCodespecialite]=useState('Choisir specialite');
     const [specialites, setSpecialites] = useState([]);
+    const [emp, setEmp] = useState([]);
+    let user=Cookies.get('user');
+  if(user){
+    user=JSON.parse(user);
+  }
+  const np=user?user.nom+' '+user.prenom:'';
+  const role=user?user.role : '';
     useEffect(() => {
         axios.get("http://localhost:3000/Specialite/",{
             withCredentials: true
@@ -23,19 +31,29 @@ function MainSection({page}){
      
     },[]);
 
+    useEffect(() => {
+        if(selected!="Selectionner une annee" && selected2!="Choisir semestre"){
+            const matricule=user?user.matricule:0;
+            axios.get("http://localhost:3000/EnsCreneaux/EmploisTempsEns/"+matricule+"/Annee/"+selected+"/Semestres/"+selected2,{
+                withCredentials: true
+              }).then(respo =>{
+              setEmp(respo.data.EnsEtCreneau);
+             })
+             .catch(err => console.log(err));
+        }
+        
+     
+    },[selected,selected2]);
 
-
+console.log(emp);
     
     
     
-    let user=Cookies.get('user');
-  if(user){
-    user=JSON.parse(user);
-  }
-  const np=user?user.nom+' '+user.prenom:'';
-  const role=user?user.role : '';
+    
     return(
-        <div className='flex flex-col w-full h-full main px-10'>
+        <>
+        {user===undefined?<Navigate to="/"  replace={true} />:null}{/*pour savoir si le cookie est expire*/}
+         <div className='flex flex-col w-full h-full main px-10'>
             <header className="flex w-full  justify-between  mt-8 h-fit">
     <div className="">
     <p className="text-black  text-3xl font-bold">{page}</p>
@@ -59,24 +77,24 @@ function MainSection({page}){
              className={reverse ? 'icone rotate' : 'icone'} />
              <ul className='list -bottom-64' style={{display:reverse?'block':'none'}}>
                 <li onClick={()=>{
-                    setSelected('2023/2024');
-                }} style={{borderLeft:selected==='2023/2024'?'3px solid #0029FF':null}}>2023/2024</li>
+                    setSelected(2024);
+                }} style={{borderLeft:selected===2024?'3px solid #0029FF':null}}>2023/2024</li>
                 <li onClick={()=>{
-                    setSelected('2022/2023');
-                }} style={{borderLeft:selected==='2022/2023'?'3px solid #0029FF':null}}>2022/2023</li>
+                    setSelected(2023);
+                }} style={{borderLeft:selected===2023?'3px solid #0029FF':null}}>2022/2023</li>
                 <li onClick={()=>{
-                    setSelected('2021/2022');
-                }} style={{borderLeft:selected==='2021/2022'?'3px solid #0029FF':null}}>2021/2022</li>
+                    setSelected(2022);
+                }} style={{borderLeft:selected===2022?'3px solid #0029FF':null}}>2021/2022</li>
                 <li onClick={()=>{
-                    setSelected('2020/2021');
-                }} style={{borderLeft:selected==='2020/2021'?'3px solid #0029FF':null}}>2020/2021</li>
+                    setSelected(2021);
+                }} style={{borderLeft:selected===2021?'3px solid #0029FF':null}}>2020/2021</li>
                 <li onClick={()=>{
-                    setSelected('2019/2020');
-                }} style={{borderLeft:selected==='2019/2020'?'3px solid #0029FF':null}}>2019/2020</li>
+                    setSelected(2020);
+                }} style={{borderLeft:selected===2020?'3px solid #0029FF':null}}>2019/2020</li>
              </ul>
         </div>
 
-        <div className='drop relative' onClick={()=>{
+        {page!="Mon emploi"?<div className='drop relative' onClick={()=>{
             setReverse4(!reverse4);
         }}>
             <span className='text-black'>{code_specialite}</span>
@@ -92,7 +110,7 @@ function MainSection({page}){
                 
                
              </ul>
-        </div>
+        </div>:null}
 
         <div className='drop relative' onClick={()=>{
             setReverse2(!reverse2);
@@ -115,12 +133,14 @@ function MainSection({page}){
         
 
     </div>
-
+    
     
 
     
 </main>
         </div>
+        </>
+       
     )
 }
 export default MainSection;

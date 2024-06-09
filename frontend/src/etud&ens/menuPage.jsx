@@ -1,8 +1,7 @@
 import '../App.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
-
-
+import { Navigate } from "react-router-dom";
 import '../navbar.css'
 import MainSection from '../etud&ens/mainSection'
 import { useState } from "react";
@@ -16,7 +15,7 @@ function MenuPage() {
     user=JSON.parse(user);
   }
   return (
-    
+    <>
     <div className='flex w-full h-full bg-white' >
         <div className="flex flex-col w-56 background h-full h-screen pl-3 fixed">
             <div className=' flex pl-3 pt-8 items-center'>
@@ -68,7 +67,8 @@ function MenuPage() {
             <li className='list-none ml-3 text-white text-base child' >Master 2</li>
             </div>
 
-            {user.type==='Enseignant'?<>
+            {
+            user?user.type==='Enseignant'?<>
             <div  className='flex pl-3 items-center py-2 h-14  rounded-2xl parent  relative'onClick={()=>{
               setNomPage("Occupation")
             }}>
@@ -82,7 +82,7 @@ function MenuPage() {
            
             <li className='list-none ml-3 text-white text-base child' >Mon emploi</li>
             </div>
-            </>:null}
+            </>:null:null}
             
 
             
@@ -104,6 +104,8 @@ function MenuPage() {
         
     </div>
 
+    </>
+   
      
     
   )
