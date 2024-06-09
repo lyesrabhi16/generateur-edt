@@ -45,6 +45,25 @@ table{
     transition: all 0.3s;
     transform: scale(1.1);
   }
+.close{
+    height: 32px;
+    width: 32px;
+    background-color: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: -12px;
+    right: -28px;
+    border-radius: 50%;
+}
+.close:first-child{
+    font-size: 16px;
+}
+.close:first-child:hover{
+    color: white;
+    cursor: pointer;
+}
 
 
 
