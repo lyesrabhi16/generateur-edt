@@ -7,6 +7,7 @@ import exceljs from "exceljs";
 import { getAllEnsEtCreneauxById } from "../DB/EnsEtCreneaux.js";
 import { selectSection } from "../DB/section.js";
 import { selectGroupes } from "../DB/groupe.js";
+import { shuffleArray } from "../generation/generation.js";
 export const getEmpGroupeFile = async (
   id_groupe,
   semestre,
@@ -83,7 +84,38 @@ export const getEmpGroupeFile = async (
     { jours: "Mercredi" },
     { jours: "Jeudi" },
   ]);
+  let nbr_modules = 0;
+  const modules = {};
+  creneaux.forEach((creneau) => {
+    if (modules[creneau.code_module] === undefined) {
+      modules[creneau.code_module] = creneau.nom;
+      nbr_modules++;
+    }
+  }); 
+  const colors_p = [
+    'FFECB751',
+    'FFC0E591',
+    'FFFBF791',
+    'FF91A1F5',
+    'CCA3A3A3',
+    'FFE58AE7',
+    'FFF0996C',
+    'FFCDA393'
+  ];
 
+  // generate new colors if nbr_modules was given and is greater than colors.length
+  if(nbr_modules > colors_p.length){
+      for(let i = colors_p.length; i < nbr_modules; i++){
+          let color = randomARGBColor();
+          while (colors_p.find(c => c.substring(2) === color.substring(2))) {
+            color = randomARGBColor();
+          }
+          colors_p.push(color);
+          console.log("generated new color: ", color);
+      }
+  }
+  shuffleArray(colors_p);
+  let colors_i = 0;
   const colors = {};
   creneaux.forEach((creneau) => {
     const row = worksheet.getRow(convertJourToIndex(creneau.jour));
@@ -96,14 +128,11 @@ export const getEmpGroupeFile = async (
     const cell_local = row.getCell(`${correctTimeFormat(creneau.debut)} - ${correctTimeFormat(creneau.fin)}-local`);
     cell_local.value = ` ${creneau.code_local} `;
     if (colors[creneau.code_module] === undefined) {
-      let color = randomARGBColor();
-      while (Object.values(colors).find((c) => c === color)) {
-        color = randomARGBColor();
-      }
-      colors[creneau.code_module] = color;
+      colors[creneau.code_module] = colors_p[colors_i];
+      colors_i++;
     }
     cell_type.style = {
-      font: { bold: true },
+      font: { bold: true, color: WhiteOrBlackFont(colors[creneau.code_module].substring(2)) },
 
       fill: {
         type: "pattern",
@@ -122,7 +151,7 @@ export const getEmpGroupeFile = async (
       },
     };
     cell_module.style = {
-      font: { bold: true },
+      font: { bold: true, color: WhiteOrBlackFont(colors[creneau.code_module].substring(2))  },
 
       fill: {
         type: "pattern",
@@ -143,7 +172,7 @@ export const getEmpGroupeFile = async (
     };
 
     cell_local.style = {
-      font: { bold: true },
+      font: { bold: true, color: WhiteOrBlackFont(colors[creneau.code_module].substring(2))  },
 
       fill: {
         type: "pattern",
@@ -180,7 +209,7 @@ export const getEmpGroupeFile = async (
           cell_merge_c += 3;
         }
         cell.style = {
-          font: { bold: true },
+          font: { bold: true, color: WhiteOrBlackFont("FFA07A")  },
           fill: {
             type: "pattern",
             pattern: "solid",
@@ -201,7 +230,7 @@ export const getEmpGroupeFile = async (
     }
     const cellJours = row.getCell("jours");
     cellJours.style = {
-      font: { bold: true },
+      font: { bold: true, color: WhiteOrBlackFont("FFA07A") },
       fill: {
         type: "pattern",
         pattern: "solid",
@@ -290,7 +319,38 @@ export const getEmpEnsFile = async (matricule, semestre, annee, filename) => {
     { jours: "Mercredi" },
     { jours: "Jeudi" },
   ]);
+  let nbr_modules = 0;
+  const modules = {};
+  emp.forEach((creneau) => {
+    if (modules[creneau.code_module] === undefined) {
+      modules[creneau.code_module] = creneau.nom;
+      nbr_modules++;
+    }
+  }); 
+  const colors_p = [
+    'FFECB751',
+    'FFC0E591',
+    'FFFBF791',
+    'FF91A1F5',
+    'CCA3A3A3',
+    'FFE58AE7',
+    'FFF0996C',
+    'FFCDA393'
+  ];
 
+  // generate new colors if nbr_modules was given and is greater than colors.length
+  if(nbr_modules > colors_p.length){
+      for(let i = colors_p.length; i < nbr_modules; i++){
+          let color = randomARGBColor();
+          while (colors_p.find(c => c.substring(2) === color.substring(2))) {
+            color = randomARGBColor();
+          }
+          colors_p.push(color);
+          console.log("generated new color: ", color);
+      }
+  }
+  shuffleArray(colors_p);
+  let colors_i = 0;
   const colors = {};
   emp.forEach((creneau) => {
     const row = worksheet.getRow(convertJourToIndex(creneau.jour));
@@ -303,14 +363,11 @@ export const getEmpEnsFile = async (matricule, semestre, annee, filename) => {
     const cell_local = row.getCell(`${correctTimeFormat(creneau.debut)} - ${correctTimeFormat(creneau.fin)}-local`);
     cell_local.value = ` ${creneau.code_local} `;
     if (colors[creneau.code_module] === undefined) {
-      let color = randomARGBColor();
-      while (Object.values(colors).find((c) => c === color)) {
-        color = randomARGBColor();
-      }
-      colors[creneau.code_module] = color;
+      colors[creneau.code_module] = colors_p[colors_i];
+      colors_i++;
     }
     cell_type.style = {
-      font: { bold: true },
+      font: { bold: true,color: WhiteOrBlackFont(colors[creneau.code_module].substring(2))   },
 
       fill: {
         type: "pattern",
@@ -329,7 +386,7 @@ export const getEmpEnsFile = async (matricule, semestre, annee, filename) => {
       },
     };
     cell_module.style = {
-      font: { bold: true },
+      font: { bold: true, color: WhiteOrBlackFont(colors[creneau.code_module].substring(2))  },
 
       fill: {
         type: "pattern",
@@ -350,7 +407,7 @@ export const getEmpEnsFile = async (matricule, semestre, annee, filename) => {
     };
 
     cell_local.style = {
-      font: { bold: true },
+      font: { bold: true,color: WhiteOrBlackFont(colors[creneau.code_module].substring(2))  },
 
       fill: {
         type: "pattern",
@@ -387,7 +444,7 @@ export const getEmpEnsFile = async (matricule, semestre, annee, filename) => {
           cell_merge_c += 3;
         }
         cell.style = {
-          font: { bold: true },
+          font: { bold: true , color: WhiteOrBlackFont("FFA07A") },
           fill: {
             type: "pattern",
             pattern: "solid",
@@ -408,7 +465,7 @@ export const getEmpEnsFile = async (matricule, semestre, annee, filename) => {
     }
     const cellJours = row.getCell("jours");
     cellJours.style = {
-      font: { bold: true },
+      font: { bold: true , color: WhiteOrBlackFont("FFA07A") },
       fill: {
         type: "pattern",
         pattern: "solid",
@@ -533,6 +590,39 @@ export const getEmpSectionFile = async (
     cell_merge_r += gpes.length;
   });
 
+  let nbr_modules = 0;
+  const modules = {};
+  creneaux.forEach((creneau) => {
+    if (modules[creneau.code_module] === undefined) {
+      modules[creneau.code_module] = creneau.nom;
+      nbr_modules++;
+    }
+  }); 
+  const colors_p = [
+    'FFECB751',
+    'FFC0E591',
+    'FFFBF791',
+    'FF91A1F5',
+    'CCA3A3A3',
+    'FFE58AE7',
+    'FFF0996C',
+    'FFCDA393'
+  ];
+
+  // generate new colors if nbr_modules was given and is greater than colors.length
+  if(nbr_modules > colors_p.length){
+      for(let i = colors_p.length; i < nbr_modules; i++){
+          let color = randomARGBColor();
+          while (colors_p.find(c => c.substring(2) === color.substring(2))) {
+            color = randomARGBColor();
+          }
+          colors_p.push(color);
+          console.log("generated new color: ", color);
+      }
+  }
+  shuffleArray(colors_p);
+
+  let colors_i = 0;
   const colors = {};
   creneaux.forEach((creneau) => {
     const row = worksheet.getRow(convertJourToIndex(creneau.jour, joursL, gpes) + gpes.findIndex(g => g === creneau.code_groupe));
@@ -545,14 +635,12 @@ export const getEmpSectionFile = async (
     const cell_local = row.getCell(`${correctTimeFormat(creneau.debut)} - ${correctTimeFormat(creneau.fin)}-local`);
     cell_local.value = ` ${creneau.code_local} `;
     if (colors[creneau.code_module] === undefined) {
-      let color = randomARGBColor();
-      while (Object.values(colors).find((c) => c === color)) {
-        color = randomARGBColor();
-      }
-      colors[creneau.code_module] = color;
+      colors[creneau.code_module] = colors_p[colors_i];
+      colors_i++;
     }
+
     cell_type.style = {
-      font: { bold: true },
+      font: { bold: true,color: WhiteOrBlackFont(colors[creneau.code_module].substring(2))  },
 
       fill: {
         type: "pattern",
@@ -571,7 +659,7 @@ export const getEmpSectionFile = async (
       },
     };
     cell_module.style = {
-      font: { bold: true },
+      font: { bold: true,color: WhiteOrBlackFont(colors[creneau.code_module].substring(2))  },
 
       fill: {
         type: "pattern",
@@ -592,7 +680,7 @@ export const getEmpSectionFile = async (
     };
 
     cell_local.style = {
-      font: { bold: true },
+      font: { bold: true,color: WhiteOrBlackFont(colors[creneau.code_module].substring(2))  },
 
       fill: {
         type: "pattern",
@@ -611,6 +699,7 @@ export const getEmpSectionFile = async (
       },
     };
   });
+  console.log(colors);
 
   worksheet.eachRow((row) => {
     row.height = 25;
@@ -629,7 +718,7 @@ export const getEmpSectionFile = async (
           cell_merge_c += 3;
         }
         cell.style = {
-          font: { bold: true },
+          font: { bold: true, color: WhiteOrBlackFont("FFA07A")  },
           fill: {
             type: "pattern",
             pattern: "solid",
@@ -650,7 +739,7 @@ export const getEmpSectionFile = async (
     }
     const cellJours = row.getCell("jours");
     cellJours.style = {
-      font: { bold: true },
+      font: { bold: true, color: WhiteOrBlackFont("FFA07A")  },
       fill: {
         type: "pattern",
         pattern: "solid",
@@ -670,7 +759,7 @@ export const getEmpSectionFile = async (
     };
     const cellGpe = row.getCell("gpe");
     cellGpe.style = {
-      font: { bold: true },
+      font: { bold: true, color: WhiteOrBlackFont("FFA07A") },
       fill: {
         type: "pattern",
         pattern: "solid",
@@ -786,8 +875,23 @@ const randomARGBColor = () => {
   let hg = g.toString(16).padStart(2, "0");
   let hb = b.toString(16).padStart(2, "0");
 
-  return hr + hg + hb;
+  return 'FF' + hr + hg + hb;
 }
+
+const hexToRgb = (hex) =>{
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
+}
+const WhiteOrBlackFont = (bg_color) => {
+  const rgb = hexToRgb(bg_color);
+  const c = (rgb.r*0.299 + rgb.g*0.587 + rgb.b*0.114);
+  return c <= 186 ? "FFFFFF" : "000000";
+}
+
 
 export const correctTimeFormat=(hh_mm_ss) => {
   return hh_mm_ss.split(":", 2).join("H");
