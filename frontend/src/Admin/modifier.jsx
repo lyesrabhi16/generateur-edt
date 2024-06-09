@@ -135,6 +135,7 @@ function Modifier({onAdd,emploie,an,section,semes}){
             data:JSON.stringify(nouvelEmploi),
             semestre:semes[semes.length-1],
             annee:an,
+            override:"true"
         }
         axios.post("http://localhost:3000/generate/save/"+section,info,{
             withCredentials: true
