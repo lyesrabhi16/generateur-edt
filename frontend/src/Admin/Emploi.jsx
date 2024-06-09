@@ -12,6 +12,7 @@ import { faEye } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from "react";
 import Afficher from '../Admin/afficherEmploi'
 import AfficherEmp from '../Admin/Afficher'
+import Modifier from '../Admin/modifier'
 import axios from 'axios';
 import toast from 'react-hot-toast';
 function Emploi(){
@@ -39,6 +40,8 @@ function Emploi(){
     const [emploi2,setEmploi2]=useState([]);
     const [Show,setShow]=useState(false);
     const [Show2,setShow2]=useState(false);
+    const [Show3,setShow3]=useState(false);
+    const [terminer,setTerminer]=useState(false);
     const [groupes,setGroupes]=useState(0);
     const [id_sec,setIdsec]=useState(0);
     useEffect(() => {
@@ -101,7 +104,7 @@ function Emploi(){
         }
         }
      
-    ,[sections,semestre,niveau,annee]);
+    ,[sections,semestre,niveau,annee,supprime,terminer]);
     
     
     let user=Cookies.get('user');
@@ -112,7 +115,7 @@ function Emploi(){
   const role=user?user.role : '';
 
   const generer=(id_section)=>{
-    
+    if(debut!="Heure de début" && fin!="Heure de fin" && dureePose!="durée pose" && dureeSeance!="durée seance"){
         const duree=dureeSeance.split('h');
         const db=debut.split('h');
         const fn=fin.split('h');
@@ -139,10 +142,14 @@ function Emploi(){
               }).catch((err)=>{
                 console.log(err)
               })
+    }else{
+        toast.error("vous devez selectionner tous les champs")
+    }
+        
     
    
   }
-  const affiche=(id_section)=>{
+  const affiche=(id_section,respo)=>{
                 const sem=semestre[semestre.length-1];
                 axios.get("http://localhost:3000/creneau/section/"+id_section+'/'+sem+'/'+annee,{
                     withCredentials: true
@@ -150,7 +157,12 @@ function Emploi(){
                     setEmploi2(res.data.Creneaux);
                     console.log(emploi2)
                     if(emploi2.Dimanche || emploi2.Samedi){
-                        setShow2(!Show2);
+                        if(respo==1){
+                            setShow3(!Show3);
+                        }else{
+                            setShow2(!Show2);
+                        }
+                        
                     }
                   }).catch((err)=>{
                     console.log(err)
@@ -161,11 +173,21 @@ function Emploi(){
   const handleAdd = () => {
     
     setShow(false);//fermer le formulaire
+    setTerminer(!terminer);//pour faire un refresh a la table
+  };
+  const handleAdd2 = () => {
+    
+    setShow2(false);//fermer le formulaire
+  };
+  const handleAdd3 = () => {
+    
+    setShow3(false);//fermer le formulaire
   };
     return(
-        <div className='flex flex-col w-full h-full main px-10 z-0 relative' id={(Show || Show2) ? 'mainflou' : undefined}>
+        <div className='flex flex-col w-full h-full main px-10 z-0 relative' id={(Show || Show2 || Show3) ? 'mainflou' : undefined}>
             {Show?<Afficher onAdd={handleAdd} data={emploi} taille={groupes} db={debut} dr={dureeSeance} fn={fin} ps={dureePose} sm={semestre} an={annee} section={id_sec} />:null /*formulaire d'ajout*/}
-            {Show2?<AfficherEmp emploie={emploi2}/>:null}
+            {Show2?<AfficherEmp onAdd={handleAdd2} emploie={emploi2}/>:null}
+            {Show3?<Modifier onAdd={handleAdd3} emploie={emploi2}/>:null}
             <header className="flex w-full  justify-between  mt-8 h-fit">
     <div className="">
     <p className="text-black  text-3xl font-bold">Emploi du temps</p>
@@ -391,11 +413,30 @@ function Emploi(){
                     affiche(section.id_section);
             }}/>
                <FontAwesomeIcon icon={faPen} className='ml-8 text-blue-700 cursor-pointer' onClick={()=>{
-                
+                affiche(section.id_section,1);
                 }}/>
                 <FontAwesomeIcon icon={faTrash} className='ml-8 text-red-600 cursor-pointer' onClick={()=>{
-                 
-                   setSupprime(!supprime);
+                 axios.get('http://localhost:3000/groupe',{
+                    withCredentials: true
+                  }).then((res)=>{
+                    let success=false;
+                    const grouprfilter=res.data.groupes.filter((gr)=> gr.code_section===section.code_section);
+                    grouprfilter.map((gr)=>{
+                        const id_groupe=parseInt(gr.id_groupe);
+                        axios.delete('http://localhost:3000/EmploisTemps/groupes/'+id_groupe,{
+                            withCredentials: true
+                          }).then(()=>{
+                            if(success==false){
+                                toast.success("suppresion avec succes");
+                            }
+                            success=true;
+                            setSupprime(!supprime);
+                          }).catch(()=> {
+                            toast.error("suppression echoué");
+                        })
+                    })
+                  })
+                   
                  
                  
                }}/>

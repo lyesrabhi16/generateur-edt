@@ -4,6 +4,8 @@ import './modifierEmp.css'
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
 function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
     const [Show, setShow] = useState(false);
     const [emploi, setEmploi] = useState(data);
@@ -11,9 +13,11 @@ function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
         setShow(false);//fermer le formulaire
         setEmploi(emp);
       };
-    
     return(
         <div className="z-10 aksil bg-white px-8 pt-8 pb-24 rounded-lg" id={Show ? 'flou' : undefined}>
+            <div className='close' onClick={()=>{onAdd()}}>
+                <FontAwesomeIcon icon={faXmark}/>
+            </div>
             {Show?<Modify emploi={emploi} groupes={taille} debut={db} duree={dr} fin={fn} pose={ps} onAdd={handleAdd}/>:null}
             <table className='emploi'>
                 <tr className='head'>
