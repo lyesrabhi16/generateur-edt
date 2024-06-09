@@ -6,7 +6,8 @@ import { getAllCreneau,
          deleteCreneau,
          getAllCreneauBySection,
          getCreneaux,
-         getAllCreneauOfEnseignant
+         getAllCreneauOfEnseignant,
+         getAllCreneauOfGroupe
 } from "../DB/Creneau.js";
 import { getAllCreneauEns } from "../DB/EnsEtCreneaux.js";
 import { getAllEnsetOccupByMatricule } from "../DB/EnsEtOccup.js";
@@ -249,6 +250,92 @@ export const selectAllCreneauOfEnseignant =(req,res)=>{
         const response={
             status:"Success",
             message:"Tout les creneaux sont trouvés de l'enseignant: "+ matricule ,
+            Creneaux: creneaux
+           }
+           res.status(200).json(response);
+     }).catch((err)=>{
+        const response={
+            status:"Error",
+            message:"Erreur pendant la recherche des creneaux",
+            erreur:err
+           }
+          res.status(500).json(response);
+    })
+
+}
+
+export const selectAllCreneauOfGroupe =(req,res)=>{
+    const { id_groupe, semestre, annee } = req.params;
+    console.log(`GET ALL CRENEAUX ENS ${id_groupe} ${semestre} ${annee}`);
+     getAllCreneauOfGroupe(id_groupe, semestre, annee).then((data)=>{
+
+
+        let horaires = [];
+        data.forEach(creneau => {
+            if(!horaires.find((h) => h===`${correctTimeFormat(creneau.debut)}-${correctTimeFormat(creneau.fin)}` )){
+                horaires.push(`${correctTimeFormat(creneau.debut)}-${correctTimeFormat(creneau.fin)}`);
+            }
+        });
+        horaires.sort();
+        const jours = ['Samedi','Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi'];
+        const creneaux = {};
+        jours.forEach(jour => {
+            creneaux[jour] = {};
+            horaires.forEach((h,i) => {
+                const h_split = h.split("-", 2);
+                creneaux[jour][""+i] = {
+                    debut: h_split[0],
+                    fin  : h_split[1],
+                    info: {}
+                };
+            })
+        });
+        data.forEach(c => {   
+            creneaux[c.jour][horaires.findIndex(h => h === `${correctTimeFormat(c.debut)}-${correctTimeFormat(c.fin)}`)]["info"] = {
+                "seance" : {
+                    "id_seance": c.id_seance,
+                    "type": c.type_seance,
+                    "niveau": c.niveau,
+                    "semestre": c.semestre,
+                    "nom_module": c.nom_module,
+                    "nom_specialite": c.nom_specialite,
+                    "code_module": c.code_module,
+                    "code_specialite": c.code_specialite
+                },
+                "locale": {
+                    "code_local": c.code_local
+                },
+                "enseignant": {
+                    "matricule": c.matricule,
+                    "nom": c.nom,
+                    "prenom": c.prenom,
+                    "role": c.role,
+                    "charges": c.charges,
+                },
+                "groupe": {
+                    "id_groupe": c.id_groupe,
+                    "code_groupe": c.code_groupe,
+                    "id_section": c.id_section,
+                    "code_section": c.code_section,
+                    "niveau": c.niveau,
+                    "code_specialite": c.code_specialite,
+                    "nom_specialite": c.nom_specialite,
+                },
+                "creneau": {
+                    "id_creneau": c.id_creneau,
+                    "debut": c.debut,
+                    "fin": c.fin,
+                    "jour": c.jour,
+                    "id_emp": c.id_emp,
+                }
+            };
+        
+        
+        });
+
+        const response={
+            status:"Success",
+            message:"Tout les creneaux sont trouvés du groupe: "+ id_groupe ,
             Creneaux: creneaux
            }
            res.status(200).json(response);
