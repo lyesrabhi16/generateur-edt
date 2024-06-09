@@ -89,7 +89,7 @@ function Occupation({page}){
 
 
 </div>
-<table className='mt-10 z-0 w-full' >
+<table className='mt-10 z-0 w-full tabe' >
     <tr className='head'>
     <td>numero</td> 
     <td>Jour</td>

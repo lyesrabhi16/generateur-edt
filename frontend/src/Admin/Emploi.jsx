@@ -187,7 +187,7 @@ function Emploi(){
         <div className='flex flex-col w-full h-full main px-10 z-0 relative' id={(Show || Show2 || Show3) ? 'mainflou' : undefined}>
             {Show?<Afficher onAdd={handleAdd} data={emploi} taille={groupes} db={debut} dr={dureeSeance} fn={fin} ps={dureePose} sm={semestre} an={annee} section={id_sec} />:null /*formulaire d'ajout*/}
             {Show2?<AfficherEmp onAdd={handleAdd2} emploie={emploi2}/>:null}
-            {Show3?<Modifier onAdd={handleAdd3} emploie={emploi2}/>:null}
+            {Show3?<Modifier onAdd={handleAdd3} emploie={emploi2} an={annee} section={id_sec} semes={semestre}/>:null}
             <header className="flex w-full  justify-between  mt-8 h-fit">
     <div className="">
     <p className="text-black  text-3xl font-bold">Emploi du temps</p>
@@ -414,6 +414,7 @@ function Emploi(){
             }}/>
                <FontAwesomeIcon icon={faPen} className='ml-8 text-blue-700 cursor-pointer' onClick={()=>{
                 affiche(section.id_section,1);
+                setIdsec(section.id_section);
                 }}/>
                 <FontAwesomeIcon icon={faTrash} className='ml-8 text-red-600 cursor-pointer' onClick={()=>{
                  axios.get('http://localhost:3000/groupe',{

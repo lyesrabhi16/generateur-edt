@@ -98,6 +98,32 @@ export const getAllCreneauBySection = (id_section, semestre, annee) =>{
   WHERE s.id_section=$1 and emp.semestre=$2 and emp.annee=$3 order by jour`, [id_section, semestre, annee] );   
 }
 
+export const getAllCreneauOfEnseignant = (matricule, semestre, annee) =>{
+   return db.manyOrNone(`SELECT c.*, g.id_groupe, g.code_groupe, s.*, sp.nom_specialite, sc.type as type_seance, m.*, p.*, emp.semestre, emp.annee
+   FROM Creneau c
+         join emploisdutemps emp on c.id_emp = emp.id_emp
+         join groupe g on emp.id_groupe = g.id_groupe
+         join section s on g.id_section = s.id_section
+         join specialite sp on s.code_specialite = sp.code_specialite
+         join seance sc on c.id_seance = sc.id_seance
+         join module m on sc.code_module = m.code_module
+ join ensEtcreneaux ensc on c.id_creneau = ensc.id_creneau
+ join personne p on ensc.matricule = p.matricule
+  WHERE p.matricule=$1 and emp.semestre=$2 and emp.annee=$3 order by jour`, [matricule, semestre, annee] );   
+}
+export const getAllCreneauOfGroupe = (id_groupe, semestre, annee) =>{
+   return db.manyOrNone(`SELECT c.*, g.id_groupe, g.code_groupe, s.*, sp.nom_specialite, sc.type as type_seance, m.*, p.*, emp.semestre, emp.annee
+   FROM Creneau c
+         join emploisdutemps emp on c.id_emp = emp.id_emp
+         join groupe g on emp.id_groupe = g.id_groupe
+         join section s on g.id_section = s.id_section
+         join specialite sp on s.code_specialite = sp.code_specialite
+         join seance sc on c.id_seance = sc.id_seance
+         join module m on sc.code_module = m.code_module
+ join ensEtcreneaux ensc on c.id_creneau = ensc.id_creneau
+ join personne p on ensc.matricule = p.matricule
+  WHERE g.id_groupe=$1 and emp.semestre=$2 and emp.annee=$3 order by jour`, [id_groupe, semestre, annee] );   
+}
 export const getCreneaux = (debut, fin, jour, local, id_creneau) => {
    const values = [debut, fin, jour, local];
    let sql = `

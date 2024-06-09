@@ -6,6 +6,9 @@ import image from '../assets/download.png'
 import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import axios from 'axios';
+import img from '../assets/360_F_134863241_QNHFFoMB6co8VdC1XY2VcDUPVWl9a3or.jpg'
+import toast from 'react-hot-toast';
+import './emp.css'
 function MainSection({page}){
     const [reverse,setReverse]=useState(false);
     const [reverse2,setReverse2]=useState(false);
@@ -15,6 +18,8 @@ function MainSection({page}){
     const [code_specialite,setCodespecialite]=useState('Choisir specialite');
     const [specialites, setSpecialites] = useState([]);
     const [emp, setEmp] = useState([]);
+    const [sections, setSections] = useState([]);
+    const [newsections, setNewsections] = useState(sections);
     let user=Cookies.get('user');
   if(user){
     user=JSON.parse(user);
@@ -32,12 +37,12 @@ function MainSection({page}){
     },[]);
 
     useEffect(() => {
-        if(selected!="Selectionner une annee" && selected2!="Choisir semestre"){
+        if(selected!="Selectionner une annee" && selected2!="Choisir semestre" && page=="Mon emploi"){
             const matricule=user?user.matricule:0;
-            axios.get("http://localhost:3000/EnsCreneaux/EmploisTempsEns/"+matricule+"/Annee/"+selected+"/Semestres/"+selected2,{
+            axios.get("http://localhost:3000/Creneau/enseignant/"+matricule+"/"+selected2+"/"+selected,{
                 withCredentials: true
               }).then(respo =>{
-              setEmp(respo.data.EnsEtCreneau);
+              setEmp(respo.data.Creneaux);
              })
              .catch(err => console.log(err));
         }
@@ -45,9 +50,64 @@ function MainSection({page}){
      
     },[selected,selected2]);
 
-console.log(emp);
+    useEffect(()=>{
+        setEmp([]);
+        setSelected("Selectionner une annee");
+        setSelected2("Choisir semestre");
+        setCodespecialite('Choisir specialite');
+        setSections([]);
+    },[page])
+
+    useEffect(() => {
+        if(page!="Mon emploi" && page!="Occupation"){
+            axios.get("http://localhost:3000/section",{
+                withCredentials: true
+              }).then(respo =>{
+                const sectionsFiltres = respo.data.sections.filter(section => section.niveau === page && section.code_specialite===code_specialite);
+                const updatesection = sectionsFiltres.map(section => ({ ...section, generated: true }));
+              setSections(updatesection);
+             })
+             .catch(err => console.log(err));
+        }
+        
+     
+    },[code_specialite,page]);
     
-    
+    useEffect(() => {
+        const updateSection=[... sections];
+        if(page!="Mon emploi" && page!="Occupation"){
+        if(sections.length>0){
+            sections.map((section,index)=>{
+            
+                axios.get('http://localhost:3000/groupe',{
+                    withCredentials: true
+                  }).then((res)=>{                                                             
+                    const grouprfilter=res.data.groupes.filter((gr)=> gr.code_section===section.code_section);
+                    grouprfilter.map((gr)=>{
+                       const id_groupe=parseInt(gr.id_groupe);
+                        axios.get('http://localhost:3000/EmploisTemps/groupes/'+id_groupe+"/"+selected2+"/"+selected+"/"+page,{
+                    withCredentials: true
+                  }).then(()=>{
+                    updateSection[index].generated=true;
+                    setNewsections(updateSection);
+                  }).catch(()=> {
+                    updateSection[index].generated=false;
+                    setNewsections(updateSection);
+                })
+                    })
+                   
+        
+                  })
+                .catch(err=>{
+                    console.log(err)
+                });
+            })
+        }else{
+            setNewsections([]);//refresh le tableau d'affichage et afficher rien s'il n'existe pas de section pour niveau et la specialite choisie
+        }
+        }
+    }
+    ,[sections,selected2,page,selected]);
     
     
     return(
@@ -133,6 +193,84 @@ console.log(emp);
         
 
     </div>
+    {
+        emp && emp.Dimanche && emp.Dimanche[0] && emp.Dimanche[0].debut?<>
+        <div className='flex w-full'>
+        <table className='enseignant mt-10 w-full'>
+          <tr className='head enstr'>
+            <td className='head w-48'>Jour/heure</td>
+            {Object.keys(emp.Dimanche).map((element, index) => (
+              <td key={index} className='head w-48'>
+                {emp.Dimanche[element].debut}-{emp.Dimanche[element].fin}
+              </td>
+            ))}
+          </tr>
+        
+       
+        {Object.keys(emp).map((jour, index) => {
+            return(
+                <tr key={index } className='enstr'>
+                    <td className='head'>{jour}</td>
+                    {Object.keys(emp[jour]).map((heure,ind)=>{
+                        if(emp[jour][heure].info){
+                            const innerseance=emp[jour][heure].info;
+                            return(
+                                <td key={ind}>
+                                {innerseance && innerseance.seance && innerseance.locale ? 
+                                    `${innerseance.seance.type} ${innerseance.seance.code_module} (${innerseance.locale.code_local} ${innerseance.seance.niveau}${innerseance.seance.code_specialite})` 
+                                    : null}
+                            </td>
+                            )
+                        }else{
+                            return(
+                                <td key={ind}></td>
+                            )
+                        }
+                    })}
+                </tr>
+            )
+        })}
+        
+
+        </table>
+
+    </div>
+    <div className='w-full flex justify-center mt-4'>
+    <button type="submit" className='flex w-48 py-1 px-2 rounded-xl justify-center text-white bg-blue-700' onClick={()=>{
+        const matricule=user?user.matricule:0;
+        window.location.href="http://localhost:3000/EmploisTemps/enseignant/"+matricule+"/"+selected2+"/"+selected+"/xlsx";
+        
+    }}>
+             Telecharger
+            </button>
+    </div>
+        </>
+        :null
+    }
+    {newsections?<div className="w-full flex flex-wrap mt-8 ">
+    {newsections.map((section,index)=>{
+        if(section.generated){
+            return(
+                <div key={index} className='w-96 mr-6 py-6 px-4  emploi' >
+                    <img className='h-3/4 img' src={img}>
+                        
+                    </img>
+                    <div className="w-full flex justify-between mt-8">
+                        <p className="font-bold">Section {section.code_section}</p>
+                        <button type="submit" className='flex w-48 py-1 px-2 rounded-xl justify-center text-white bg-blue-700' onClick={()=>{
+                         window.location.href="http://localhost:3000/EmploisTemps/section/"+section.id_section+"/"+selected2+"/"+selected+"/xlsx";
+        
+    }}>
+             Telecharger
+            </button>
+                    </div>
+                </div>
+            )
+        }
+    })}
+    </div>:null}
+    
+    
     
     
 
