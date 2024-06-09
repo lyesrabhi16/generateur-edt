@@ -127,11 +127,61 @@ export const EmailSend = () => {
     }
   };
 
+  const download = () => {
+    const id = toast.loading("Starting Download...");
+    axios
+      .get("http://localhost:3000/emploistemps/section/1/S2/2024/xlsx", {
+        withCredentials: true,
+        responseType: "blob",
+      })
+      .then((res) => {
+
+        console.log(res.headers);
+        // create file link in browser's memory
+        const href = URL.createObjectURL(res.data);
+
+        // create "a" HTML element with href to file & click
+        const link = document.createElement("a");
+        link.href = href; 
+        // Extract filename from header
+        const filename = res.headers['content-disposition']
+          .split(';')
+          .find(n => n.includes('filename='))
+          .replace('filename=', '')
+          .replace('"', '')
+          .replace('"', '')
+          .trim()
+        ;
+        link.setAttribute("download", filename); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+
+        // clean up "a" element & remove ObjectURL
+        document.body.removeChild(link);
+        URL.revokeObjectURL(href);
+
+        toast.success("Success", { id: id });
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.success("Failed", { id: id });
+      });
+  };
+
   return (
     <>
       <div>EmailSend</div>
-      <button className="btn bg-primary hover:bg-accent text-white" onClick={trySend}>
+      <button
+        className="btn bg-primary hover:bg-accent text-white"
+        onClick={trySend}
+      >
         {params.access_token ? "Send" : "Login"}
+      </button>
+      <button
+        className="btn bg-primary hover:bg-accent text-white"
+        onClick={download}
+      >
+        Download
       </button>
     </>
   );

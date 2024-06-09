@@ -523,7 +523,7 @@ const formatTime = (d) =>{
 }
 
 // Fisher–Yates (aka Knuth) Shuffle algorithm
-function shuffleArray(array) {
+export const shuffleArray = (array) => {
     let currentIndex = array.length;
   
     // While there remain elements to shuffle...
