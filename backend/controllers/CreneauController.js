@@ -93,8 +93,8 @@ export const selectAllCreneauBySection =(req,res)=>{
         let horaires = [];
         let groupes = [];
         data.forEach(creneau => {
-            if(!horaires.find((h) => h===`${correctTimeFormat(creneau.debut)}-${correctTimeFormat(creneau.fin)}` )){
-                horaires.push(`${correctTimeFormat(creneau.debut)}-${correctTimeFormat(creneau.fin)}`);
+            if(!horaires.find((h) => h===`${correctTimeFormat(creneau.debut, ':')}-${correctTimeFormat(creneau.fin, ':')}` )){
+                horaires.push(`${correctTimeFormat(creneau.debut, ':')}-${correctTimeFormat(creneau.fin, ':')}`);
             }
             if(!groupes.find((g) => g===creneau.code_groupe)){
                 groupes.push(creneau.code_groupe);
@@ -119,7 +119,7 @@ export const selectAllCreneauBySection =(req,res)=>{
         });
 
         data.forEach(c => {        
-            creneaux[c.jour][horaires.findIndex(h => h === `${correctTimeFormat(c.debut)}-${correctTimeFormat(c.fin)}`)][c.code_groupe] = {
+            creneaux[c.jour][horaires.findIndex(h => h === `${correctTimeFormat(c.debut, ':')}-${correctTimeFormat(c.fin, ':')}`)][c.code_groupe] = {
                 "seance" : {
                     "id_seance": c.id_seance,
                     "type": c.type_seance,
@@ -186,8 +186,8 @@ export const selectAllCreneauOfEnseignant =(req,res)=>{
 
         let horaires = [];
         data.forEach(creneau => {
-            if(!horaires.find((h) => h===`${correctTimeFormat(creneau.debut)}-${correctTimeFormat(creneau.fin)}` )){
-                horaires.push(`${correctTimeFormat(creneau.debut)}-${correctTimeFormat(creneau.fin)}`);
+            if(!horaires.find((h) => h===`${correctTimeFormat(creneau.debut, ':')}-${correctTimeFormat(creneau.fin, ':')}` )){
+                horaires.push(`${correctTimeFormat(creneau.debut, ':')}-${correctTimeFormat(creneau.fin, ':')}`);
             }
         });
         horaires.sort();
@@ -205,7 +205,7 @@ export const selectAllCreneauOfEnseignant =(req,res)=>{
             })
         });
         data.forEach(c => {   
-            creneaux[c.jour][horaires.findIndex(h => h === `${correctTimeFormat(c.debut)}-${correctTimeFormat(c.fin)}`)]["info"] = {
+            creneaux[c.jour][horaires.findIndex(h => h === `${correctTimeFormat(c.debut, ':')}-${correctTimeFormat(c.fin, ':')}`)]["info"] = {
                 "seance" : {
                     "id_seance": c.id_seance,
                     "type": c.type_seance,
@@ -272,8 +272,8 @@ export const selectAllCreneauOfGroupe =(req,res)=>{
 
         let horaires = [];
         data.forEach(creneau => {
-            if(!horaires.find((h) => h===`${correctTimeFormat(creneau.debut)}-${correctTimeFormat(creneau.fin)}` )){
-                horaires.push(`${correctTimeFormat(creneau.debut)}-${correctTimeFormat(creneau.fin)}`);
+            if(!horaires.find((h) => h===`${correctTimeFormat(creneau.debut, ':')}-${correctTimeFormat(creneau.fin, ':')}` )){
+                horaires.push(`${correctTimeFormat(creneau.debut, ':')}-${correctTimeFormat(creneau.fin, ':')}`);
             }
         });
         horaires.sort();
@@ -291,7 +291,7 @@ export const selectAllCreneauOfGroupe =(req,res)=>{
             })
         });
         data.forEach(c => {   
-            creneaux[c.jour][horaires.findIndex(h => h === `${correctTimeFormat(c.debut)}-${correctTimeFormat(c.fin)}`)]["info"] = {
+            creneaux[c.jour][horaires.findIndex(h => h === `${correctTimeFormat(c.debut, ':')}-${correctTimeFormat(c.fin, ':')}`)]["info"] = {
                 "seance" : {
                     "id_seance": c.id_seance,
                     "type": c.type_seance,
