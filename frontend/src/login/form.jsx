@@ -22,8 +22,8 @@ function Form() {
     }else{
       setAdmin('Etudiant')
     }
-    Cookies.set('user', JSON.stringify(res.data.personne), { expires: 1/24, secure: true, sameSite: 'strict' });
-    Cookies.set('token', res.data.token, { expires: 1/24, secure: true, sameSite: 'strict' });
+    Cookies.set('user', JSON.stringify(res.data.personne), { expires: rememberMe ? 1 : 1/24, secure: true, sameSite: 'strict' });
+    Cookies.set('token', res.data.token, { expires: rememberMe ? 1 : 1/24, secure: true, sameSite: 'strict' });
   })
             .catch(err=>{
               toast.error("erreur");

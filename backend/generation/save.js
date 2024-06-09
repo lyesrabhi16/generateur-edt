@@ -84,7 +84,7 @@ export const save = async (req, res) => {
     for(const jour in data){
       for(const period in data[jour]){
         const c = data[jour][period][groupe.code_groupe];
-        if(c !== undefined){
+        if(c !== undefined && c.seance !== undefined){
           c.debut = data[jour][period]["debut"];
           c.fin = data[jour][period]["fin"];
           c.jour = jour;
