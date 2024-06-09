@@ -100,7 +100,7 @@ function MenuPage() {
             
 
         </div>
-        {nomPage==='Occupation'?<Occupation page={nomPage}/>:<MainSection page={nomPage}/>}
+        {nomPage==='Occupation'?<Occupation page={nomPage}/>:<MainSection page={nomPage} />}
         
     </div>
 

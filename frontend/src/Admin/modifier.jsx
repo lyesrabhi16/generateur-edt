@@ -2,7 +2,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from "react";
 import './modifierEmp.css'
-function Modifier({onAdd,emploie}){
+import axios from 'axios';
+import toast from 'react-hot-toast';
+function Modifier({onAdd,emploie,an,section,semes}){
     const [jour1, setJour1] = useState('');
     const [seance1, setSeance1] = useState('');
     const [groupe1, setgroupe1] = useState('');
@@ -10,13 +12,151 @@ function Modifier({onAdd,emploie}){
     const [seance2, setSeance2] = useState('');
     const [groupe2, setgroupe2] = useState('');
     const [type, setType] = useState('Cour');
-    console.log(emploie)
+    const [Emp, setEmp] = useState(emploie);
+    console.log(emploie);
     const confirmer=(e)=>{
         e.preventDefault();
+        let  db=(emploie[jour2][seance2].debut).replace(/H/g, ':');
+        let fn=(emploie[jour2][seance2].fin).replace(/H/g, ':');
+        let lc;
+        let sm;
+        let creneau;
+        let mat;
+        let data
+        if(type!='Cour'){
+            lc=emploie[jour2][seance2][groupe2].locale.code_local;
+            sm=emploie[jour2][seance2][groupe2].seance.semestre;
+            creneau=(emploie[jour2][seance2][groupe2].creneau.id_creneau).toString();
+            mat=emploie[jour1][seance1][groupe1].enseignant.matricule
+        }else{
+            lc=emploie[jour2][seance2].G1.locale.code_local;
+            sm=emploie[jour2][seance2].G1.seance.semestre;
+            mat=emploie[jour1][seance1].G1.enseignant.matricule;
+            creneau = ''; // Initialisez creneau comme une chaîne vide
+            
+          // Boucle sur les groupes et concaténez les identifiants de créneau avec une virgule
+          Array.from({ length: (Object.keys((emploie[jour2][seance2])).length-2)  }, (v, i) => {
+           const groupe = 'G' + (i + 1);
+           const id_creneau = (emploie[jour2][seance2][groupe].creneau.id_creneau.toString());
+    
+         // Ajoutez une virgule si creneau n'est pas vide
+           if (creneau !== '') {
+         creneau += ',';
+          }
+    
+       // Concaténez l'identifiant de créneau actuel à la chaîne creneau
+       creneau += id_creneau.toString();
+       data={
+        debut:db,
+        fin:fn,
+        jour:jour2,
+        code_local:lc,
+        annee:an,
+        semestre:sm,
+        id_creneau:creneau,
+        matricule:mat
+    }
+     });
+           
+        }
+        
+        console.log(data)
+       axios.post("http://localhost:3000/creneau/verification",data,{
+        withCredentials: true
+      }
+       ).then((res)=>{
+        
+        if(res.data.message=='Créneau disponible'){
+            
+        let db2=(emploie[jour1][seance1].debut).replace(/H/g, ':');
+        let fn2=(emploie[jour1][seance1].fin).replace(/H/g, ':');
+        let lc2;
+        let sm2;
+        let creneau2;
+        let mat2;
+        let data2;
+        if(type!='Cour'){
+            lc2=emploie[jour1][seance1][groupe1].locale.code_local;
+            sm2=emploie[jour1][seance1][groupe1].seance.semestre;
+            creneau2=(emploie[jour1][seance1][groupe1].creneau.id_creneau).toString();
+            
+            mat2=emploie[jour2][seance2][groupe2].enseignant.matricule
+        }else{
+            lc2=emploie[jour1][seance1].G1.locale.code_local;
+            sm2=emploie[jour1][seance1].G1.seance.semestre;
+            mat2=emploie[jour2][seance2].G1.enseignant.matricule;
+            creneau2 = ''; // Initialisez creneau comme une chaîne vide
+            
+          // Boucle sur les groupes et concaténez les identifiants de créneau avec une virgule
+          Array.from({ length: (Object.keys((emploie[jour1][seance1])).length-2)  }, (v, i) => {
+           const groupe = 'G' + (i + 1);
+           const id_creneau = (emploie[jour1][seance1][groupe].creneau.id_creneau.toString());
+    
+         // Ajoutez une virgule si creneau n'est pas vide
+           if (creneau2 !== '') {
+         creneau2 += ',';
+          }
+    
+       // Concaténez l'identifiant de créneau actuel à la chaîne creneau
+       creneau2 += id_creneau.toString();
+       data2={
+        debut:db2,
+        fin:fn2,
+        jour:jour1,
+        code_local:lc2,
+        annee:an,
+        semestre:sm2,
+        id_creneau:creneau2,
+        matricule:mat2
+    }
+     });
+        console.log(data2)
+        axios.post("http://localhost:3000/creneau/verification",data2,{
+            withCredentials: true
+          }
+           ).then((res)=>{
+            if(res.data.message=='Créneau disponible'){
+                const nouvelEmploi = { ...Emp }; // Créez une copie de l'objet emploi
+        
+        if (type === 'Cour') {
+            Array.from({ length: Object.keys(nouvelEmploi.Dimanche[0]).length-2 }, (v, i) => {
+                const groupe = 'G' + (i + 1);
+                let x = nouvelEmploi[jour1][seance1][groupe];
+                nouvelEmploi[jour1][seance1][groupe] = nouvelEmploi[jour2][seance2][groupe];
+                nouvelEmploi[jour2][seance2][groupe] = x;
+            });
+        } else {
+            let x = nouvelEmploi[jour1][seance1][groupe1];
+            nouvelEmploi[jour1][seance1][groupe1] = nouvelEmploi[jour2][seance2][groupe2];
+            nouvelEmploi[jour2][seance2][groupe2] = x;
+        }
+        setEmp(nouvelEmploi);
+        const info={
+            data:JSON.stringify(nouvelEmploi),
+            semestre:semes[semes.length-1],
+            annee:an,
+        }
+        axios.post("http://localhost:3000/generate/save/"+section,info,{
+            withCredentials: true
+          }).then(()=>{
+            toast.success('emploi du temps enregistré');
+            onAdd();
+          }).catch((err)=>{
+            console.log(err);
+            toast.error('enregistrement echoué');
+          })
+            }
+           }).catch((err)=>{
+            toast.error(err.response.data.message);
+           })
+        }
+       }}).catch((err)=>{
+        toast.error(err.response.data.message);
+       })
 
     }
     return(
-        <form className="forme z-20">
+        <form className="forme z-20" onSubmit={confirmer}>
             <div className='close' onClick={()=>{onAdd()}}>
                 <FontAwesomeIcon icon={faXmark}/>
             </div>

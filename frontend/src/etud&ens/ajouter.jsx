@@ -8,8 +8,8 @@ import { parse, format } from 'date-fns';
 import Cookies from 'js-cookie';
 function Ajouter({onAdd,modify}){
     const [jour,setJour]=useState(modify.jour || '');
-    const [heure_deb,setDeb]=useState(modify.heur_debut.split(':').slice(0, 2).join(':') || '');
-    const [heure_fin,setFin]=useState(modify.heur_fin.split(':').slice(0, 2).join(':') || '');
+    const [heure_deb, setDeb] = useState(modify.heur_debut ? modify.heur_debut.split(':').slice(0, 2).join(':') : '');
+const [heure_fin, setFin] = useState(modify.heur_fin ? modify.heur_fin.split(':').slice(0, 2).join(':') : '');
     let user=Cookies.get('user');
     if(user){
       user=JSON.parse(user);
@@ -23,26 +23,8 @@ function Ajouter({onAdd,modify}){
             axios.post("http://localhost:3000/Occupation/DayHDHf/getDayHdHf",occup,{
                 withCredentials: true
               }).then((res)=>{
-                if(res.data.Occupation==null){  //si l'occupation n'existe pas on doit la cree sinon on affecte directement l'occupation au prof concerne
-                    axios.post("http://localhost:3000/Occupation",occup,{
-        withCredentials: true
-      }).then(()=>{
-        axios.post("http://localhost:3000/Occupation/DayHDHf/getDayHdHf",occup,{
-        withCredentials: true
-      }).then((res)=>{
-        const id_occup=parseInt(res.data.Occupation.id_occup);
-        axios.post("http://localhost:3000/EnsEtOccup/",{matricule:parseInt(user.matricule),id_occup},{
-        withCredentials: true
-      }).then(()=>{
-        onAdd();
-        toast.success("ajout avec succes");
-      })
-      })
-
-      }).catch((err)=>{
-        console.log(err)
-      });
-                }else{
+                
+                
                     const id_occup=parseInt(res.data.Occupation.id_occup);
                     axios.post("http://localhost:3000/EnsEtOccup/",{matricule:parseInt(user.matricule),id_occup},{
                     withCredentials: true
@@ -52,8 +34,29 @@ function Ajouter({onAdd,modify}){
                   }).catch(()=>{
                     toast.error("ajout échoue");
                   })
-                }
-              })
+                
+              }).catch((res)=>{
+                console.log(res)
+                if(res.response.data.Occupation==null){  //si l'occupation n'existe pas on doit la cree sinon on affecte directement l'occupation au prof concerne
+                  axios.post("http://localhost:3000/Occupation",occup,{
+      withCredentials: true
+    }).then(()=>{
+      axios.post("http://localhost:3000/Occupation/DayHDHf/getDayHdHf",occup,{
+      withCredentials: true
+    }).then((res)=>{
+      const id_occup=parseInt(res.data.Occupation.id_occup);
+      axios.post("http://localhost:3000/EnsEtOccup/",{matricule:parseInt(user.matricule),id_occup},{
+      withCredentials: true
+    }).then(()=>{
+      onAdd();
+      toast.success("ajout avec succes");
+    })
+    })
+
+    }).catch((err)=>{
+      console.log(err)
+    });
+              }});
 
 
             
