@@ -16,8 +16,8 @@ function Modifier({onAdd,emploie,an,section,semes}){
     console.log(emploie);
     const confirmer=(e)=>{
         e.preventDefault();
-        let  db=(emploie[jour2][seance2].debut).replace(/H/g, ':');
-        let fn=(emploie[jour2][seance2].fin).replace(/H/g, ':');
+        let  db=(emploie[jour2][seance2].debut);
+        let fn=(emploie[jour2][seance2].fin);
         let lc;
         let sm;
         let creneau;
@@ -68,8 +68,8 @@ function Modifier({onAdd,emploie,an,section,semes}){
         
         if(res.data.message=='Créneau disponible'){
             
-        let db2=(emploie[jour1][seance1].debut).replace(/H/g, ':');
-        let fn2=(emploie[jour1][seance1].fin).replace(/H/g, ':');
+        let db2=(emploie[jour1][seance1].debut);
+        let fn2=(emploie[jour1][seance1].fin);
         let lc2;
         let sm2;
         let creneau2;
