@@ -14,20 +14,29 @@ function Modifier({onAdd,emploie,an,section,semes}){
     const [type, setType] = useState('Cour');
     const [Emp, setEmp] = useState(emploie);
     console.log(emploie);
-    const confirmer=(e)=>{
-        e.preventDefault();
+    const confirmer=()=>{
         let  db=(emploie[jour2][seance2].debut);
         let fn=(emploie[jour2][seance2].fin);
         let lc;
         let sm;
         let creneau;
         let mat;
-        let data
+        let data;
         if(type!='Cour'){
             lc=emploie[jour2][seance2][groupe2].locale.code_local;
             sm=emploie[jour2][seance2][groupe2].seance.semestre;
             creneau=(emploie[jour2][seance2][groupe2].creneau.id_creneau).toString();
-            mat=emploie[jour1][seance1][groupe1].enseignant.matricule
+            mat=emploie[jour1][seance1][groupe1].enseignant.matricule;
+            data={
+                debut:db,
+                fin:fn,
+                jour:jour2,
+                code_local:lc,
+                annee:an,
+                semestre:sm,
+                id_creneau:creneau,
+                matricule:mat
+            }
         }else{
             lc=emploie[jour2][seance2].G1.locale.code_local;
             sm=emploie[jour2][seance2].G1.seance.semestre;
@@ -80,7 +89,17 @@ function Modifier({onAdd,emploie,an,section,semes}){
             sm2=emploie[jour1][seance1][groupe1].seance.semestre;
             creneau2=(emploie[jour1][seance1][groupe1].creneau.id_creneau).toString();
             
-            mat2=emploie[jour2][seance2][groupe2].enseignant.matricule
+            mat2=emploie[jour2][seance2][groupe2].enseignant.matricule;
+            data2={
+                debut:db2,
+                fin:fn2,
+                jour:jour1,
+                code_local:lc2,
+                annee:an,
+                semestre:sm2,
+                id_creneau:creneau2,
+                matricule:mat2
+            }
         }else{
             lc2=emploie[jour1][seance1].G1.locale.code_local;
             sm2=emploie[jour1][seance1].G1.seance.semestre;
@@ -110,6 +129,7 @@ function Modifier({onAdd,emploie,an,section,semes}){
         matricule:mat2
     }
      });
+    }
         console.log(data2)
         axios.post("http://localhost:3000/creneau/verification",data2,{
             withCredentials: true
@@ -150,14 +170,98 @@ function Modifier({onAdd,emploie,an,section,semes}){
            }).catch((err)=>{
             toast.error(err.response.data.message);
            })
-        }
+        
        }}).catch((err)=>{
         toast.error(err.response.data.message);
        })
 
     }
+    const confirmer2=()=>{
+        let  db=(emploie[jour2][seance2].debut);
+        let fn=(emploie[jour2][seance2].fin);
+        let lc;
+        let sm;
+        let mat;
+        let data;
+        if(type=='Cour'){
+            mat=emploie[jour1][seance1].G1.enseignant.matricule;
+            sm=emploie[jour1][seance1].G1.seance.semestre;
+            lc=emploie[jour1][seance1].G1.locale.code_local;
+        }else{
+            mat=emploie[jour1][seance1][groupe1].enseignant.matricule;
+            sm=emploie[jour1][seance1][groupe1].seance.semestre;
+            lc=emploie[jour1][seance1][groupe1].locale.code_local;
+        }
+        data={
+            debut:db,
+            fin:fn,
+            jour:jour2,
+            code_local:lc,
+            annee:an,
+            semestre:sm,
+            matricule:mat
+        }
+        axios.post("http://localhost:3000/creneau/verification",data,{
+            withCredentials: true
+          }
+           ).then((res)=>{
+            if(res.data.message=='Créneau disponible'){
+                const nouvelEmploi = { ...Emp }; // Créez une copie de l'objet emploi
+        
+        if (type === 'Cour') {
+            Array.from({ length: Object.keys(nouvelEmploi.Dimanche[0]).length-2 }, (v, i) => {
+                const groupe = 'G' + (i + 1);
+                let x = nouvelEmploi[jour1][seance1][groupe];
+                nouvelEmploi[jour1][seance1][groupe] = nouvelEmploi[jour2][seance2][groupe];
+                nouvelEmploi[jour2][seance2][groupe] = x;
+            });
+        } else {
+            let x = nouvelEmploi[jour1][seance1][groupe1];
+            nouvelEmploi[jour1][seance1][groupe1] = nouvelEmploi[jour2][seance2][groupe2];
+            nouvelEmploi[jour2][seance2][groupe2] = x;
+        }
+        setEmp(nouvelEmploi);
+        const info={
+            data:JSON.stringify(nouvelEmploi),
+            semestre:semes[semes.length-1],
+            annee:an,
+            override:"true"
+        }
+        axios.post("http://localhost:3000/generate/save/"+section,info,{
+            withCredentials: true
+          }).then(()=>{
+            toast.success('emploi du temps enregistré');
+            onAdd();
+          }).catch((err)=>{
+            console.log(err);
+            toast.error('enregistrement echoué');
+          })
+            }
+           }).catch((err)=>{
+            toast.error(err.response.data.message);
+           })
+
+    }
     return(
-        <form className="forme z-20" onSubmit={confirmer}>
+        <form className="forme z-20" onSubmit={(e) => {
+            e.preventDefault();
+           
+            if(type=='Cour'){
+                
+                if (emploie[jour2][seance2].G1.seance) {
+                    confirmer(); 
+                }else{
+                    confirmer2();
+                }
+            }else{
+                if(emploie[jour2][seance2][groupe2].seance!=undefined){
+                    confirmer();
+                }else{
+                    confirmer2();
+                }
+            }
+           
+        }}>
             <div className='close' onClick={()=>{onAdd()}}>
                 <FontAwesomeIcon icon={faXmark}/>
             </div>
@@ -232,6 +336,9 @@ function Modifier({onAdd,emploie,an,section,semes}){
                                })}
             </select>
             </div>
+
+            
+
             <div className="flex w-full justify-between mt-4">
             <select className='w-full  border-b border-b-gray-500' value={type} onChange={(e)=>{
                 setType(e.target.value);
