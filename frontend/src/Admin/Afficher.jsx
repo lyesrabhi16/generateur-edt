@@ -29,10 +29,9 @@ function AfficherEmp({onAdd, emploie }) {
                 const seance = emploie[jour][horaire].G1.seance;
                 if (seance) {
                   if (seance.type === 'Cours') {
-                    console.log(seance)
                     return (
                       <td key={ind}>
-                        Cours {emploie[jour][horaire].G1.enseignant.code_module}({emploie[jour][horaire].G1.enseignant.nom} {emploie[jour][horaire].G1.locale.code_local})
+                        Cours {seance.code_module}({emploie[jour][horaire].G1.enseignant.nom} {emploie[jour][horaire].G1.locale.code_local})
                       </td>
                       
                     );
@@ -48,7 +47,7 @@ function AfficherEmp({onAdd, emploie }) {
                                 <tr key={inx} >
                                   <td>{element}</td>
                                   <td>
-                                    {innerSeance.type} {emploie[jour][horaire][element].enseignant.code_module}({emploie[jour][horaire][element].enseignant.nom})
+                                    {innerSeance.type} {innerSeance.code_module}({emploie[jour][horaire][element].enseignant.nom})
                                   </td>
                                   <td>{emploie[jour][horaire][element].locale.code_local}</td>
                                 </tr>
@@ -75,7 +74,7 @@ function AfficherEmp({onAdd, emploie }) {
                               <tr key={inx} >
                                 <td>{element}</td>
                                 <td>
-                                  {innerSeance.type} {emploie[jour][horaire][element].enseignant.code_module}({emploie[jour][horaire][element].enseignant.nom})
+                                  {innerSeance.type} {innerSeance.code_module} ({emploie[jour][horaire][element].enseignant.nom})
                                 </td>
                                 <td>{emploie[jour][horaire][element].locale.code_local}</td>
                               </tr>

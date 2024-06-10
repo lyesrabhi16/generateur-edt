@@ -9,6 +9,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { faAdd } from '@fortawesome/free-solid-svg-icons'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import { faEye } from '@fortawesome/free-solid-svg-icons'
+import { faArrowsDownToLine } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from "react";
 import Afficher from '../Admin/afficherEmploi'
 import AfficherEmp from '../Admin/Afficher'
@@ -126,13 +127,19 @@ function Emploi(){
                 h:parseInt(db[0]),
                 m:parseInt(db[1])
             }),
+            temps_fin:JSON.stringify({
+                h:parseInt(fn[0]),
+                m:parseInt(fn[1])
+            }),
             
             duree_creneaux:JSON.stringify({
                 h:parseInt(duree[0]),
                 m:parseInt(duree[1])
             }),
             minutes_entre_creneaux:parseInt(dureePose),
-            annee
+            annee,
+            shuffle:1,
+            
         }
     axios.post("http://localhost:3000/generate/"+id_section,data,{
                 withCredentials: true
@@ -441,6 +448,10 @@ function Emploi(){
                  
                  
                }}/>
+                <FontAwesomeIcon icon={faArrowsDownToLine} className='ml-4 text-green-600 cursor-pointer' onClick={()=>{
+                    const seme=semestre[semestre.length-1];
+                    window.location.href="http://localhost:3000/EmploisTemps/section/"+section.id_section+"/"+seme+"/"+annee+"/xlsx";
+            }}/>
                   </>
                   
                
