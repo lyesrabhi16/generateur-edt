@@ -13,12 +13,13 @@ function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
         setShow(false);//fermer le formulaire
         setEmploi(emp);
       };
+      console.log(emploi)
     return(
         <div className="z-10 aksil bg-white px-8 pt-8 pb-24 rounded-lg" id={Show ? 'flou' : undefined}>
             <div className='close' onClick={()=>{onAdd()}}>
                 <FontAwesomeIcon icon={faXmark}/>
             </div>
-            {Show?<Modify emploi={emploi} groupes={taille} debut={db} duree={dr} fin={fn} pose={ps} onAdd={handleAdd}/>:null}
+            {Show?<Modify emploie={emploi} groupes={taille} debut={db} duree={dr} fin={fn} pose={ps} onAdd={handleAdd} an={an}/>:null}
             <table className='emploi'>
                 <tr className='head'>
                     <td>Jour/heure</td>

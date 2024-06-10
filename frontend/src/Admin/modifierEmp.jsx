@@ -1,7 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from "react";
-function modifierEmp({emploi,groupes,debut,duree,fin,pose,onAdd}){
+import axios from 'axios';
+import toast from 'react-hot-toast';
+function modifierEmp({emploie,groupes,debut,duree,fin,pose,onAdd,an}){
     const [jour1, setJour1] = useState('');
     const [seance1, setSeance1] = useState('');
     const [groupe1, setgroupe1] = useState('');
@@ -28,15 +30,135 @@ function modifierEmp({emploi,groupes,debut,duree,fin,pose,onAdd}){
         
         return nombreSeances;
     }
-    const [Emp, setEmp] = useState(emploi);
+    const [Emp, setEmp] = useState(emploie);
     
     const seances=calculerNombreSeances(debut,fin,duree,pose);
-    const ajouter = (e) => {
-        e.preventDefault();
-        const nouvelEmploi = { ...Emp }; // Créez une copie de l'objet emploi
+    const confirmer=()=>{
+        let  db=(emploie[jour2][seance2].debut);
+        let fn=(emploie[jour2][seance2].fin);
+        let lc;
+        let sm;
+        let creneau;
+        let mat;
+        let data;
+        if(type!='Cour'){
+            lc=emploie[jour2][seance2][groupe2].locale.code_local;
+            sm=emploie[jour2][seance2][groupe2].seance.semestre;
+            creneau=(emploie[jour2][seance2][groupe2].creneau.id_creneau).toString();
+            mat=emploie[jour1][seance1][groupe1].enseignant.matricule;
+            data={
+                debut:db,
+                fin:fn,
+                jour:jour2,
+                code_local:lc,
+                annee:an,
+                semestre:sm,
+                id_creneau:creneau,
+                matricule:mat
+            }
+        }else{
+            lc=emploie[jour2][seance2].G1.locale.code_local;
+            sm=emploie[jour2][seance2].G1.seance.semestre;
+            mat=emploie[jour1][seance1].G1.enseignant.matricule;
+            creneau = ''; // Initialisez creneau comme une chaîne vide
+            
+          // Boucle sur les groupes et concaténez les identifiants de créneau avec une virgule
+          Array.from({ length: (Object.keys((emploie[jour2][seance2])).length-2)  }, (v, i) => {
+           const groupe = 'G' + (i + 1);
+           const id_creneau = (emploie[jour2][seance2][groupe].creneau.id_creneau.toString());
+    
+         // Ajoutez une virgule si creneau n'est pas vide
+           if (creneau !== '') {
+         creneau += ',';
+          }
+    
+       // Concaténez l'identifiant de créneau actuel à la chaîne creneau
+       creneau += id_creneau.toString();
+       data={
+        debut:db,
+        fin:fn,
+        jour:jour2,
+        code_local:lc,
+        annee:an,
+        semestre:sm,
+        id_creneau:creneau,
+        matricule:mat
+    }
+     });
+           
+        }
+        
+        console.log(data)
+       axios.post("http://localhost:3000/creneau/verification",data,{
+        withCredentials: true
+      }
+       ).then((res)=>{
+        
+        if(res.data.message=='Créneau disponible'){
+            
+        let db2=(emploie[jour1][seance1].debut);
+        let fn2=(emploie[jour1][seance1].fin);
+        let lc2;
+        let sm2;
+        let creneau2;
+        let mat2;
+        let data2;
+        if(type!='Cour'){
+            lc2=emploie[jour1][seance1][groupe1].locale.code_local;
+            sm2=emploie[jour1][seance1][groupe1].seance.semestre;
+            creneau2=(emploie[jour1][seance1][groupe1].creneau.id_creneau).toString();
+            
+            mat2=emploie[jour2][seance2][groupe2].enseignant.matricule;
+            data2={
+                debut:db2,
+                fin:fn2,
+                jour:jour1,
+                code_local:lc2,
+                annee:an,
+                semestre:sm2,
+                id_creneau:creneau2,
+                matricule:mat2
+            }
+        }else{
+            lc2=emploie[jour1][seance1].G1.locale.code_local;
+            sm2=emploie[jour1][seance1].G1.seance.semestre;
+            mat2=emploie[jour2][seance2].G1.enseignant.matricule;
+            creneau2 = ''; // Initialisez creneau comme une chaîne vide
+            
+          // Boucle sur les groupes et concaténez les identifiants de créneau avec une virgule
+          Array.from({ length: (Object.keys((emploie[jour1][seance1])).length-2)  }, (v, i) => {
+           const groupe = 'G' + (i + 1);
+           const id_creneau = (emploie[jour1][seance1][groupe].creneau.id_creneau.toString());
+    
+         // Ajoutez une virgule si creneau n'est pas vide
+           if (creneau2 !== '') {
+         creneau2 += ',';
+          }
+    
+       // Concaténez l'identifiant de créneau actuel à la chaîne creneau
+       creneau2 += id_creneau.toString();
+       data2={
+        debut:db2,
+        fin:fn2,
+        jour:jour1,
+        code_local:lc2,
+        annee:an,
+        semestre:sm2,
+        id_creneau:creneau2,
+        matricule:mat2
+    }
+     });
+    }
+        console.log(data2)
+        axios.post("http://localhost:3000/creneau/verification",data2,{
+            withCredentials: true
+          }
+           ).then((res)=>{
+            if(res.data.message=='Créneau disponible'){
+                const nouvelEmploi = { ...Emp }; // Créez une copie de l'objet emploi
         
         if (type === 'Cour') {
-            Array.from({ length: groupes }, (v, i) => {
+            Array.from({ length: Object.keys(nouvelEmploi.Dimanche[0]).length-2 }, (v, i) => {
                 const groupe = 'G' + (i + 1);
                 let x = nouvelEmploi[jour1][seance1][groupe];
                 nouvelEmploi[jour1][seance1][groupe] = nouvelEmploi[jour2][seance2][groupe];
@@ -47,13 +169,90 @@ function modifierEmp({emploi,groupes,debut,duree,fin,pose,onAdd}){
             nouvelEmploi[jour1][seance1][groupe1] = nouvelEmploi[jour2][seance2][groupe2];
             nouvelEmploi[jour2][seance2][groupe2] = x;
         }
-        setEmp(emploi);
-         onAdd(Emp);
+        setEmp(nouvelEmploi);
+        onAdd(Emp);
+            }
+           }).catch((err)=>{
+            toast.error(err.response.data.message);
+           })
         
+       }}).catch((err)=>{
+        toast.error(err.response.data.message);
+       })
+
+    }
+    const confirmer2=()=>{
+        let  db=(emploie[jour2][seance2].debut);
+        let fn=(emploie[jour2][seance2].fin);
+        let lc;
+        let sm;
+        let mat;
+        let data;
+        if(type=='Cour'){
+            mat=emploie[jour1][seance1].G1.enseignant.matricule;
+            sm=emploie[jour1][seance1].G1.seance.semestre;
+            lc=emploie[jour1][seance1].G1.locale.code_local;
+        }else{
+            mat=emploie[jour1][seance1][groupe1].enseignant.matricule;
+            sm=emploie[jour1][seance1][groupe1].seance.semestre;
+            lc=emploie[jour1][seance1][groupe1].locale.code_local;
+        }
+        data={
+            debut:db,
+            fin:fn,
+            jour:jour2,
+            code_local:lc,
+            annee:an,
+            semestre:sm,
+            matricule:mat
+        }
+        axios.post("http://localhost:3000/creneau/verification",data,{
+            withCredentials: true
+          }
+           ).then((res)=>{
+            if(res.data.message=='Créneau disponible'){
+                const nouvelEmploi = { ...Emp }; // Créez une copie de l'objet emploi
         
-    };
+        if (type === 'Cour') {
+            Array.from({ length: Object.keys(nouvelEmploi.Dimanche[0]).length-2 }, (v, i) => {
+                const groupe = 'G' + (i + 1);
+                let x = nouvelEmploi[jour1][seance1][groupe];
+                nouvelEmploi[jour1][seance1][groupe] = nouvelEmploi[jour2][seance2][groupe];
+                nouvelEmploi[jour2][seance2][groupe] = x;
+            });
+        } else {
+            let x = nouvelEmploi[jour1][seance1][groupe1];
+            nouvelEmploi[jour1][seance1][groupe1] = nouvelEmploi[jour2][seance2][groupe2];
+            nouvelEmploi[jour2][seance2][groupe2] = x;
+        }
+        setEmp(nouvelEmploi);
+        onAdd(Emp);
+            }
+           }).catch((err)=>{
+            toast.error(err.response.data.message);
+           })
+
+    }
     return(
-        <form className="forme z-20" onSubmit={ajouter}>
+        <form className="forme z-20" onSubmit={(e) => {
+            e.preventDefault();
+           
+            if(type=='Cour'){
+                
+                if (emploie[jour2][seance2].G1.seance) {
+                    confirmer(); 
+                }else{
+                    confirmer2();
+                }
+            }else{
+                if(emploie[jour2][seance2][groupe2].seance!=undefined){
+                    confirmer();
+                }else{
+                    confirmer2();
+                }
+            }
+           
+        }}>
             <div className='close' onClick={()=>{onAdd(Emp)}}>
                 <FontAwesomeIcon icon={faXmark}/>
             </div>
