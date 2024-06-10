@@ -218,6 +218,7 @@ export const generate = async (req, res) => {
                         while (b){
                             if (enseignants.length === 0){
                                 b = false;
+                                enseignant = undefined;
                                 break;
                             }
                             enseignant = getEnseignantWithHighestPriorite(enseignants, Object.keys(EnsRoles).filter(r => r !== "vacataire"),contraints.ignore_charges);
@@ -226,6 +227,7 @@ export const generate = async (req, res) => {
                             }
                               
                             if (!ocp_ens[enseignant.matricule][jour][period]){
+                                console.log(enseignant.matricule, jour, period)
                                 b = false;   
                             }
                             else{
@@ -298,6 +300,7 @@ export const generate = async (req, res) => {
                 while (b){
                     if (enseignants.length === 0){
                         b = false;
+                        enseignant = undefined;
                         break;
                     }
                     enseignant = getEnseignantWithHighestPriorite(enseignants, Object.keys(EnsRoles), contraints.ignore_charges);
@@ -306,6 +309,7 @@ export const generate = async (req, res) => {
                     }
 
                     if (!ocp_ens[enseignant.matricule][jour][period]){
+                        console.log(enseignant.matricule, jour, period)
                         b = false;   
                     }
                     else{
@@ -331,6 +335,7 @@ export const generate = async (req, res) => {
                                     seance: seance,
                                     locale: locale,
                                 };
+                                console.log(creneau.jour,creneau.period, creneau.enseignant.matricule );
                                 ocp_groupes[groupe.id_groupe][jour][period] = true;
                                 seance.remaining_groupes = [...seance.remaining_groupes.filter(g => g.id_groupe !== groupe.id_groupe)];
                                 ocp_ens[enseignant.matricule][jour][period] = true;
