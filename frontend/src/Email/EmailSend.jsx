@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { toast } from "react-hot-toast";
 export const EmailSend = () => {
-  const getParams = () => {
+  const^getParams = () => {
     // Parse query string to see if page request is coming from OAuth 2.0 server.
     const fragmentString = location.hash.substring(1);
     const params = {};
@@ -38,7 +38,7 @@ export const EmailSend = () => {
           .post(
             "http://localhost:3000/email/send",
             {
-              id_emp: 66,
+              id_emp: 77,
               user_email: res.data.email,
               access_token: params.access_token,
             },
@@ -130,7 +130,7 @@ export const EmailSend = () => {
   const download = () => {
     const id = toast.loading("Starting Download...");
     axios
-      .get("http://localhost:3000/emploistemps/section/1/S2/2024/xlsx", {
+      .get("http://localhost:3000/emploistemps/section/1/2/2024/xlsx", {
         withCredentials: true,
         responseType: "blob",
       })
