@@ -152,7 +152,7 @@ export const generateValidator = (req, res, next) => {
         req.body.temps_fin,
         req.body.duree_creneaux,
         req.body.minutes_entre_creneaux
-      ) - 1;
+      ) ;
   } else {
     try {
       req.body.nbr_creneaux_par_jour = parseInt(nbr_creneaux_par_jour);
