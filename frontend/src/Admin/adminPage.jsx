@@ -21,7 +21,7 @@ function AdminPage() {
   return (
     
     <div className='flex w-full h-full bg-white' >
-        <div className="flex flex-col w-56 background h-full h-screen pl-3 fixed">
+        <div className="flex flex-col w-56 z-50 background h-full h-screen pl-3 fixed">
             <div className=' flex pl-3 pt-8 items-center'>
                 <div className='logo'></div>
                 <p className='text-white text-3xl font-semibold ml-3'>Logo</p>
