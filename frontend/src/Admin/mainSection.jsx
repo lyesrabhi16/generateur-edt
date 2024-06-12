@@ -1,7 +1,7 @@
 import image from '../assets/download.png'
 import './mainsection.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { faAngleDown, faDownload, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { faFilter } from '@fortawesome/free-solid-svg-icons'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
@@ -24,6 +24,51 @@ function Section({page}){
   const [Finish, setFinish] = useState(false);
   const [supprime, setSupprime] = useState(false);
   const [info, setInfo] = useState('');
+  const [ens, setEns] = useState(null);
+  const [annee,setAnnee]=useState('Selectionner une annee');
+  const [semestre,setSemestre]=useState('Choisir semestre');
+  const telecharger = (matricule, semestre, annee) => {
+    const id_t = toast.loading("downloading...");
+    axios.get(`http://localhost:3000/emploistemps/enseignant/${matricule}/${semestre}/${annee}/xlsx`, {
+      withCredentials: true,
+      responseType:'blob'
+    }).then(res => {
+    // create file link in browser's memory
+    const href = URL.createObjectURL(res.data);
+
+    // create "a" HTML element with href to file & click
+    const link = document.createElement("a");
+    link.href = href; 
+    // Extract filename from header
+    const filename = res.headers['content-disposition']
+      .split(';')
+      .find(n => n.includes('filename='))
+      .replace('filename=', '')
+      .replace('"', '')
+      .replace('"', '')
+      .trim()
+    ;
+    link.setAttribute("download", filename); //or any other extension
+    document.body.appendChild(link);
+    link.click();
+
+    // clean up "a" element & remove ObjectURL
+    document.body.removeChild(link);
+    URL.revokeObjectURL(href);
+
+    toast.success("Success", { id: id_t });
+    })
+    .catch(err => {
+      console.log(err);
+    toast.success("Failed", { id: id_t });
+    })
+  }
+
+  const getYears = () => {
+    const Year = new Date().getFullYear() + 1;
+    return Array.from(new Array(10), (val, index) => `${Year - index - 1}/${Year - index}`);
+  }
+
   let user=Cookies.get('user');
   if(user){
     user=JSON.parse(user);
@@ -350,7 +395,7 @@ page==='Groupe'?<tr className='head'>
       if(regex.test(etud.nom) || regex.test(etud.prenom) || regex.test(etud.matricule) || regex.test(etud.email) || regex.test(etud.anneebac) || regex.test(etud.role)){
        
         return (
-          <tr key={index}>
+          <tr key={index} className="group">
             <td>{etud.nom}</td>
             <td>{etud.prenom}</td>
             <td>{etud.matricule}</td>
@@ -358,7 +403,12 @@ page==='Groupe'?<tr className='head'>
             <td>{page==='Etudiant'?etud.anneebac:etud.role}</td>
             <td>
             <div className='flex items-center justify-center'>
-                <FontAwesomeIcon icon={faPen} className='text-blue-700 cursor-pointer' onClick={()=>{
+                { page === 'Enseignant' && <FontAwesomeIcon icon={faDownload} className="text-blue-700 cursor-pointer m-4 group-hover:text-white" onClick={() => {
+                    setEns(etud);
+                    document.getElementById('download_ens_emp_form_modal').showModal();
+
+                }}/>}
+                <FontAwesomeIcon icon={faPen} className='text-blue-700 cursor-pointer group-hover:text-white' onClick={()=>{
                   setInfo(etud)
                   setShow(!Show)
                 }}/>
@@ -395,9 +445,62 @@ page==='Groupe'?<tr className='head'>
 
         </div>
        
+       {/* Open the modal using document.getElementById('ID').showModal() method */}
+    <dialog id="download_ens_emp_form_modal" className="modal">
+        <div className="modal-box flex flex-col items-center justify-center gap-4 overflow-visible">
+          <h3 className="font-bold text-lg">Emplois Du Temps</h3>
+          <h4 className="font-thin text-base">{ens && ens.nom} {ens && ens.prenom}</h4>
+          <div className="group drop relative" onClick={(e) => {
+            e.preventDefault();
+            e.currentTarget.classList.toggle("active");
+            console.log(e.currentTarget.classList);
+          }}>
+          <span className='text-black'>{annee}</span>
+            <FontAwesomeIcon
+             icon={faAngleDown}
+             className={'icone group-[.active]:rotate-180'} />
+             <ul className='list z-10 overflow-scroll max-h-40 top-12 hidden group-[.active]:block'>
+                {getYears().map((year, index) => (
+                  <li key={index} onClick={() => setAnnee(year.split("/")[1])}>{year}</li>
+                ))}
+              </ul>
+          </div>
+          <div className="group drop relative" onClick={(e) => {
+            e.preventDefault();
+            e.currentTarget.classList.toggle("active");
+            console.log(e.currentTarget.classList);
+          }}>
+          <span className='text-black'>{semestre}</span>
+            <FontAwesomeIcon
+             icon={faAngleDown}
+             className={'icone group-[.active]:rotate-180'} />
+             <ul className='list overflow-scroll max-h-40 top-12 hidden group-[.active]:block'>
+             <li onClick={()=>{
+                    setSemestre("1");
+                }} style={{borderLeft:semestre==="semestre 1" ?'3px solid #0029FF':null}}>semestre 1</li>
+                <li onClick={()=>{
+                    setSemestre("2");
+                }} style={{borderLeft:semestre==="semestre 2"?'3px solid #0029FF':null}}>semestre 2</li>
+              </ul>
+          </div>
+          <div className="modal-action">
+      <form method="dialog">
+        {/* if there is a button in form, it will close the modal */}
+        <button className="btn">Close</button>
+      </form>
+      <button className="btn bg-blue-700 text-white" onClick={(e) => {
+          e.preventDefault();
+          telecharger(ens.matricule, semestre, annee);
+          document.getElementById('download_ens_emp_form_modal').close();
+      }}>Télécharger</button>
+    </div>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+    </dialog>
         
         </>
-        
     )
     
 }
