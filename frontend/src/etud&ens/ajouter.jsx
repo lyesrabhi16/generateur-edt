@@ -82,6 +82,7 @@ const [heure_fin, setFin] = useState(modify.heur_fin ? modify.heur_fin.split(':'
                 setJour(e.target.value);
             }}>
                <option value="" disabled selected>Jour</option>
+               <option value="Samedi">Samedi</option>
                <option value="Dimanche">Dimanche</option>
                <option value="Lundi">Lundi</option>
                <option value="Mardi">Mardi</option>

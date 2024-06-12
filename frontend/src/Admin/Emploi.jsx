@@ -60,7 +60,7 @@ function Emploi(){
             withCredentials: true
           }).then(respo =>{
             const sectionsFiltres = respo.data.sections.filter(section => section.niveau === niveau && section.code_specialite===code_specialite);
-            const updatesection = sectionsFiltres.map(section => ({ ...section, generated: true }));
+            const updatesection = sectionsFiltres.map(section => ({ ...section, generated: false }));
           setSections(updatesection);
           
           
@@ -77,7 +77,8 @@ function Emploi(){
             
                 axios.get('http://localhost:3000/groupe',{
                     withCredentials: true
-                  }).then((res)=>{                                                             
+                  }).then((res)=>{           
+                    console.log(res);                                                  
                     const grouprfilter=res.data.groupes.filter((gr)=> gr.code_section===section.code_section);
                     setGroupes(grouprfilter.length);
                     grouprfilter.map((gr)=>{
@@ -139,16 +140,25 @@ function Emploi(){
             minutes_entre_creneaux:parseInt(dureePose),
             annee,
             shuffle:1,
+            ignore_charges:"0"
             
         }
-    axios.post("http://localhost:3000/generate/"+id_section,data,{
+        axios.get('http://localhost:3000/groupe',{
+            withCredentials: true
+          }).then((res)=>{           
+            console.log(res);                                                  
+            const grouprfilter=res.data.groupes.filter((gr)=> gr.id_section===id_section);
+            setGroupes(grouprfilter.length);
+            axios.post("http://localhost:3000/generate/"+id_section,data,{
                 withCredentials: true
               }).then((res)=>{
-                setEmploi(res.data.creneaux);
+                setEmploi(res);
                 setShow(true);
               }).catch((err)=>{
                 console.log(err)
               })
+          })
+    
     }else{
         toast.error("vous devez selectionner tous les champs")
     }
@@ -397,6 +407,7 @@ function Emploi(){
         <td>section</td>
         <td>Action</td>
         </tr>
+        {console.log(newsections)}
         {newsections.map((section,index)=>{
             
             return (

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { toast } from "react-hot-toast";
 export const EmailSend = () => {
-  const^getParams = () => {
+  const getParams = () => {
     // Parse query string to see if page request is coming from OAuth 2.0 server.
     const fragmentString = location.hash.substring(1);
     const params = {};
