@@ -3,20 +3,34 @@ import './navbar.css'
 import Logo from './login/login'
 import AdminPage from './Admin/adminPage'
 import EtudPage from './etud&ens/menuPage'
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { Toaster } from 'react-hot-toast'
 import { EmailSend } from './Email/EmailSend.jsx'
-
+import Cookies from 'js-cookie';
 
  
 
 function App() {
+  const user = Cookies.get("user") && JSON.parse(Cookies.get("user")) || null;
+  const LoginProtectedRoute = ({user, element}) => {
+    if (user === null) {
+      return <Navigate to="/" />;
+    }
+    return element;
+  }
+  const AdminProtectedRoute = ({user, element}) => {
+    if (user === null || user.type!=='Administrateur') {
+      return <Navigate to="/" />;
+    }
+    return element;
+  }
   return (
     <div className='w-screen min-w-full h-full min-h-screen ' >
       <Routes>
+    
         <Route path="/" element={<Logo />} />
-        <Route path="/admin" element={<AdminPage />} />
-        <Route path="/etu" element={<EtudPage />} />
+        <Route path="/admin" element={<AdminProtectedRoute user={user} element={<AdminPage />} />} />
+        <Route path="/etu" element={<LoginProtectedRoute user={user} element={<EtudPage />} />} />
 
         {/* 
          //?   from : @lyesrabhi16
@@ -28,9 +42,10 @@ function App() {
          //? tell me to change it in google console too
          
         */}
-        <Route path="/email/send/callback" element={<EmailSend/>} />
-        <Route path="/email/send" element={<EmailSend/>} />
+        <Route path="/email/send/callback" element={<AdminProtectedRoute user={user} element={<EmailSend/>} />} />
+        <Route path="/email/send" element={<AdminProtectedRoute user={user} element={<EmailSend/>} />} />
 
+        <Route path="*" element={<Navigate to={"/"}/>}/>{/* or make a 404 page */}
       </Routes>
       <Toaster position='top-center'/>
     </div>
