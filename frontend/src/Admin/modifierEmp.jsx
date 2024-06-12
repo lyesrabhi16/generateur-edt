@@ -44,7 +44,6 @@ function modifierEmp({emploie,groupes,debut,duree,fin,pose,onAdd,an}){
         if(type!='Cour'){
             lc=emploie[jour2][seance2][groupe2].locale.code_local;
             sm=emploie[jour2][seance2][groupe2].seance.semestre;
-            creneau=(emploie[jour2][seance2][groupe2].creneau.id_creneau).toString();
             mat=emploie[jour1][seance1][groupe1].enseignant.matricule;
             data={
                 debut:db,
@@ -53,38 +52,22 @@ function modifierEmp({emploie,groupes,debut,duree,fin,pose,onAdd,an}){
                 code_local:lc,
                 annee:an,
                 semestre:sm,
-                id_creneau:creneau,
                 matricule:mat
             }
         }else{
             lc=emploie[jour2][seance2].G1.locale.code_local;
             sm=emploie[jour2][seance2].G1.seance.semestre;
             mat=emploie[jour1][seance1].G1.enseignant.matricule;
-            creneau = ''; // Initialisez creneau comme une chaîne vide
-            
-          // Boucle sur les groupes et concaténez les identifiants de créneau avec une virgule
-          Array.from({ length: (Object.keys((emploie[jour2][seance2])).length-2)  }, (v, i) => {
-           const groupe = 'G' + (i + 1);
-           const id_creneau = (emploie[jour2][seance2][groupe].creneau.id_creneau.toString());
-    
-         // Ajoutez une virgule si creneau n'est pas vide
-           if (creneau !== '') {
-         creneau += ',';
-          }
-    
-       // Concaténez l'identifiant de créneau actuel à la chaîne creneau
-       creneau += id_creneau.toString();
-       data={
-        debut:db,
-        fin:fn,
-        jour:jour2,
-        code_local:lc,
-        annee:an,
-        semestre:sm,
-        id_creneau:creneau,
-        matricule:mat
-    }
-     });
+            data={
+                debut:db,
+                fin:fn,
+                jour:jour2,
+                code_local:lc,
+                annee:an,
+                semestre:sm,
+                matricule:mat
+            }
+           
            
         }
         
@@ -106,7 +89,6 @@ function modifierEmp({emploie,groupes,debut,duree,fin,pose,onAdd,an}){
         if(type!='Cour'){
             lc2=emploie[jour1][seance1][groupe1].locale.code_local;
             sm2=emploie[jour1][seance1][groupe1].seance.semestre;
-            creneau2=(emploie[jour1][seance1][groupe1].creneau.id_creneau).toString();
             
             mat2=emploie[jour2][seance2][groupe2].enseignant.matricule;
             data2={
@@ -116,38 +98,22 @@ function modifierEmp({emploie,groupes,debut,duree,fin,pose,onAdd,an}){
                 code_local:lc2,
                 annee:an,
                 semestre:sm2,
-                id_creneau:creneau2,
                 matricule:mat2
             }
         }else{
             lc2=emploie[jour1][seance1].G1.locale.code_local;
             sm2=emploie[jour1][seance1].G1.seance.semestre;
             mat2=emploie[jour2][seance2].G1.enseignant.matricule;
-            creneau2 = ''; // Initialisez creneau comme une chaîne vide
-            
-          // Boucle sur les groupes et concaténez les identifiants de créneau avec une virgule
-          Array.from({ length: (Object.keys((emploie[jour1][seance1])).length-2)  }, (v, i) => {
-           const groupe = 'G' + (i + 1);
-           const id_creneau = (emploie[jour1][seance1][groupe].creneau.id_creneau.toString());
-    
-         // Ajoutez une virgule si creneau n'est pas vide
-           if (creneau2 !== '') {
-         creneau2 += ',';
-          }
-    
-       // Concaténez l'identifiant de créneau actuel à la chaîne creneau
-       creneau2 += id_creneau.toString();
-       data2={
-        debut:db2,
-        fin:fn2,
-        jour:jour1,
-        code_local:lc2,
-        annee:an,
-        semestre:sm2,
-        id_creneau:creneau2,
-        matricule:mat2
-    }
-     });
+            data2={
+                debut:db2,
+                fin:fn2,
+                jour:jour1,
+                code_local:lc2,
+                annee:an,
+                semestre:sm2,
+                matricule:mat2
+            }
+           
     }
         console.log(data2)
         axios.post("http://localhost:3000/creneau/verification",data2,{
