@@ -44,7 +44,7 @@ function Form() {
             </div>
             <div className="flex flex-col mt-6">
                 <label className=" text-white">Mot de passe</label>
-                <input type="input"  className="pl-1 mt-4 h-10 rounded-lg bg-transparent border-2 border-solid  border-white outline-none focus:border-4 text-white placeholder:text-white" id={erreur?'error':null} placeholder="************" onChange={(e)=>{
+                <input type="password"  className="pl-1 mt-4 h-10 rounded-lg bg-transparent border-2 border-solid  border-white outline-none focus:border-4 text-white placeholder:text-white" id={erreur?'error':null} placeholder="************" onChange={(e)=>{
                   setPassword(e.target.value);
                   setErreur(false)
                 }}></input>
