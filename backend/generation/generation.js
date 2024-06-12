@@ -183,8 +183,7 @@ export const generate = async (req, res) => {
         });
     }
 
-    response.ocp_ens = ocp_ens;
-    response.ocp_local = ocp_locales;
+    
 
      // creneaux[jour][period][groupe]
     const creneaux = {};
@@ -217,6 +216,7 @@ export const generate = async (req, res) => {
                         let b=true;
                         while (b){
                             if (enseignants.length === 0){
+                                enseignant = undefined;
                                 b = false;
                                 enseignant = undefined;
                                 break;
@@ -299,6 +299,7 @@ export const generate = async (req, res) => {
                 let b=true;
                 while (b){
                     if (enseignants.length === 0){
+                        enseignant = undefined;
                         b = false;
                         enseignant = undefined;
                         break;
