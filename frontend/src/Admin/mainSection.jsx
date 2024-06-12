@@ -25,11 +25,48 @@ function Section({page}){
   const [supprime, setSupprime] = useState(false);
   const [info, setInfo] = useState('');
   const [ens, setEns] = useState(null);
+  const [grp, setGrp] = useState(null);
   const [annee,setAnnee]=useState('Selectionner une annee');
   const [semestre,setSemestre]=useState('Choisir semestre');
-  const telecharger = (matricule, semestre, annee) => {
+  const telechargerEmpEns = (matricule, semestre, annee) => {
     const id_t = toast.loading("downloading...");
     axios.get(`http://localhost:3000/emploistemps/enseignant/${matricule}/${semestre}/${annee}/xlsx`, {
+      withCredentials: true,
+      responseType:'blob'
+    }).then(res => {
+    // create file link in browser's memory
+    const href = URL.createObjectURL(res.data);
+
+    // create "a" HTML element with href to file & click
+    const link = document.createElement("a");
+    link.href = href; 
+    // Extract filename from header
+    const filename = res.headers['content-disposition']
+      .split(';')
+      .find(n => n.includes('filename='))
+      .replace('filename=', '')
+      .replace('"', '')
+      .replace('"', '')
+      .trim()
+    ;
+    link.setAttribute("download", filename); //or any other extension
+    document.body.appendChild(link);
+    link.click();
+
+    // clean up "a" element & remove ObjectURL
+    document.body.removeChild(link);
+    URL.revokeObjectURL(href);
+
+    toast.success("Success", { id: id_t });
+    })
+    .catch(err => {
+      console.log(err);
+    toast.success("Failed", { id: id_t });
+    })
+  }
+  const telechargerEmpGroupe = (id_groupe, semestre, annee) => {
+    const id_t = toast.loading("downloading...");
+    axios.get(`http://localhost:3000/emploistemps/groupe/${id_groupe}/${semestre}/${annee}/xlsx`, {
       withCredentials: true,
       responseType:'blob'
     }).then(res => {
@@ -254,13 +291,13 @@ page==='Groupe'?<tr className='head'>
     if(page ==='Modules'){
       if (regex.test(etud.code_module) || regex.test(etud.nom_module)) {
         return (
-          <tr key={index}>
+          <tr key={index} className="group">
             <td>{index+1}</td>
             <td>{etud.code_module}</td>
             <td>{etud.nom_module}</td>
             <td>
             <div className='flex items-center justify-center'>
-                <FontAwesomeIcon icon={faPen} className='text-blue-700 cursor-pointer' onClick={()=>{
+                <FontAwesomeIcon icon={faPen} className='text-blue-700 group-hover:text-white cursor-pointer' onClick={()=>{
                   setInfo(etud)
                   setShow(!Show)
                 }}/>
@@ -284,14 +321,14 @@ page==='Groupe'?<tr className='head'>
       if (regex.test(etud.code_local) || regex.test(etud.capacite) || regex.test(etud.type)) {
         
         return (
-          <tr key={index}>
+          <tr key={index} className="group">
             <td>{index+1}</td>
             <td>{etud.code_local}</td>
             <td>{etud.capacite}</td>
             <td>{etud.type}</td>
             <td>
             <div className='flex items-center justify-center'>
-                <FontAwesomeIcon icon={faPen} className='text-blue-700 cursor-pointer' onClick={()=>{
+                <FontAwesomeIcon icon={faPen} className='text-blue-700 group-hover:text-white cursor-pointer' onClick={()=>{
                   setInfo(etud)
                   setShow(!Show)
                 }}/>
@@ -314,13 +351,13 @@ page==='Groupe'?<tr className='head'>
     }else if(page==='Specialite'){
      if(regex.test(etud.code_specialite) || regex.test(etud.nom_specialite)){
       return (
-        <tr key={index}>
+        <tr key={index} className="group">
           <td>{index+1}</td>
           <td>{etud.code_specialite}</td>
           <td>{etud.nom_specialite}</td>
           <td>
           <div className='flex items-center justify-center'>
-              <FontAwesomeIcon icon={faPen} className='text-blue-700 cursor-pointer' onClick={()=>{
+              <FontAwesomeIcon icon={faPen} className='text-blue-700 group-hover:text-white cursor-pointer' onClick={()=>{
                 setInfo(etud)
                 setShow(!Show)
               }}/>
@@ -340,14 +377,14 @@ page==='Groupe'?<tr className='head'>
     }else if(page==='Section'){
       if(regex.test(etud.code_section) || regex.test(etud.niveau) || regex.test(etud.code_specialite)){
        return (
-         <tr key={index}>
+         <tr key={index} className="group">
            <td>{index+1}</td>
            <td>{etud.code_section}</td>
            <td>{etud.niveau}</td>
            <td>{etud.code_specialite}</td>
            <td>
            <div className='flex items-center justify-center'>
-               <FontAwesomeIcon icon={faPen} className='text-blue-700 cursor-pointer' onClick={()=>{
+               <FontAwesomeIcon icon={faPen} className='text-blue-700 group-hover:text-white cursor-pointer' onClick={()=>{
                  setInfo(etud)
                  setShow(!Show)
                }}/>
@@ -367,7 +404,7 @@ page==='Groupe'?<tr className='head'>
      }else if(page==='Groupe'){
       if(regex.test(etud.code_groupe) || regex.test(etud.code_section) || regex.test(etud.niveau) || regex.test(etud.code_specialite)){
        return (
-         <tr key={index}>
+         <tr key={index} className="group">
            <td>{index+1}</td>
            <td>{etud.code_groupe}</td>
            <td>{etud.code_section}</td>
@@ -375,7 +412,11 @@ page==='Groupe'?<tr className='head'>
            <td>{etud.code_specialite}</td>
            <td>
            <div className='flex items-center justify-center'>
-               
+               <FontAwesomeIcon icon={faDownload} className="text-blue-700 cursor-pointer m-4 group-hover:text-white" onClick={() => {
+                    setGrp(etud);
+                    document.getElementById('download_groupe_emp_form_modal').showModal();
+
+                }}/>
                <FontAwesomeIcon icon={faTrash} className='ml-4 text-red-600 cursor-pointer' onClick={()=>{
                  axios.delete('http://localhost:3000/groupe/'+etud.id_groupe,{
                    withCredentials: true
@@ -449,11 +490,10 @@ page==='Groupe'?<tr className='head'>
     <dialog id="download_ens_emp_form_modal" className="modal">
         <div className="modal-box flex flex-col items-center justify-center gap-4 overflow-visible">
           <h3 className="font-bold text-lg">Emplois Du Temps</h3>
-          <h4 className="font-thin text-base">{ens && ens.nom} {ens && ens.prenom}</h4>
+          <h4 className="text-base">{ens && ens.nom} {ens && ens.prenom}</h4>
           <div className="group drop relative" onClick={(e) => {
             e.preventDefault();
             e.currentTarget.classList.toggle("active");
-            console.log(e.currentTarget.classList);
           }}>
           <span className='text-black'>{annee}</span>
             <FontAwesomeIcon
@@ -468,7 +508,6 @@ page==='Groupe'?<tr className='head'>
           <div className="group drop relative" onClick={(e) => {
             e.preventDefault();
             e.currentTarget.classList.toggle("active");
-            console.log(e.currentTarget.classList);
           }}>
           <span className='text-black'>{semestre}</span>
             <FontAwesomeIcon
@@ -490,7 +529,7 @@ page==='Groupe'?<tr className='head'>
       </form>
       <button className="btn bg-blue-700 text-white" onClick={(e) => {
           e.preventDefault();
-          telecharger(ens.matricule, semestre, annee);
+          telechargerEmpEns(ens.matricule, semestre, annee);
           document.getElementById('download_ens_emp_form_modal').close();
       }}>Télécharger</button>
     </div>
@@ -499,7 +538,57 @@ page==='Groupe'?<tr className='head'>
           <button>close</button>
         </form>
     </dialog>
-        
+    <dialog id="download_groupe_emp_form_modal" className="modal">
+        <div className="modal-box flex flex-col items-center justify-center gap-4 overflow-visible">
+          <h3 className="font-bold text-lg">Emplois Du Temps</h3>
+          <h4 className="text-base">{grp && ( grp.niveau + " " +grp.code_specialite + " "+ grp.code_section + " "+ grp.code_groupe ) }</h4>
+          <div className="group drop relative" onClick={(e) => {
+            e.preventDefault();
+            e.currentTarget.classList.toggle("active");
+          }}>
+          <span className='text-black'>{annee}</span>
+            <FontAwesomeIcon
+             icon={faAngleDown}
+             className={'icone group-[.active]:rotate-180'} />
+             <ul className='list z-10 overflow-scroll max-h-40 top-12 hidden group-[.active]:block'>
+                {getYears().map((year, index) => (
+                  <li key={index} onClick={() => setAnnee(year.split("/")[1])}>{year}</li>
+                ))}
+              </ul>
+          </div>
+          <div className="group drop relative" onClick={(e) => {
+            e.preventDefault();
+            e.currentTarget.classList.toggle("active");
+          }}>
+          <span className='text-black'>{semestre}</span>
+            <FontAwesomeIcon
+             icon={faAngleDown}
+             className={'icone group-[.active]:rotate-180'} />
+             <ul className='list overflow-scroll max-h-40 top-12 hidden group-[.active]:block'>
+             <li onClick={()=>{
+                    setSemestre("1");
+                }} style={{borderLeft:semestre==="semestre 1" ?'3px solid #0029FF':null}}>semestre 1</li>
+                <li onClick={()=>{
+                    setSemestre("2");
+                }} style={{borderLeft:semestre==="semestre 2"?'3px solid #0029FF':null}}>semestre 2</li>
+              </ul>
+          </div>
+          <div className="modal-action">
+      <form method="dialog">
+        {/* if there is a button in form, it will close the modal */}
+        <button className="btn">Close</button>
+      </form>
+      <button className="btn bg-blue-700 text-white" onClick={(e) => {
+          e.preventDefault();
+          telechargerEmpGroupe(grp.id_groupe, semestre, annee);
+          document.getElementById('download_groupe_emp_form_modal').close();
+      }}>Télécharger</button>
+    </div>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+    </dialog>
         </>
     )
     
