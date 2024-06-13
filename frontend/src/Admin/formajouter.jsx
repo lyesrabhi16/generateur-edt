@@ -1,7 +1,7 @@
 
 import '../Admin/Formajout.css'
 import { useState, useEffect } from "react";
-import axios from 'axios';
+import axios from '../axiosConfig.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons'

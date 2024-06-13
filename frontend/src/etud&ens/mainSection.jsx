@@ -5,7 +5,7 @@ import '../Admin/Emploi.css'
 import image from '../assets/download.png'
 import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
-import axios from 'axios';
+import axios from '../axiosConfig.js';
 import img from '../assets/360_F_134863241_QNHFFoMB6co8VdC1XY2VcDUPVWl9a3or.jpg'
 import toast from 'react-hot-toast';
 import './emp.css'

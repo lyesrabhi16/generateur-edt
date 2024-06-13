@@ -8,7 +8,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from "react";
 import Ajouter from './formajouter';
-import axios from 'axios'
+import axios from '../axiosConfig.js'
 import Cookies from 'js-cookie';
 import { Navigate } from "react-router-dom";
 import toast from 'react-hot-toast'
@@ -28,78 +28,6 @@ function Section({page}){
   const [grp, setGrp] = useState(null);
   const [annee,setAnnee]=useState('Selectionner une annee');
   const [semestre,setSemestre]=useState('Choisir semestre');
-  const telechargerEmpEns = (matricule, semestre, annee) => {
-    const id_t = toast.loading("downloading...");
-    axios.get(`http://localhost:3000/emploistemps/enseignant/${matricule}/${semestre}/${annee}/xlsx`, {
-      withCredentials: true,
-      responseType:'blob'
-    }).then(res => {
-    // create file link in browser's memory
-    const href = URL.createObjectURL(res.data);
-
-    // create "a" HTML element with href to file & click
-    const link = document.createElement("a");
-    link.href = href; 
-    // Extract filename from header
-    const filename = res.headers['content-disposition']
-      .split(';')
-      .find(n => n.includes('filename='))
-      .replace('filename=', '')
-      .replace('"', '')
-      .replace('"', '')
-      .trim()
-    ;
-    link.setAttribute("download", filename); //or any other extension
-    document.body.appendChild(link);
-    link.click();
-
-    // clean up "a" element & remove ObjectURL
-    document.body.removeChild(link);
-    URL.revokeObjectURL(href);
-
-    toast.success("Success", { id: id_t });
-    })
-    .catch(err => {
-      console.log(err);
-    toast.success("Failed", { id: id_t });
-    })
-  }
-  const telechargerEmpGroupe = (id_groupe, semestre, annee) => {
-    const id_t = toast.loading("downloading...");
-    axios.get(`http://localhost:3000/emploistemps/groupe/${id_groupe}/${semestre}/${annee}/xlsx`, {
-      withCredentials: true,
-      responseType:'blob'
-    }).then(res => {
-    // create file link in browser's memory
-    const href = URL.createObjectURL(res.data);
-
-    // create "a" HTML element with href to file & click
-    const link = document.createElement("a");
-    link.href = href; 
-    // Extract filename from header
-    const filename = res.headers['content-disposition']
-      .split(';')
-      .find(n => n.includes('filename='))
-      .replace('filename=', '')
-      .replace('"', '')
-      .replace('"', '')
-      .trim()
-    ;
-    link.setAttribute("download", filename); //or any other extension
-    document.body.appendChild(link);
-    link.click();
-
-    // clean up "a" element & remove ObjectURL
-    document.body.removeChild(link);
-    URL.revokeObjectURL(href);
-
-    toast.success("Success", { id: id_t });
-    })
-    .catch(err => {
-      console.log(err);
-    toast.success("Failed", { id: id_t });
-    })
-  }
 
   const getYears = () => {
     const Year = new Date().getFullYear() + 1;
@@ -529,7 +457,7 @@ page==='Groupe'?<tr className='head'>
       </form>
       <button className="btn bg-blue-700 text-white" onClick={(e) => {
           e.preventDefault();
-          telechargerEmpEns(ens.matricule, semestre, annee);
+          window.location.href = `http://localhost:3000/emploistemps/enseignant/${ens.matricule}/${semestre}/${annee}/xlsx`
           document.getElementById('download_ens_emp_form_modal').close();
       }}>Télécharger</button>
     </div>
@@ -580,7 +508,7 @@ page==='Groupe'?<tr className='head'>
       </form>
       <button className="btn bg-blue-700 text-white" onClick={(e) => {
           e.preventDefault();
-          telechargerEmpGroupe(grp.id_groupe, semestre, annee);
+          window.location.href = `http://localhost:3000/emploistemps/groupe/${grp.id_groupe}/${semestre}/${annee}/xlsx`
           document.getElementById('download_groupe_emp_form_modal').close();
       }}>Télécharger</button>
     </div>
