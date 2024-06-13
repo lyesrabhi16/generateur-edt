@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../axiosConfig.js';
 import { useState } from "react"
 import { Navigate } from "react-router-dom";
 import Cookies from 'js-cookie';
@@ -27,7 +27,7 @@ function Form() {
   })
             .catch(err=>{
               toast.error("erreur");
-                console.log(err)
+                console.log(err);
                 setErreur(true);
             });
  }

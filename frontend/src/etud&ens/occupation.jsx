@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 import { useState, useEffect } from "react";
-import axios from 'axios';
+import axios from '../axiosConfig.js';
 import image from '../assets/download.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
