@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from "react";
-import axios from 'axios';
+import axios from '../axiosConfig.js';
 import toast from 'react-hot-toast';
 function modifierEmp({emploie,groupes,debut,duree,fin,pose,onAdd,an}){
     const [jour1, setJour1] = useState('');

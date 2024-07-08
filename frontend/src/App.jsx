@@ -13,12 +13,14 @@ import Cookies from 'js-cookie';
 function App() {
   const user = Cookies.get("user") && JSON.parse(Cookies.get("user")) || null;
   const LoginProtectedRoute = ({user, element}) => {
+    user = Cookies.get("user") && JSON.parse(Cookies.get("user")) || null;
     if (user === null) {
       return <Navigate to="/" />;
     }
     return element;
   }
   const AdminProtectedRoute = ({user, element}) => {
+    user = Cookies.get("user") && JSON.parse(Cookies.get("user")) || null;
     if (user === null || user.type!=='Administrateur') {
       return <Navigate to="/" />;
     }
