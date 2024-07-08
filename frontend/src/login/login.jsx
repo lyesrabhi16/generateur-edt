@@ -4,7 +4,7 @@ import image from '../assets/BlogImage.png'
 import { Navigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 function Logo() {
-    const user = Cookies.get("user") && JSON.parse(Cookies.get("user")) || null;
+    const user = (Cookies.get("user") && JSON.parse(Cookies.get("user"))) || null;
 
     return user !== null ? (
       user.type === 'Administrateur' ? <Navigate to='/admin' /> : <Navigate to='/etu' />

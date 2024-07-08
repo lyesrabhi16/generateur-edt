@@ -1,8 +1,8 @@
 import './afficherEmploi.css'
 import Modify from './modifierEmp'
 import './modifierEmp.css'
-import { useState, useEffect } from "react";
-import axios from 'axios';
+import { useState } from "react";
+import axios from '../axiosConfig.js';
 import toast from 'react-hot-toast';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
