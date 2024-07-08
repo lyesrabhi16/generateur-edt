@@ -3,13 +3,13 @@ import image from '../assets/download.png'
 import './Emploi.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
+import { faDownload, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { faAdd } from '@fortawesome/free-solid-svg-icons'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import { faEye } from '@fortawesome/free-solid-svg-icons'
-import { faArrowsDownToLine } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from "react";
 import Afficher from '../Admin/afficherEmploi'
 import AfficherEmp from '../Admin/Afficher'
@@ -23,6 +23,7 @@ function Emploi(){
     const [reverse4,setReverse4]=useState(false);
     const [reverse5,setReverse5]=useState(false);
     const [reverse6,setReverse6]=useState(false);
+    const [reverse7,setReverse7]=useState(false);
     const [reverse8,setReverse8]=useState(false);
     const [reverse9,setReverse9]=useState(false);
     const [annee,setAnnee]=useState('Selectionner une annee');
@@ -45,6 +46,7 @@ function Emploi(){
     const [terminer,setTerminer]=useState(false);
     const [groupes,setGroupes]=useState(0);
     const [id_sec,setIdsec]=useState(0);
+    const [ignorer,setIgnorer]=useState('ignorer la charge');
     useEffect(() => {
         axios.get("http://localhost:3000/Specialite/",{
             withCredentials: true
@@ -121,6 +123,12 @@ function Emploi(){
         const duree=dureeSeance.split('h');
         const db=debut.split('h');
         const fn=fin.split('h');
+        let ignor;
+        if(ignorer=="oui"){
+            ignor="1";
+        }else{
+            ignor="0";
+        }
         
         const data={
             semestre:semestre[semestre.length-1],
@@ -140,13 +148,12 @@ function Emploi(){
             minutes_entre_creneaux:parseInt(dureePose),
             annee,
             shuffle:1,
-            ignore_charges:"0"
+            ignore_charges:ignor
             
         }
         axios.get('http://localhost:3000/groupe',{
             withCredentials: true
           }).then((res)=>{           
-            console.log(res);                                                  
             const grouprfilter=res.data.groupes.filter((gr)=> gr.id_section===id_section);
             setGroupes(grouprfilter.length);
             axios.post("http://localhost:3000/generate/"+id_section,data,{
@@ -154,8 +161,21 @@ function Emploi(){
               }).then((res)=>{
                 setEmploi(res);
                 setShow(true);
+                if(res.data.success ){
+                    if(parseInt(res.headers['content-length'])>=2000){
+                        toast.success("generation avec succes");
+                    }else{
+                        toast.success("emploi du temps vide");
+                    }
+                }else if(res.data.error){
+                    if(res.data.error=="Some seances have not been scheduled"){
+                        toast.success("emploi du temps generer mais il manque des seance qui ne sont pas affecter vous devez soit ajouter des enseignat ou ignorer les charge d'enseignant", {
+                            duration: 8000
+                          });
+                    }
+                }
               }).catch((err)=>{
-                console.log(err)
+                toast.error("erreur lors du generation");
               })
           })
     
@@ -191,6 +211,7 @@ function Emploi(){
     
     setShow(false);//fermer le formulaire
     setTerminer(!terminer);//pour faire un refresh a la table
+    setIgnorer("ignorer la charge");
   };
   const handleAdd2 = () => {
     
@@ -200,9 +221,15 @@ function Emploi(){
     
     setShow3(false);//fermer le formulaire
   };
+
+  const getYears = () => {
+    const Year = new Date().getFullYear() + 1;
+    return Array.from(new Array(10), (val, index) => `${Year - index - 1}/${Year - index}`);
+  }
+
     return(
-        <div className='flex flex-col w-full h-full main px-10 z-0 relative' id={(Show || Show2 || Show3) ? 'mainflou' : undefined}>
-            {Show?<Afficher onAdd={handleAdd} data={emploi} taille={groupes} db={debut} dr={dureeSeance} fn={fin} ps={dureePose} sm={semestre} an={annee} section={id_sec} />:null /*formulaire d'ajout*/}
+        <div className='flex flex-col w-full h-full main px-10 z-0 relative' id={(Show || Show2 || Show3) ? 'mainflou' : undefined} style={(Show || Show2 || Show3) ?{zIndex:"9"}:null}>
+            {Show?<Afficher onAdd={handleAdd} data={emploi} taille={groupes} db={debut} dr={dureeSeance} fn={fin} ps={dureePose} sm={semestre} an={annee} section={id_sec}  />:null /*formulaire d'ajout*/}
             {Show2?<AfficherEmp onAdd={handleAdd2} emploie={emploi2}/>:null}
             {Show3?<Modifier onAdd={handleAdd3} emploie={emploi2} an={annee} section={id_sec} semes={semestre}/>:null}
             <header className="flex w-full  justify-between  mt-8 h-fit">
@@ -226,22 +253,17 @@ function Emploi(){
             <FontAwesomeIcon
              icon={faAngleDown}
              className={reverse ? 'icone rotate' : 'icone'} />
-             <ul className='list -bottom-64' style={{display:reverse?'block':'none'}}>
-                <li onClick={()=>{
-                    setAnnee(2024);
-                }} style={{borderLeft:annee===2024?'3px solid #0029FF':null}}>2023/2024</li>
-                <li onClick={()=>{
-                    setAnnee(2023);
-                }} style={{borderLeft:annee===2023?'3px solid #0029FF':null}}>2022/2023</li>
-                <li onClick={()=>{
-                    setAnnee(2022);
-                }} style={{borderLeft:annee===2022?'3px solid #0029FF':null}}>2021/2022</li>
-                <li onClick={()=>{
-                    setAnnee(2021);
-                }} style={{borderLeft:annee===2021?'3px solid #0029FF':null}}>2020/2021</li>
-                <li onClick={()=>{
-                    setAnnee(2020);
-                }} style={{borderLeft:annee===2020?'3px solid #0029FF':null}}>2019/2020</li>
+             <ul className='list ' style={{display:reverse?'block':'none', bottom:"-500px"}}>
+             {getYears().map((year,index)=>{
+                    return(
+                        <li key={index} onClick={()=>{
+                            setAnnee(year.split("/")[1]);
+                        }} style={{borderLeft:annee==year.split("/")[1]?'3px solid #0029FF':null}}>{year}</li>
+                    )
+                    
+                   })}
+                
+               
              </ul>
         </div>
 
@@ -349,6 +371,9 @@ function Emploi(){
                 <li onClick={()=>{
                     setFin('17h00');
                 }} style={{borderLeft:fin==='17h00'?'3px solid #0029FF':null}}>17h00</li>
+                <li onClick={()=>{
+                    setFin('18h00');
+                }} style={{borderLeft:fin==='18h00'?'3px solid #0029FF':null}}>18h00</li>
                 
              </ul>
         </div>
@@ -393,6 +418,24 @@ function Emploi(){
              </ul>
         </div>
 
+        <div className='drop relative' onClick={()=>{
+            setReverse7(!reverse7);
+        }}>
+            <span className='text-black'>{ignorer}</span>
+            <FontAwesomeIcon
+             icon={faAngleDown}
+             className={reverse7 ? 'icone rotate' : 'icone'} />
+             <ul className='list -bottom-28' style={{display:reverse7?'block':'none'}}>
+                <li onClick={()=>{
+                    setIgnorer('oui');
+                }} style={{borderLeft:ignorer==='oui'?'3px solid #0029FF':null}}>oui</li>
+                <li onClick={()=>{
+                    setIgnorer('non');
+                }} style={{borderLeft:ignorer==='non'?'3px solid #0029FF':null}}>non</li>
+              
+             </ul>
+        </div>
+
         
 
         </div>
@@ -407,7 +450,6 @@ function Emploi(){
         <td>section</td>
         <td>Action</td>
         </tr>
-        {console.log(newsections)}
         {newsections.map((section,index)=>{
             
             return (
@@ -417,7 +459,7 @@ function Emploi(){
                   <td>{section.niveau}</td>
                   <td>
                   
-                  {section.generated?<FontAwesomeIcon icon={faCheck} className='text-white bg-green-500 p-1 rounded-3xl'/>:
+                  {section.generated?<FontAwesomeIcon icon={faCheck} className='text-white bg-green-500 p-1 rounded-3xl hv'/>:
                   <FontAwesomeIcon icon={faXmark} className='text-white bg-red-600 px-1.5 py-1 rounded-3xl'/>
                   }
                  
@@ -427,10 +469,10 @@ function Emploi(){
 
                   {section.generated?
                   <>
-                   <FontAwesomeIcon icon={faEye} className='ml-4 text-blue-700 cursor-pointer' onClick={()=>{
+                   <FontAwesomeIcon icon={faEye} className='ml-4 text-blue-700 cursor-pointer hv' onClick={()=>{
                     affiche(section.id_section);
             }}/>
-               <FontAwesomeIcon icon={faPen} className='ml-8 text-blue-700 cursor-pointer' onClick={()=>{
+               <FontAwesomeIcon icon={faPen} className='ml-8 text-blue-700 cursor-pointer hv' onClick={()=>{
                 affiche(section.id_section,1);
                 setIdsec(section.id_section);
                 }}/>
@@ -459,7 +501,7 @@ function Emploi(){
                  
                  
                }}/>
-                <FontAwesomeIcon icon={faArrowsDownToLine} className='ml-4 text-green-600 cursor-pointer' onClick={()=>{
+                <FontAwesomeIcon icon={faDownload} className='ml-4 text-green-600 cursor-pointer hv' onClick={()=>{
                     const seme=semestre[semestre.length-1];
                     window.location.href="http://localhost:3000/EmploisTemps/section/"+section.id_section+"/"+seme+"/"+annee+"/xlsx";
             }}/>
@@ -467,7 +509,7 @@ function Emploi(){
                   
                
                :<>
-               <FontAwesomeIcon icon={faAdd} className=' ml-4 text-blue-700 text-xl cursor-pointer' onClick={()=>{
+               <FontAwesomeIcon icon={faAdd} className=' ml-4 text-blue-700 text-xl cursor-pointer hv' onClick={()=>{
                 generer(section.id_section);
                 setIdsec(section.id_section);
                 }}/>

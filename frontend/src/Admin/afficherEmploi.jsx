@@ -369,7 +369,7 @@ function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
                     </td>
                 </tr>
             </table>
-            <div className='w-full flex justify-between mt-8'>
+            {data.data && data.data.success && parseInt(data.headers['content-length'])>=2000 ?<div className='w-full flex justify-between mt-8'>
                 <button className='emploimodifier text-white rounded-2xl px-3 py-2 w-28 transition-all delay-100' onClick={()=>{
                     setShow(!Show);
                 }}>Modifier</button>
@@ -390,7 +390,7 @@ function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
                       })
                 }}>Approuver</button>
 
-            </div>
+            </div>:null}
         </div>
     )
 }
