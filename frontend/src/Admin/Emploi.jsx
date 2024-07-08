@@ -624,13 +624,15 @@ function Emploi(){
                     const grouprfilter=res.data.groupes.filter((gr)=> gr.code_section===section.code_section);
                     grouprfilter.map((gr)=>{
                         const id_groupe=parseInt(gr.id_groupe);
-                        axios.delete('http://localhost:3000/EmploisTemps/groupes/'+id_groupe,{
+                        const seme=semestre[semestre.length-1];
+                        axios.delete('http://localhost:3000/EmploisTemps/groupes/'+id_groupe+"/"+seme+"/"+annee,{
                             withCredentials: true
-                          }).then(()=>{
+                          }).then((rr)=>{
                             if(success==false){
                                 toast.success("suppresion avec succes");
                             }
                             success=true;
+                            console.log(rr)
                             setSupprime(!supprime);
                           }).catch(()=> {
                             toast.error("suppression echoué");
