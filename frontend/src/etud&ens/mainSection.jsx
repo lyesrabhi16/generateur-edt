@@ -109,7 +109,11 @@ function MainSection({page}){
     }
     ,[sections,selected2,page,selected]);
     
-    
+    const getYears = () => {
+        const Year = new Date().getFullYear() + 1;
+        return Array.from(new Array(10), (val, index) => `${Year - index - 1}/${Year - index}`);
+      }
+
     return(
         <>
         {user===undefined?<Navigate to="/"  replace={true} />:null}{/*pour savoir si le cookie est expire*/}
@@ -135,22 +139,17 @@ function MainSection({page}){
             <FontAwesomeIcon
              icon={faAngleDown}
              className={reverse ? 'icone rotate' : 'icone'} />
-             <ul className='list -bottom-64' style={{display:reverse?'block':'none'}}>
-                <li onClick={()=>{
-                    setSelected(2024);
-                }} style={{borderLeft:selected===2024?'3px solid #0029FF':null}}>2023/2024</li>
-                <li onClick={()=>{
-                    setSelected(2023);
-                }} style={{borderLeft:selected===2023?'3px solid #0029FF':null}}>2022/2023</li>
-                <li onClick={()=>{
-                    setSelected(2022);
-                }} style={{borderLeft:selected===2022?'3px solid #0029FF':null}}>2021/2022</li>
-                <li onClick={()=>{
-                    setSelected(2021);
-                }} style={{borderLeft:selected===2021?'3px solid #0029FF':null}}>2020/2021</li>
-                <li onClick={()=>{
-                    setSelected(2020);
-                }} style={{borderLeft:selected===2020?'3px solid #0029FF':null}}>2019/2020</li>
+             <ul className='list ' style={{display:reverse?'block':'none', bottom:"-500px"}}>
+             {getYears().map((year,index)=>{
+                    return(
+                        <li key={index} onClick={()=>{
+                            setSelected(year.split("/")[1]);
+                        }} style={{borderLeft:selected==year.split("/")[1]?'3px solid #0029FF':null}}>{year}</li>
+                    )
+                    
+                   })}
+                
+               
              </ul>
         </div>
 

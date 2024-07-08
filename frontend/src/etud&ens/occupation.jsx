@@ -41,6 +41,7 @@ function Occupation({page}){
       setFinish(!Finish);//pour faire un refresh de la table
       setShow(false);//fermer le formulaire
     };
+
     return(
       <>
       {user===undefined?<Navigate to="/"  replace={true} />:null /*pour savoir si le cookie est expire*/}
