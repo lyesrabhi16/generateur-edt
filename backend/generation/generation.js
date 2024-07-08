@@ -216,9 +216,10 @@ export const generate = async (req, res) => {
                         let b=true;
                         while (b){
                             if (enseignants.length === 0){
-                                enseignant = undefined;
+                                if(ignore_charges==0){
+                                    enseignant = undefined;
+                                }
                                 b = false;
-                                enseignant = undefined;
                                 break;
                             }
                             enseignant = getEnseignantWithHighestPriorite(enseignants, Object.keys(EnsRoles).filter(r => r !== "vacataire"),contraints.ignore_charges);
@@ -299,9 +300,10 @@ export const generate = async (req, res) => {
                 let b=true;
                 while (b){
                     if (enseignants.length === 0){
-                        enseignant = undefined;
+                        if(ignore_charges==0){
+                            enseignant = undefined;
+                        }
                         b = false;
-                        enseignant = undefined;
                         break;
                     }
                     enseignant = getEnseignantWithHighestPriorite(enseignants, Object.keys(EnsRoles), contraints.ignore_charges);

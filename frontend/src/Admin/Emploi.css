@@ -91,6 +91,9 @@
     border-top-right-radius: 30px;
     border-bottom-right-radius: 30px;
 }
+.aks tr:hover .hv{
+   color: white;
+}
 
 .aks tr{
     transition: all 0.3s;

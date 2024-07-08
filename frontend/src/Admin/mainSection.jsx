@@ -156,7 +156,7 @@ function Section({page}){
     return(
       <>
       {user===undefined?<Navigate to="/"  replace={true} />:null}{/*pour savoir si le cookie est expire*/}
-      <div className="flex flex-col main px-10 z-0 h-full" id={Show ? 'mainflou' : undefined}>
+      <div className="flex flex-col main px-10  h-full" id={Show ? 'mainflou' : undefined} style={Show?{zIndex:"9"}:null}>
 
       {Show?<Ajouter onAdd={handleAdd} typep={page} modify={info} />:null /*formulaire d'ajout*/}
 

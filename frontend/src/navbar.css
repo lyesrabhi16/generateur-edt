@@ -29,3 +29,6 @@ color:#193BEF
 .items{
 width: 90%;
 }
+.wholepage{
+    z-index: 1;
+}
