@@ -22,7 +22,7 @@ EmploisRouter.get('/groupes/:id_groupe/:semestre/:annee/:niveau',selectOneEmploi
 EmploisRouter.post('/', insertOneEmploisValidator,insertOneEmplois);
 EmploisRouter.delete('/:id_emp',deleteOneEmplois);
 EmploisRouter.put('/:id_emp', insertOneEmploisValidator,updateOneEmplois);
-EmploisRouter.delete('/groupes/:id_groupe',deleteOneEmploisByIdGroupe);
+EmploisRouter.delete('/groupes/:id_groupe/:semestre/:annee',deleteOneEmploisByIdGroupe);
 EmploisRouter.get('/groupe/:id_groupe/:semestre/:annee/xlsx', downloadXLSX_EmpGroupe);
 EmploisRouter.get('/enseignant/:matricule/:semestre/:annee/xlsx', downloadXLSX_EmpEns);
 EmploisRouter.get('/section/:id_section/:semestre/:annee/xlsx', downloadXLSX_EmpSection);

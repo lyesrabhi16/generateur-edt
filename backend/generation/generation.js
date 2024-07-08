@@ -103,6 +103,8 @@ export const generate = async (req, res) => {
             const ens = EnsM[i];
             const ens_c = await getAllEnsEtCreneauxById(ens.matricule, semestre, annee);
             ens.chargesR = ens.charges - ens_c.length;
+            ens.chargesDA = ens_c.length;
+            ens.chargesA = 0;
         }
         ens[module] = EnsM;
     }
@@ -228,7 +230,6 @@ export const generate = async (req, res) => {
                             }
                               
                             if (!ocp_ens[enseignant.matricule][jour][period]){
-                                console.log(enseignant.matricule, jour, period)
                                 b = false;   
                             }
                             else{
@@ -262,6 +263,7 @@ export const generate = async (req, res) => {
                                 seances = seances.filter(s => s.id_seance !== seance.id_seance);
                             }
                             enseignant.chargesR -= 1;
+                            enseignant.chargesA += 1;
 
                             nbr_cours++;
                             
@@ -312,7 +314,6 @@ export const generate = async (req, res) => {
                     }
 
                     if (!ocp_ens[enseignant.matricule][jour][period]){
-                        console.log(enseignant.matricule, jour, period)
                         b = false;   
                     }
                     else{
@@ -338,7 +339,6 @@ export const generate = async (req, res) => {
                                     seance: seance,
                                     locale: locale,
                                 };
-                                console.log(creneau.jour,creneau.period, creneau.enseignant.matricule );
                                 ocp_groupes[groupe.id_groupe][jour][period] = true;
                                 seance.remaining_groupes = [...seance.remaining_groupes.filter(g => g.id_groupe !== groupe.id_groupe)];
                                 ocp_ens[enseignant.matricule][jour][period] = true;
@@ -349,8 +349,8 @@ export const generate = async (req, res) => {
 
                                 const s = {...seance};
                                 delete s.remaining_groupes;
-                                console.log(enseignant.chargesR);
                                 enseignant.chargesR -= 1;
+                                enseignant.chargesA += 1;
 
                                 creneaux[jour][period][groupe.code_groupe] ={
                                     seance: s,

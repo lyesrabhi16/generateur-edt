@@ -54,8 +54,8 @@ export const deleteEmplois =(id_Emp) => {
 
 }
 
-export const deleteEmploisByIdGroupe =(id_groupe) => {
-    return db.oneOrNone("DELETE FROM emploisdutemps where id_groupe=$1 ",[id_groupe]);
+export const deleteEmploisByIdGroupe =(id_groupe, semestre, annee) => {
+    return db.oneOrNone("DELETE FROM emploisdutemps where id_groupe=$1 and semestre=$2 and annee=$3",[id_groupe, semestre, annee]);
 
 }
 

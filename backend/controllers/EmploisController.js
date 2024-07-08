@@ -165,8 +165,8 @@ export const deleteOneEmplois =(req,res)=>{
 }
 
 export const deleteOneEmploisByIdGroupe=(req,res)=>{
-    const {id_groupe} = req.params;
-    deleteEmploisByIdGroupe(id_groupe).then(()=>{
+    const {id_groupe, semestre, annee} = req.params;
+    deleteEmploisByIdGroupe(id_groupe, semestre, annee).then(()=>{
 
         const response={
             status:"Success",
