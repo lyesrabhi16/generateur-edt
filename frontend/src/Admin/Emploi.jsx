@@ -2,8 +2,8 @@ import Cookies from 'js-cookie';
 import image from '../assets/download.png'
 import './Emploi.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
 import { faDownload, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { faAngleDown, faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 import Afficher from '../Admin/afficherEmploi'
 import AfficherEmp from '../Admin/Afficher'
 import Modifier from '../Admin/modifier'
-import axios from 'axios';
+import axios from '../axiosConfig.js';
 import toast from 'react-hot-toast';
 function Emploi(){
     const [reverse,setReverse]=useState(false);
@@ -47,6 +47,143 @@ function Emploi(){
     const [groupes,setGroupes]=useState(0);
     const [id_sec,setIdsec]=useState(0);
     const [ignorer,setIgnorer]=useState('ignorer la charge');
+
+    const GOOGLE_CLIENT_ID = "148373478842-lab6hq5l2piurkludiu36158p6tm0mah.apps.googleusercontent.com"; 
+    const GOOGLE_REDIRECT_URI = "http://localhost:5000/email/send/callback";
+    const sendEmail = (emps) => {
+        const googleParams_s = Cookies.get("google_params");
+        if (googleParams_s) {
+            const googleParams = JSON.parse(googleParams_s);
+            emps.forEach((emp) => {
+                const t = toast.loading(`Sending Emails To ${emp.niveau}${emp.code_specialite} ${emp.code_section} ${emp.code_groupe}...`);
+            axios
+            .get("https://www.googleapis.com/oauth2/v3/userinfo", {
+                headers: {
+                Authorization: `Bearer ${googleParams.access_token}`,
+                },
+            })
+            .then((res) => {
+                axios
+                .post(
+                    "http://localhost:3000/email/send",
+                    {
+                    id_emp: emp.id_emp,
+                    user_email: res.data.email,
+                    access_token: googleParams.access_token,
+                    },
+                    {
+                    withCredentials: true,
+                    }
+                )
+                .then((res) => {
+                    console.log(res);
+                    toast.success(`${emp.niveau}${emp.code_specialite} ${emp.code_section} ${emp.code_groupe} Emails sent successfully`, { id: t });
+                })
+                .catch((err) => {
+                    toast.error(`${emp.niveau}${emp.code_specialite} ${emp.code_section} ${emp.code_groupe} Error sending emails`, { id: t });
+                    console.log(err);
+                });
+            })
+            .catch((err) => {
+                toast.error(`Error getting user email`, { id: t });
+                Cookies.remove("google_params");
+                console.log(err);
+            });
+            })
+            
+        }else{
+            toast.error("Please authenticate with Google first");
+            oauth2SignIn(() => sendEmail(emps));
+        }
+    }
+    
+    const oauth2SignIn = (callback) => {
+        // Function to generate a random state value
+        const generateCryptoRandomState = () => {
+            const randomValues = new Uint32Array(2);
+            window.crypto.getRandomValues(randomValues);
+
+            // Encode as UTF-8
+            const utf8Encoder = new TextEncoder();
+            const utf8Array = utf8Encoder.encode(
+            String.fromCharCode.apply(null, randomValues)
+            );
+
+            // Base64 encode the UTF-8 data
+            return btoa(String.fromCharCode.apply(null, utf8Array))
+            .replace(/\+/g, "-")
+            .replace(/\//g, "_")
+            .replace(/=+$/, "");
+        };
+        // create random state value to check return result for a possible CSRF Attack
+        const state = generateCryptoRandomState();
+        // Google's OAuth 2.0 endpoint for requesting an access token
+        const oauth2Endpoint = "https://accounts.google.com/o/oauth2/v2/auth";
+
+        
+        // Parameters to pass to OAuth 2.0 endpoint.
+        const params = {
+        client_id: GOOGLE_CLIENT_ID,
+        redirect_uri: GOOGLE_REDIRECT_URI,
+        scope:
+            "https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.metadata https://www.googleapis.com/auth/userinfo.email https://mail.google.com/",
+        state: state,
+        include_granted_scopes: "true",
+        response_type: "token",
+        };
+
+        const googlePopUp = window.open(undefined, 'Google Auth', 'height=600,width=450');
+        // Create element to open OAuth 2.0 endpoint in new window.
+        const form = googlePopUp.document.createElement("form");
+        form.setAttribute("method", "GET"); // Send as a GET request.
+        form.setAttribute("action", oauth2Endpoint);
+
+        // Add form parameters as hidden input values.
+        for (let p in params) {
+        const input = googlePopUp.document.createElement("input");
+        input.setAttribute("type", "hidden");
+        input.setAttribute("name", p);
+        input.setAttribute("value", params[p]);
+        form.appendChild(input);
+        }
+
+        // Add form to page and submit it to open the OAuth 2.0 endpoint.
+        googlePopUp.document.body.appendChild(form);
+        form.submit();
+        googlePopUp.document.body.remove(form);
+        const start = Date.now();
+        const checkForResult = setInterval(() => {
+            const elapsed = Date.now() - start;// time elapsed in milliseconds
+            if(elapsed >= 300000){ // try for 5 minutes
+                clearInterval(checkForResult);
+                toast.error("Google Auth Attempt Failed, Must Be done in less than 5 minutes, Please Retry")
+            }
+
+            const google_params_s = Cookies.get("google_params"); 
+            console.log(google_params_s);
+            if(google_params_s){
+                clearInterval(checkForResult);
+                const google_params = JSON.parse(google_params_s);
+                console.log(google_params);
+                if(google_params["state"] !== state){
+                    console.log("Possible CSRF Detected");
+                    toast.error("Possible CSRF Detected");
+                    Cookies.remove("google_params")
+                    return;
+                }
+                if(google_params["access_token"] === undefined){
+                    console.log("Failed to get access_token");
+                    toast.error("Google Auth Failed");
+                    Cookies.remove("google_params")
+                    return;
+                }
+                callback();
+            }
+        }, 100);
+            
+    };
+
+
     useEffect(() => {
         axios.get("http://localhost:3000/Specialite/",{
             withCredentials: true
@@ -62,7 +199,7 @@ function Emploi(){
             withCredentials: true
           }).then(respo =>{
             const sectionsFiltres = respo.data.sections.filter(section => section.niveau === niveau && section.code_specialite===code_specialite);
-            const updatesection = sectionsFiltres.map(section => ({ ...section, generated: false }));
+            const updatesection = sectionsFiltres.map(section => ({ ...section, generated: false, emps:{} }));
           setSections(updatesection);
           
           
@@ -88,8 +225,10 @@ function Emploi(){
                        const sem=semestre[semestre.length-1]
                         axios.get('http://localhost:3000/EmploisTemps/groupes/'+id_groupe+"/"+sem+"/"+annee+"/"+niveau,{
                     withCredentials: true
-                  }).then(()=>{
+                  }).then((res)=>{
                     updateSection[index].generated=true;
+                    (new Set()).a
+                    updateSection[index].emps[gr.code_groupe] = res.data.Emplois_temps;
                     setNewsections(updateSection);
                   }).catch(()=> {
                     updateSection[index].generated=false;
@@ -361,7 +500,7 @@ function Emploi(){
             <FontAwesomeIcon
              icon={faAngleDown}
              className={reverse9 ? 'icone rotate' : 'icone'} />
-             <ul className='list -bottom-40' style={{display:reverse9?'block':'none'}}>
+             <ul className='list -bottom-52' style={{display:reverse9?'block':'none'}}>
                 <li onClick={()=>{
                     setFin('15h00');
                 }} style={{borderLeft:fin==='15h00'?'3px solid #0029FF':null}}>15h00</li>
@@ -453,7 +592,7 @@ function Emploi(){
         {newsections.map((section,index)=>{
             
             return (
-                <tr key={index}>
+                <tr key={index} className='group'>
                   <td>{index+1}</td>
                   <td>{section.code_specialite}</td>
                   <td>{section.niveau}</td>
@@ -469,10 +608,11 @@ function Emploi(){
 
                   {section.generated?
                   <>
-                   <FontAwesomeIcon icon={faEye} className='ml-4 text-blue-700 cursor-pointer hv' onClick={()=>{
+
+                   <FontAwesomeIcon icon={faEye} className='ml-4 text-blue-700 group-hover:text-white cursor-pointer' onClick={()=>{
                     affiche(section.id_section);
             }}/>
-               <FontAwesomeIcon icon={faPen} className='ml-8 text-blue-700 cursor-pointer hv' onClick={()=>{
+               <FontAwesomeIcon icon={faPen} className='ml-8 text-blue-700 group-hover:text-white cursor-pointer' onClick={()=>{
                 affiche(section.id_section,1);
                 setIdsec(section.id_section);
                 }}/>
@@ -504,6 +644,9 @@ function Emploi(){
                 <FontAwesomeIcon icon={faDownload} className='ml-4 text-green-600 cursor-pointer hv' onClick={()=>{
                     const seme=semestre[semestre.length-1];
                     window.location.href="http://localhost:3000/EmploisTemps/section/"+section.id_section+"/"+seme+"/"+annee+"/xlsx";
+            }}/>
+            <FontAwesomeIcon icon={faEnvelope} className='ml-4 text-blue-700 group-hover:text-white cursor-pointer' onClick={() => {
+                    sendEmail(Object.values(section.emps));
             }}/>
                   </>
                   

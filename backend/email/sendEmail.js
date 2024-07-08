@@ -11,7 +11,7 @@ export const sendEmail = async (req, res) => {
   // user_email is the sender's email (from his gmail service)
   // user_pass is the sender's pass (from his gmail service) or App Password if the user has 2fa enabled in gmail for example
   const { id_emp, user_email, access_token, refresh_token, expires } = req.body;
-  console.log(id_emp, user_email, access_token, refresh_token);
+  console.log("send emails: ", id_emp, user_email);
 
   let e = false;
 
@@ -35,7 +35,7 @@ export const sendEmail = async (req, res) => {
     });
   }
 
-  const emailsEtudiants = ["lyes.rabhi@se.univ-bejaia.dz"];
+  const emailsEtudiants = [];
 
   // get emails of related students
   const etudiants = await selectPersonnes(
@@ -56,6 +56,7 @@ export const sendEmail = async (req, res) => {
   etudiants.forEach((etudiant) => {
     emailsEtudiants.push(etudiant.email);
   });
+
   // get emails of related teachers
   const ensD = {};
   const enseignantsD = await getAllEnsEtCreneaux(id_emp).catch((err) => {
@@ -113,21 +114,22 @@ export const sendEmail = async (req, res) => {
 
   const filename = "EDT-" + uuidV4() + ".xlsx";
 
-  const created = await getEmpGroupeFile(
+  const created_groupe_emp = await getEmpGroupeFile(
     emp.id_groupe,
     emp.semestre,
     emp.annee,
     filename
   );
-  if (!created) {
+  if (!created_groupe_emp) {
     return res.status(500).json({
       status: "Error",
       message: "Failed to create transporter",
     });
   }
+  const mailOptions = [];
   // add Email of students
-  const mailOptions = [
-    {
+  if (emailsEtudiants.length > 0){
+    mailOptions.push({
       from: user_email,
       to: emailsEtudiants,
       subject: `Emplois du temps ${emp.code_specialite} ${emp.code_section} ${emp.code_groupe}`,
@@ -138,8 +140,8 @@ export const sendEmail = async (req, res) => {
           path: filename,
         },
       ],
-    },
-  ];
+    })
+  }
   // add an Email for each ens
   const ensEmpFiles = [];
   for (let i = 0; i < enseignants.length; i++) {
@@ -204,8 +206,13 @@ export const sendEmail = async (req, res) => {
   }
 
   // remove created files
-  fs.unlinkSync(filename);
-  ensEmpFiles.forEach((f) => fs.unlinkSync(f));
+  if(fs.existsSync(filename)){
+    fs.unlinkSync(filename);
+  }
+  ensEmpFiles.forEach((f) => {
+    if(fs.existsSync(f)){
+      fs.unlinkSync(f);
+    }});
 
   if (e) {
     res.status(500).json({

@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 
 export const cookieJwtAuthentication = (req, res, next) => {
     const token = req.cookies.token;
-    console.log(token);
+    console.log('token', token);
     
     try {
         /* @MassinS
@@ -18,7 +18,9 @@ export const cookieJwtAuthentication = (req, res, next) => {
         res.set('Access-Control-Allow-Credentials', 'true');
         next();
     } catch {
+        console.log("unauthorized");
         res.clearCookie('token');
-        return res.redirect('/login');
+        res.clearCookie('user');
+        return res.status(401).redirect("http://localhost:5000");
     }
 };

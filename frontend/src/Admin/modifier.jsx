@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from "react";
 import './modifierEmp.css'
-import axios from 'axios';
+import axios from '../axiosConfig.js';
 import toast from 'react-hot-toast';
 function Modifier({onAdd,emploie,an,section,semes}){
     const [jour1, setJour1] = useState('');
