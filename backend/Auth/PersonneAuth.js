@@ -1,13 +1,11 @@
 import { selectPersonneByEmail } from "../DB/personne.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { env } from 'node:process';
 
     export const AuthOnePersonne = (req,res)=>{
-     
     const {email,password}=req.body;
     let { rememberMe } = req.body;
-
+    console.log("Auth attempt: ", email);
     if(rememberMe !== true && rememberMe !== false){
       if (rememberMe === undefined) {
         rememberMe = false;
@@ -42,6 +40,7 @@ import { env } from 'node:process';
     const passwordFound =data.password;
     const passwordMatch = await bcrypt.compare(password,passwordFound);
   
+    console.log("passwordMatch: ", passwordMatch);
 
     if (!passwordMatch) {
         response.status = "Error";
