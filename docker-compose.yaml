@@ -8,6 +8,8 @@
             POSTGRES_DB: ${DBName}
             POSTGRES_USER: ${DBUser}
             POSTGRES_PASSWORD: ${DBPass}
+          volumes:
+              - ./pgdata:/var/lib/postgresql/data
           ports:
             - 9000:5432
 
