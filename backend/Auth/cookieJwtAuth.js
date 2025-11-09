@@ -9,7 +9,7 @@ export const cookieJwtAuthentication = (req, res, next) => {
                 * extracted only email and id from the token
             ?--written by @lyesrabhi16
          */
-
+        console.log(jwt.verify(token, process.env.JWTSecret));
         const { id, email } = jwt.verify(token, process.env.JWTSecret);
         req.email = email;
         req.matricule = id;
@@ -18,8 +18,8 @@ export const cookieJwtAuthentication = (req, res, next) => {
         console.log(`auth success: ${id} ${email}`);
         next();
     } catch {
+        console.log("unauthorized");
         res.clearCookie('token');
         console.log(`auth failed with token: `, token);
-        return res.redirect('/login');
-    }
+        return res.redirect('/login');}
 };

@@ -13,6 +13,7 @@ export const downloadXLSX_EmpGroupe = async (req, res) => {
             "Content-Disposition",
             `attachment; filename=${filename}`
         );
+        res.header('Access-Control-Expose-Headers', 'Content-Disposition');
         res.download(filename, filename.replace(id+"#", ""),(err) => {
             if(err){
                 console.log(err);
@@ -39,6 +40,7 @@ export const downloadXLSX_EmpEns = async (req, res) => {
             "Content-Disposition",
             `attachment; filename=${filename}`
         );
+        res.header('Access-Control-Expose-Headers', 'Content-Disposition');
         res.download(filename,  filename.replace(id+"#", ""), (err) => {
             if(err){
                 console.log(err);
@@ -66,6 +68,7 @@ export const downloadXLSX_EmpSection = async (req, res) => {
             "Content-Disposition",
             `attachment; filename=${filename}`
         );
+        res.header('Access-Control-Expose-Headers', 'Content-Disposition');
         res.download(filename,  filename.replace(id+"#", ""), (err) => {
             if(err){
                 console.log(err);
