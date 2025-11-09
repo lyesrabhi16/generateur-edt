@@ -1,69 +1,114 @@
-# Initialization
+# Generateur‑EDT
 
-## download
+A web application to automatically generate timetables (*emploi du temps*) for educational institutions.  
 
-install [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) if you don't have it, and configure the [login with ssh](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
+## Table of Contents
+
+- [Features](#features)  
+- [Tech Stack](#tech-stack)  
+- [Getting Started](#getting-started)  
+- [Project Structure](#project-structure)  
+- [Configuration](#configuration)  
+- [Usage](#usage)  
+- [Contributing](#contributing)  
+- [License](#license)
+
+## Features
+
+- Automatically generate timetables based on courses, teachers, rooms, and time slots.  
+- Web-based interface for easy input and visualization.  
+- Modular and extendable architecture for customization.
+
+## Tech Stack
+
+- Frontend: HTML, CSS, JavaScript  
+- Backend: Node.js + Express  
+- Database: (Specify if used, e.g., MongoDB, MySQL)  
+- Package manager: npm
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js and npm installed  
+- Git installed  
+- (If applicable) A running database server
+
+### Installation
 
 ```bash
-git clone git@github.com:lyesrabhi16/Projet_AIE.git
-```
+# Clone the repository
+git clone https://github.com/lyesrabhi16/generateur-edt.git
+cd generateur-edt
 
-## install the dependencies
-
-execute these from the root folder, meaning:
-
-```bash
-cd Projet_AIE
-```
-
-install [Nodejs and npm](https://kinsta.com/blog/how-to-install-node-js/) if you don't have them
-
-```bash
+# Install backend dependencies
 npm install --prefix backend
+
+# Install frontend dependencies
 npm install --prefix frontend
-
 ```
 
-## start the backend server
+### Run
+
+Start backend and frontend servers in separate terminals:
 
 ```bash
-npm run backend
+# Backend server
+npm run --prefix backend start
+
+# Frontend server
+npm run --prefix frontend start
 ```
 
-## start the frontend website
+The frontend is usually available at `http://localhost:3000`.  
 
-in a different terminal/shell window, start the frontend development server with:
+## Project Structure
 
-```bash
-npm run frontend
+```
+generateur-edt/
+│
+├── backend/         # Backend application
+│   ├── src/
+│   ├── package.json
+│   └── …
+│
+├── frontend/        # Frontend application
+│   ├── src/
+│   ├── package.json
+│   └── …
+│
+├── .gitignore
+└── README.md
 ```
 
-## DB configuration
+## Configuration
 
-### locally
+- Use `.env` files to set environment variables for backend:
+  - `PORT` for backend server  
+  - `DATABASE_URL` if using a database  
+  - Any API keys if needed  
 
-download and install [PostgreSQL](https://www.postgresql.org/) if you don't have it
+- Update frontend configuration if necessary (API base URL, etc.).  
 
-download and install [PgAdmin](https://www.pgadmin.org/) if you want
+## Usage
 
-configure your local Postgresql db with:
+1. Open your browser at the frontend URL.  
+2. Enter your data: courses, rooms, teachers, and time slots.  
+3. Click **Generate Timetable**.  
+4. Export or download the timetable (PDF/Excel) if supported.
 
-1. [create a user](https://phoenixnap.com/kb/postgres-create-user) named: **admin** with the password: **admin** with superuser privilege
-2. [create a database](https://phoenixnap.com/kb/postgres-create-database) with the name **agemp_db_local**
-3. run the scripts in the [DB Folder](autres/DB/)
+## Contributing
 
-you will find the DB environment variables in the [env file](backend/.env)
+Contributions are welcome:
 
-### remote
+1. Fork the repository  
+2. Create a new branch (`git checkout -b feature/my-feature`)  
+3. Commit your changes (`git commit -m "Add awesome feature"`)  
+4. Push to the branch (`git push origin feature/my-feature`)  
+5. Open a Pull Request
 
-URL:
+Please follow the coding style and include tests when possible.
 
-```txt
-    postgres://admin:EuununkXWDDJZ33W7cQLLBi8pagZ4qzH@dpg-cnir53ed3nmc73fm5eqg-a.frankfurt-postgres.render.com/agemp_db
-```
+## License
 
-PSQL Command:
-
-```txt
-    PGPASSWORD=EuununkXWDDJZ33W7cQLLBi8pagZ4qzH psql -h dpg-cnir53ed3nmc73fm5eqg-a.frankfurt-postgres.render.com -U admin agemp_db
-```
+This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
