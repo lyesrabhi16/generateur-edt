@@ -23,6 +23,7 @@ import authRouter from "./router/Auth.js";
 import { cookieJwtAuthentication } from "./Auth/cookieJwtAuth.js";
 import generateRouter from "./router/generate.js";
 import emailRouter from "./router/email.js";
+import { isAdmin } from "./Auth/isAdmin.js";
 dotEnv.config();
 
 const app = new Express();
@@ -42,6 +43,11 @@ app.get("/", (req, res) => {
     res.send("AGEMP Server");// for testing purposes
 });
 
+/* 
+  !!! if you find some API that is Admin Only 
+  !!! add isAdmin check to it if it's not already there
+*/
+
 app.use("/Personne", cookieJwtAuthentication,PersonneRouter);
 app.use("/Specialite", cookieJwtAuthentication ,SpecialiteRouter);
 app.use("/Section", cookieJwtAuthentication ,SectionRouter);
@@ -55,8 +61,8 @@ app.use('/EmploisTemps',cookieJwtAuthentication,EmploisRouter);
 app.use('/EnsEtOccup',cookieJwtAuthentication,EnsEtOccupRouter);
 app.use('/ModuleEns',cookieJwtAuthentication,ModuleEnsRouter);
 app.use('/EnsCreneaux',cookieJwtAuthentication,EnsEtCreneauxRouter);
-app.use('/generate', cookieJwtAuthentication,generateRouter);
-app.use('/email', cookieJwtAuthentication,emailRouter);
+app.use('/generate', cookieJwtAuthentication, isAdmin,generateRouter);
+app.use('/email', cookieJwtAuthentication, isAdmin,emailRouter);
 app.use('/login',authRouter);
 app.listen(port, () => {
   console.log("Server running on http://localhost:" + port);
