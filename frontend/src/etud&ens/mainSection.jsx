@@ -4,7 +4,11 @@ import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
 import '../Admin/Emploi.css'
 import image from '../assets/download.png'
 import { useState, useEffect } from "react";
-import axios from 'axios';
+import { Navigate } from "react-router-dom";
+import axios from '../axiosConfig.js';
+import img from '../assets/360_F_134863241_QNHFFoMB6co8VdC1XY2VcDUPVWl9a3or.jpg'
+import toast from 'react-hot-toast';
+import './emp.css'
 function MainSection({page}){
     const [reverse,setReverse]=useState(false);
     const [reverse2,setReverse2]=useState(false);
@@ -13,6 +17,15 @@ function MainSection({page}){
     const [selected2,setSelected2]=useState('Choisir semestre');
     const [code_specialite,setCodespecialite]=useState('Choisir specialite');
     const [specialites, setSpecialites] = useState([]);
+    const [emp, setEmp] = useState([]);
+    const [sections, setSections] = useState([]);
+    const [newsections, setNewsections] = useState(sections);
+    let user=Cookies.get('user');
+  if(user){
+    user=JSON.parse(user);
+  }
+  const np=user?user.nom+' '+user.prenom:'';
+  const role=user?user.role : '';
     useEffect(() => {
         axios.get("http://localhost:3000/Specialite/",{
             withCredentials: true
@@ -23,19 +36,88 @@ function MainSection({page}){
      
     },[]);
 
+    useEffect(() => {
+        if(selected!="Selectionner une annee" && selected2!="Choisir semestre" && page=="Mon emploi"){
+            const matricule=user?user.matricule:0;
+            axios.get("http://localhost:3000/Creneau/enseignant/"+matricule+"/"+selected2+"/"+selected,{
+                withCredentials: true
+              }).then(respo =>{
+              setEmp(respo.data.Creneaux);
+             })
+             .catch(err => console.log(err));
+        }
+        
+     
+    },[selected,selected2]);
 
+    useEffect(()=>{
+        setEmp([]);
+        setSelected("Selectionner une annee");
+        setSelected2("Choisir semestre");
+        setCodespecialite('Choisir specialite');
+        setSections([]);
+    },[page])
 
+    useEffect(() => {
+        if(page!="Mon emploi" && page!="Occupation"){
+            axios.get("http://localhost:3000/section",{
+                withCredentials: true
+              }).then(respo =>{
+                const sectionsFiltres = respo.data.sections.filter(section => section.niveau === page && section.code_specialite===code_specialite);
+                const updatesection = sectionsFiltres.map(section => ({ ...section, generated: true }));
+              setSections(updatesection);
+             })
+             .catch(err => console.log(err));
+        }
+        
+     
+    },[code_specialite,page]);
     
+    useEffect(() => {
+        const updateSection=[... sections];
+        if(page!="Mon emploi" && page!="Occupation"){
+        if(sections.length>0){
+            sections.map((section,index)=>{
+            
+                axios.get('http://localhost:3000/groupe',{
+                    withCredentials: true
+                  }).then((res)=>{                                                             
+                    const grouprfilter=res.data.groupes.filter((gr)=> gr.code_section===section.code_section);
+                    grouprfilter.map((gr)=>{
+                       const id_groupe=parseInt(gr.id_groupe);
+                        axios.get('http://localhost:3000/EmploisTemps/groupes/'+id_groupe+"/"+selected2+"/"+selected+"/"+page,{
+                    withCredentials: true
+                  }).then(()=>{
+                    updateSection[index].generated=true;
+                    setNewsections(updateSection);
+                  }).catch(()=> {
+                    updateSection[index].generated=false;
+                    setNewsections(updateSection);
+                })
+                    })
+                   
+        
+                  })
+                .catch(err=>{
+                    console.log(err)
+                });
+            })
+        }else{
+            setNewsections([]);//refresh le tableau d'affichage et afficher rien s'il n'existe pas de section pour niveau et la specialite choisie
+        }
+        }
+    }
+    ,[sections,selected2,page,selected]);
     
-    
-    let user=Cookies.get('user');
-  if(user){
-    user=JSON.parse(user);
-  }
-  const np=user?user.nom+' '+user.prenom:'';
-  const role=user?user.role : '';
+    const getYears = () => {
+        const Year = new Date().getFullYear() + 1;
+        return Array.from(new Array(10), (val, index) => `${Year - index - 1}/${Year - index}`);
+      }
+
     return(
-        <div className='flex flex-col w-full h-full main px-10'>
+        <>
+        {user===undefined?<Navigate to="/"  replace={true} />:null}{/*pour savoir si le cookie est expire*/}
+         <div className='flex flex-col w-full h-full main px-10'>
             <header className="flex w-full  justify-between  mt-8 h-fit">
     <div className="">
     <p className="text-black  text-3xl font-bold">{page}</p>
@@ -57,26 +139,21 @@ function MainSection({page}){
             <FontAwesomeIcon
              icon={faAngleDown}
              className={reverse ? 'icone rotate' : 'icone'} />
-             <ul className='list -bottom-64' style={{display:reverse?'block':'none'}}>
-                <li onClick={()=>{
-                    setSelected('2023/2024');
-                }} style={{borderLeft:selected==='2023/2024'?'3px solid #0029FF':null}}>2023/2024</li>
-                <li onClick={()=>{
-                    setSelected('2022/2023');
-                }} style={{borderLeft:selected==='2022/2023'?'3px solid #0029FF':null}}>2022/2023</li>
-                <li onClick={()=>{
-                    setSelected('2021/2022');
-                }} style={{borderLeft:selected==='2021/2022'?'3px solid #0029FF':null}}>2021/2022</li>
-                <li onClick={()=>{
-                    setSelected('2020/2021');
-                }} style={{borderLeft:selected==='2020/2021'?'3px solid #0029FF':null}}>2020/2021</li>
-                <li onClick={()=>{
-                    setSelected('2019/2020');
-                }} style={{borderLeft:selected==='2019/2020'?'3px solid #0029FF':null}}>2019/2020</li>
+             <ul className='list ' style={{display:reverse?'block':'none', bottom:"-500px"}}>
+             {getYears().map((year,index)=>{
+                    return(
+                        <li key={index} onClick={()=>{
+                            setSelected(year.split("/")[1]);
+                        }} style={{borderLeft:selected==year.split("/")[1]?'3px solid #0029FF':null}}>{year}</li>
+                    )
+                    
+                   })}
+                
+               
              </ul>
         </div>
 
-        <div className='drop relative' onClick={()=>{
+        {page!="Mon emploi"?<div className='drop relative' onClick={()=>{
             setReverse4(!reverse4);
         }}>
             <span className='text-black'>{code_specialite}</span>
@@ -92,7 +169,7 @@ function MainSection({page}){
                 
                
              </ul>
-        </div>
+        </div>:null}
 
         <div className='drop relative' onClick={()=>{
             setReverse2(!reverse2);
@@ -115,12 +192,92 @@ function MainSection({page}){
         
 
     </div>
+    {
+        emp && emp.Dimanche && emp.Dimanche[0] && emp.Dimanche[0].debut?<>
+        <div className='flex w-full'>
+        <table className='enseignant mt-10 w-full'>
+          <tr className='head enstr'>
+            <td className='head w-48'>Jour/heure</td>
+            {Object.keys(emp.Dimanche).map((element, index) => (
+              <td key={index} className='head w-48'>
+                {emp.Dimanche[element].debut}-{emp.Dimanche[element].fin}
+              </td>
+            ))}
+          </tr>
+        
+       
+        {Object.keys(emp).map((jour, index) => {
+            return(
+                <tr key={index } className='enstr'>
+                    <td className='head'>{jour}</td>
+                    {Object.keys(emp[jour]).map((heure,ind)=>{
+                        if(emp[jour][heure].info){
+                            const innerseance=emp[jour][heure].info;
+                            return(
+                                <td key={ind}>
+                                {innerseance && innerseance.seance && innerseance.locale ? 
+                                    `${innerseance.seance.type} ${innerseance.seance.code_module} (${innerseance.locale.code_local} ${innerseance.seance.niveau}${innerseance.seance.code_specialite})` 
+                                    : null}
+                            </td>
+                            )
+                        }else{
+                            return(
+                                <td key={ind}></td>
+                            )
+                        }
+                    })}
+                </tr>
+            )
+        })}
+        
 
+        </table>
+
+    </div>
+    <div className='w-full flex justify-center mt-4'>
+    <button type="submit" className='flex w-48 py-1 px-2 rounded-xl justify-center text-white bg-blue-700' onClick={()=>{
+        const matricule=user?user.matricule:0;
+        window.location.href="http://localhost:3000/EmploisTemps/enseignant/"+matricule+"/"+selected2+"/"+selected+"/xlsx";
+        
+    }}>
+             Telecharger
+            </button>
+    </div>
+        </>
+        :null
+    }
+    {newsections?<div className="w-full flex flex-wrap mt-8 ">
+    {newsections.map((section,index)=>{
+        if(section.generated){
+            return(
+                <div key={index} className='w-96 mr-6 py-6 px-4  emploi' >
+                    <img className='h-3/4 img' src={img}>
+                        
+                    </img>
+                    <div className="w-full flex justify-between mt-8">
+                        <p className="font-bold">Section {section.code_section}</p>
+                        <button type="submit" className='flex w-48 py-1 px-2 rounded-xl justify-center text-white bg-blue-700' onClick={()=>{
+                         window.location.href="http://localhost:3000/EmploisTemps/section/"+section.id_section+"/"+selected2+"/"+selected+"/xlsx";
+        
+    }}>
+             Telecharger
+            </button>
+                    </div>
+                </div>
+            )
+        }
+    })}
+    </div>:null}
+    
+    
+    
     
 
     
 </main>
         </div>
+        </>
+       
     )
 }
 export default MainSection;

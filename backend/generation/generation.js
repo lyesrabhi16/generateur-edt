@@ -93,7 +93,6 @@ export const generate = async (req, res) => {
             modules.push(seance.code_module);
         }
     });
-
     // get All Enseignants that teach each module
     const ens = {};
     for (let i = 0; i < modules.length; i++) {
@@ -104,6 +103,8 @@ export const generate = async (req, res) => {
             const ens = EnsM[i];
             const ens_c = await getAllEnsEtCreneauxById(ens.matricule, semestre, annee);
             ens.chargesR = ens.charges - ens_c.length;
+            ens.chargesDA = ens_c.length;
+            ens.chargesA = 0;
         }
         ens[module] = EnsM;
     }
@@ -133,7 +134,6 @@ export const generate = async (req, res) => {
             }
         });
     });
-    
     // build initial matrixes with all occups set to false
     const ocp_ens = buildOCPMatrix(ens_matricules, jours, contraints.nbr_creneaux_par_jour);
     const ocp_locales = buildOCPMatrix(locales.map(local => local.code_local), jours, contraints.nbr_creneaux_par_jour);
@@ -144,27 +144,30 @@ export const generate = async (req, res) => {
     for (let i = 0; i< Object.keys(ocp_ens).length; i++){
         const matricule = Object.keys(ocp_ens)[i];
         // populate ocp_ens with data from EnsEtOccup    
-        const occupations = await getAllEnsetOccupByMatricule(matricule);        
-        occupations.forEach(occupation => {
+        const occupations = await getAllEnsetOccupByMatricule(matricule);
+        for (let j = 0; j < occupations.length; j++) {
+            const occupation = occupations[j];
             const {heur_debut, heur_fin, jour} = occupation;
             const heur_debut_f = {h: parseInt(heur_debut.split(':')[0]), m: parseInt(heur_debut.split(':')[1])};
             const heur_fin_f = {h: parseInt(heur_fin.split(':')[0]), m: parseInt(heur_fin.split(':')[1])};
-            const periods = getPeriodFromHeurDebutEtHeurFin(heur_debut_f, heur_fin_f, contraints.duree_creneaux);
-            periods.forEach(period => {
-                ocp_ens[matricule][jour][period] = true;
-            });
-        });
+            const periods = getPeriodFromHeurDebutEtHeurFin(heur_debut_f, heur_fin_f, contraints);
+            for(let p = 0; p< periods.length; p++){
+                ocp_ens[matricule][jour][periods[periods[p]]] = true;
+            }
+        
+        }
         // populate ocp_ens with data from EnsEtCreneaux
         const creneaux = await getAllEnsEtCreneauxById(matricule, semestre, annee);
-        creneaux.forEach(creneau => {
+        for(let j = 0; j<creneaux.length; j++){
+            const creneau = creneaux[j];
             const {debut, fin, jour} = creneau;
             const heur_debut_f = {h: parseInt(debut.split(':')[0]), m: parseInt(debut.split(':')[1])};
             const heur_fin_f = {h: parseInt(fin.split(':')[0]), m: parseInt(fin.split(':')[1])};
-            const periods = getPeriodFromHeurDebutEtHeurFin(heur_debut_f, heur_fin_f, contraints.duree_creneaux);
-            periods.forEach(period => {
-                ocp_ens[matricule][jour][period] = true;
-            });
-        });    
+            const periods = getPeriodFromHeurDebutEtHeurFin(heur_debut_f, heur_fin_f, contraints);
+            for(let p=0; p<periods.length; p++){
+                ocp_ens[matricule][jour][periods[periods[p]]] = true;
+            }
+        }
     }
     // 2. for locales
     for (let i = 0; i< Object.keys(ocp_locales).length; i++){
@@ -175,16 +178,17 @@ export const generate = async (req, res) => {
             const {debut, fin, jour} = creneau;
             const heur_debut_f = {h: parseInt(debut.split(':')[0]), m: parseInt(debut.split(':')[1])};
             const heur_fin_f = {h: parseInt(fin.split(':')[0]), m: parseInt(fin.split(':')[1])};
-            const periods = getPeriodFromHeurDebutEtHeurFin(heur_debut_f, heur_fin_f, contraints.duree_creneaux);
+            const periods = getPeriodFromHeurDebutEtHeurFin(heur_debut_f, heur_fin_f, contraints);
             periods.forEach(period => {
                 ocp_locales[code_local][jour][period] = true;
             });
         });
     }
 
+    
+
      // creneaux[jour][period][groupe]
     const creneaux = {};
-    const creneaux_class_objects = {};
     Object.keys(jours).filter(jour => jour !== jours.Vendredi).forEach(jour => {
         creneaux[jour] = {};
         let nbr_cours = 0;
@@ -214,10 +218,13 @@ export const generate = async (req, res) => {
                         let b=true;
                         while (b){
                             if (enseignants.length === 0){
+                                if(ignore_charges==0){
+                                    enseignant = undefined;
+                                }
                                 b = false;
                                 break;
                             }
-                            enseignant = getEnseignantWithHighestPriorite(enseignants, Object.keys(EnsRoles).filter(r => r !== "vacataire"));
+                            enseignant = getEnseignantWithHighestPriorite(enseignants, Object.keys(EnsRoles).filter(r => r !== "vacataire"),contraints.ignore_charges);
                             if (enseignant === undefined) {
                                 break;
                             }
@@ -256,6 +263,7 @@ export const generate = async (req, res) => {
                                 seances = seances.filter(s => s.id_seance !== seance.id_seance);
                             }
                             enseignant.chargesR -= 1;
+                            enseignant.chargesA += 1;
 
                             nbr_cours++;
                             
@@ -294,10 +302,13 @@ export const generate = async (req, res) => {
                 let b=true;
                 while (b){
                     if (enseignants.length === 0){
+                        if(ignore_charges==0){
+                            enseignant = undefined;
+                        }
                         b = false;
                         break;
                     }
-                    enseignant = getEnseignantWithHighestPriorite(enseignants, Object.keys(EnsRoles));
+                    enseignant = getEnseignantWithHighestPriorite(enseignants, Object.keys(EnsRoles), contraints.ignore_charges);
                     if (enseignant === undefined) {
                       break;
                     }
@@ -339,6 +350,7 @@ export const generate = async (req, res) => {
                                 const s = {...seance};
                                 delete s.remaining_groupes;
                                 enseignant.chargesR -= 1;
+                                enseignant.chargesA += 1;
 
                                 creneaux[jour][period][groupe.code_groupe] ={
                                     seance: s,
@@ -421,7 +433,7 @@ const getLocal = (locaux, type, ocp_locales, jour, period, capacite)=>{
 }
 
 
-const getPeriodFromHeurDebutEtHeurFin = (heur_debut, heur_fin, duree_creneaux)=>{
+const getPeriodFromHeurDebutEtHeurFin = (heur_debut, heur_fin, constraints)=>{
     const debut = new Date();
     const fin = new Date();
     debut.setUTCHours(heur_debut.h, heur_debut.m);
@@ -429,13 +441,18 @@ const getPeriodFromHeurDebutEtHeurFin = (heur_debut, heur_fin, duree_creneaux)=>
 
     const periods = [];
     let i = 0;
-    while (debut < fin){
+    const d = new Date(constraints.temps_debut);
+    while (d.getUTCHours() < debut.getUTCHours() && d.getUTCMinutes() < debut.getUTCMinutes() ) {
+        d.setUTCMinutes(d.getUTCMinutes() + constraints.duree_creneaux.m + constraints.temps_entre_creneaux);
+        d.setUTCHours(d.getUTCHours() + constraints.duree_creneaux.h);
+        i++;
+    };
+    while ( debut < fin){
         periods.push(i);
         i++;
-        debut.setUTCMinutes(debut.getUTCMinutes() + duree_creneaux.m);
-        debut.setUTCHours(debut.getUTCHours() + duree_creneaux.h);
+        debut.setUTCMinutes(debut.getUTCMinutes() + constraints.duree_creneaux.m + constraints.temps_entre_creneaux);
+        debut.setUTCHours(debut.getUTCHours() + constraints.duree_creneaux.h);
     }
-
     return periods;
 }
 
@@ -523,7 +540,7 @@ const formatTime = (d) =>{
 }
 
 // Fisher–Yates (aka Knuth) Shuffle algorithm
-function shuffleArray(array) {
+export const shuffleArray = (array) => {
     let currentIndex = array.length;
   
     // While there remain elements to shuffle...

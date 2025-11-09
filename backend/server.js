@@ -31,8 +31,8 @@ const port = process.env.ServerPort || 2999;
 
 export const db = DB();
 app.use(morgan('dev'))
-app.use(Express.urlencoded({ extended: true }));
-app.use(Express.json());
+app.use(Express.urlencoded({ extended: true, limit: '5mb' }));
+app.use(Express.json({ limit: '5mb' }));
 app.use(cors({
   origin: true,
   credentials: true
@@ -71,5 +71,3 @@ app.listen(port, () => {
 db.connect()
       .then(()=>console.log("Database connected: "+db.$cn.database))
       .catch((err)=>console.log("Error connecting to the database:", err));
-
-

@@ -22,8 +22,13 @@ export const saveValidator = (req, res, next) => {
 
   if (override === "true") {
     req.body.override = true;
-  } else if (override === "false") {
+  } else if (override === undefined || override === "false" ) {
     req.body.override = false;
+  }else{
+    return res.status(400).json({
+      status: "Value Error",
+      message: "override attribute value must be either true or false",
+    })
   }
 
   try {
@@ -147,7 +152,7 @@ export const generateValidator = (req, res, next) => {
         req.body.temps_fin,
         req.body.duree_creneaux,
         req.body.minutes_entre_creneaux
-      ) - 1;
+      ) ;
   } else {
     try {
       req.body.nbr_creneaux_par_jour = parseInt(nbr_creneaux_par_jour);

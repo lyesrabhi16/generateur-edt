@@ -1,7 +1,7 @@
 
 import '../Admin/Formajout.css'
 import { useState, useEffect } from "react";
-import axios from 'axios';
+import axios from '../axiosConfig.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
@@ -24,9 +24,11 @@ function Ajouter({onAdd,typep,modify}){
     const [semestre, setSemestre] = useState('');
     const [code_groupe, setCode_groupe] = useState(modify.code_groupe ||null);
     const [code_section, setCode_section] = useState(modify.code_section ||null);
+    const [Id_section, setId_section] = useState(modify.id_section ||null);
     const [matricule, setMatricule] = useState(modify.matricule);
     const [role, setRole] = useState(modify.role ||null);
     const [charges, setCharges] = useState(modify.charges ||null);
+    const [priorite, setPriorite] = useState(modify.charges ||null);
     const [id_groupe, setId_groupe] = useState(modify.id_groupe ||null);
     const [code_module, setCode_module] = useState(modify.code_module);
     const [nom_module, setNom_module] = useState(modify.nom_module);
@@ -71,6 +73,7 @@ function Ajouter({onAdd,typep,modify}){
             withCredentials: true
           }).then(respo =>{
             const moduleens = respo.data.ModuleEns.filter((mdl) => mdl.matricule == matricule );
+            setPriorite(moduleens[0].priorite);
             moduleens.forEach((module) => {
             const updatedOptions = [...modul] ;
             updatedOptions.forEach((mdl,idx)=>{
@@ -127,6 +130,10 @@ function Ajouter({onAdd,typep,modify}){
         };
     }
 
+    const getYears = () => {
+        const Year = new Date().getFullYear() + 1;
+        return Array.from(new Array(10), (val, index) => `${Year - index - 1}/${Year - index}`);
+      }
     
 
     useEffect(() => {
@@ -154,12 +161,13 @@ function Ajouter({onAdd,typep,modify}){
         axios.get("http://localhost:3000/groupe/",{
             withCredentials: true
           }).then(respo =>{
-            const groupes = respo.data.groupes.filter((gr) => gr.code_specialite === code_specialite );
+            const groupes = respo.data.groupes.filter((gr) => (gr.code_specialite === code_specialite && gr.id_section==Id_section) );
+            console.log(Id_section);
           setGr(groupes);
          })
          .catch(err => console.log(err));
      
-    },[niveau,code_specialite]);
+    },[niveau,code_specialite,Id_section]);
 
     
         useEffect(() => {
@@ -203,7 +211,7 @@ function Ajouter({onAdd,typep,modify}){
                     if(typep==='Enseignant'){
                         ensModules.forEach((module)=>{
                             const code_module=module.code_module;
-                            const modules={matricule:parseInt(matricule),code_module,priorite:1};
+                            const modules={matricule:parseInt(matricule),code_module,priorite:priorite};
                             if(module.checked){
                                 axios.post('http://localhost:3000/moduleens',modules,{
                               withCredentials: true
@@ -595,9 +603,12 @@ function Ajouter({onAdd,typep,modify}){
                     setAnneeBac(e.target.value, 10);
                 }}>
                    <option value="" disabled selected>Annee du bac</option>
-                   <option value="2019">2019</option>
-                   <option value="2020">2020</option>
-                   <option value="2021">2021</option> 
+                   {getYears().map((year,index)=>{
+                    return(
+                        <option key={index} value={year.split("/")[1]} >{year}</option>
+                    )
+                    
+                   })} 
                 </select>
             <select className='w-full ml-4 border-b border-b-gray-500' value={code_specialite} onChange={(e)=>{
                 setSpecia(e.target.value);
@@ -634,10 +645,9 @@ function Ajouter({onAdd,typep,modify}){
                 </>:null}
                
             {typep==='Enseignant'?<>
-            <option value="Maitre E">Maitre E</option>
-               <option value="Maitre D">Maitre D</option>
-               <option value="Maitre C">Maitre C</option>
-               <option value="Maitre B">Maitre B</option>
+            <option value="Doctorant">Doctorant</option>
+               <option value="vacataire">vacataire</option>
+               <option value="Professeur">Professeur</option>
             </>:null}
                
  
@@ -651,7 +661,17 @@ function Ajouter({onAdd,typep,modify}){
             </div>
             {
                 typep==='Etudiant'?<div className="flex w-full ">
-                <select className='w-full border-b border-b-gray-500' value={id_groupe} onChange={(e)=>{
+                    
+                    <select className='w-1/2 border-b border-b-gray-500' value={Id_section} onChange={(e)=>{
+                setId_section(e.target.value);
+            }}>
+               <option value="" disabled selected>Section</option>
+               {sections.map((section,index)=>{
+                return <option key={index} value={section.id_section}>{section.code_section}</option>
+               })}
+            </select>
+
+                <select className='w-1/2 ml-4 border-b border-b-gray-500' value={id_groupe} onChange={(e)=>{
                     setId_groupe(e.target.value);
                 }}>
                    <option value="" disabled selected>Groupe</option>
@@ -659,14 +679,17 @@ function Ajouter({onAdd,typep,modify}){
                     return <option key={index} value={groupe.id_groupe}>{groupe.code_groupe}</option>
                    })}
                 </select>
+
+                
                 </div>:null
             }
-            { typep==='Enseignant'?<div className="flex w-full justify-between">
+            { typep==='Enseignant'?<>
+            <div className="flex w-full justify-between">
                 
                 <select className='w-1/2 border-b border-b-gray-500' value={charges} onChange={(e)=>{
                     setCharges(e.target.value);
                 }}>
-                   <option value="" disabled selected>nombre horaire maximale</option>
+                   <option value="" disabled selected>nombre seance maximale</option>
                    <option value="1">1</option>
                    <option value="2">2</option>
                    <option value="3">3</option>
@@ -701,7 +724,17 @@ function Ajouter({onAdd,typep,modify}){
                 
             </div>
 
-            </div>:null
+            </div>
+            <div className="flex w-full justify-between">
+            <select className='w-full border-b border-b-gray-500' value={priorite} onChange={(e)=>{
+                    setPriorite(e.target.value);
+                }}>
+                   <option value="" disabled selected>Priorite</option>
+                   <option value="1">1</option>
+                   <option value="2">2</option>
+                </select>
+            </div>
+            </>  :null
 }
 </>
             }

@@ -64,8 +64,8 @@ export const selectOneEmploisById = (req,res) =>{
 }
 
 export const selectOneEmploisByGroupe = (req,res) =>{
-    const {id_groupe} = req.params;
-    getOneEmploisByGroupe(id_groupe).then((data)=>{
+    const {id_groupe, semestre, annee, niveau} = req.params;
+    getOneEmploisByGroupe(id_groupe, semestre, annee, niveau).then((data)=>{
         const response={
             status:"Success",
             message:"Emplois de temps trouvé ",
@@ -75,7 +75,7 @@ export const selectOneEmploisByGroupe = (req,res) =>{
            if(data===null ) {
     
             response.status='Error';
-            response.message='Aucun Emplois de temps trouvé pour ce groupe  '+ id_groupe 
+            response.message='Aucun Emplois de temps trouvé pour ce groupe  '+ id_groupe + ` ${semestre} ${annee} ${niveau}` 
             return res.status(404).json(response)
     
            }
@@ -165,8 +165,8 @@ export const deleteOneEmplois =(req,res)=>{
 }
 
 export const deleteOneEmploisByIdGroupe=(req,res)=>{
-    const {id_groupe} = req.params;
-    deleteEmploisByIdGroupe(id_groupe).then(()=>{
+    const {id_groupe, semestre, annee} = req.params;
+    deleteEmploisByIdGroupe(id_groupe, semestre, annee).then(()=>{
 
         const response={
             status:"Success",

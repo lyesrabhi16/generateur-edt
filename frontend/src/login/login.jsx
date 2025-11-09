@@ -1,9 +1,14 @@
 import Form from '../login/form'
 import '../login/Login.css'
 import image from '../assets/BlogImage.png'
+import { Navigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 function Logo() {
+    const user = (Cookies.get("user") && JSON.parse(Cookies.get("user"))) || null;
 
-    return (
+    return user !== null ? (
+      user.type === 'Administrateur' ? <Navigate to='/admin' /> : <Navigate to='/etu' />
+    ) : (
       <div className='flex-col w-screen min-w-full h-full min-h-screen bg-cover bg-no-repeat' style={{backgroundImage: `url(${image})`}}>
         <div className='h-20 w-screen min-w-full'></div>
         <div className='w-full px-8 py-8  flex-col md:flex-row sm:justify-between xl:px-20 items-center  md:flex sm:items-center relative '>
