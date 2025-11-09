@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../axiosConfig.js';
 import { useState } from "react"
 import { Navigate } from "react-router-dom";
 import Cookies from 'js-cookie';
@@ -7,7 +7,8 @@ import toast from 'react-hot-toast';
 function Form() {
  const[email,setEmail]=useState(''); 
  const[password,setPassword]=useState('');
- const personne={email,password}
+ const[rememberMe,setRememberMe]=useState(false);
+ const personne={email, password, rememberMe}
  const[navige,setAdmin]=useState('');
  const[erreur,setErreur]=useState(false);
  const changer=(e)=>{
@@ -21,12 +22,12 @@ function Form() {
     }else{
       setAdmin('Etudiant')
     }
-    Cookies.set('user', JSON.stringify(res.data.personne), { expires: 1/24, secure: true, sameSite: 'strict' });
-    Cookies.set('token', res.data.token, { expires: 1/24, secure: true, sameSite: 'strict' });
+    Cookies.set('user', JSON.stringify(res.data.personne), { expires: rememberMe ? 1 : 1/24, secure: true, sameSite: 'strict' });
+    Cookies.set('token', res.data.token, { expires: rememberMe ? 1 : 1/24, secure: true, sameSite: 'strict' });
   })
             .catch(err=>{
               toast.error("erreur");
-                console.log(err)
+                console.log(err);
                 setErreur(true);
             });
  }
@@ -43,7 +44,7 @@ function Form() {
             </div>
             <div className="flex flex-col mt-6">
                 <label className=" text-white">Mot de passe</label>
-                <input type="input"  className="pl-1 mt-4 h-10 rounded-lg bg-transparent border-2 border-solid  border-white outline-none focus:border-4 text-white placeholder:text-white" id={erreur?'error':null} placeholder="************" onChange={(e)=>{
+                <input type="password"  className="pl-1 mt-4 h-10 rounded-lg bg-transparent border-2 border-solid  border-white outline-none focus:border-4 text-white placeholder:text-white" id={erreur?'error':null} placeholder="************" onChange={(e)=>{
                   setPassword(e.target.value);
                   setErreur(false)
                 }}></input>
@@ -55,7 +56,7 @@ function Form() {
             <div className=" flex items-center
              
              ">
-              <input type="checkbox" className="
+              <input type="checkbox" onClick={(e) => setRememberMe(e.target.checked)} className="
              flex 
              h-4 
              w-4

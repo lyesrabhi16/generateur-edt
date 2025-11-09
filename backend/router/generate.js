@@ -8,7 +8,7 @@ import { generateValidator, saveValidator } from "../validators/generateValidato
 const generateRouter = Router();
 
 
-generateRouter.get('/:id_section', generateValidator, generate);
+generateRouter.post('/:id_section', generateValidator, generate);
 generateRouter.post('/save/:id_section', saveValidator, save);
 
 export default generateRouter;

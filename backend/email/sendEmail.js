@@ -1,15 +1,17 @@
 import { TypePersonne } from "../../constants.js";
 import { getOneEmploisById } from "../DB/EmploisDuTemps.js";
 import { getAllEnsEtCreneaux } from "../DB/EnsEtCreneaux.js";
-import { selectPersonne, selectPersonnes } from "../DB/personne.js";
+import { selectPersonnes } from "../DB/personne.js";
 import nodemailer from "nodemailer";
 import { getEmpEnsFile, getEmpGroupeFile } from "../EmpAsFile/emp_xlsx.js";
 import { v4 as uuidV4 } from "uuid";
 import fs from "fs";
+
 export const sendEmail = async (req, res) => {
   // user_email is the sender's email (from his gmail service)
   // user_pass is the sender's pass (from his gmail service) or App Password if the user has 2fa enabled in gmail for example
-  const { id_emp, user_email, user_pass } = req.body;
+  const { id_emp, user_email, access_token, refresh_token, expires } = req.body;
+  console.log("send emails: ", id_emp, user_email);
 
   let e = false;
 
@@ -33,7 +35,7 @@ export const sendEmail = async (req, res) => {
     });
   }
 
-  const emailsEtudiants = ["lyes.rabhi@se.univ-bejaia.dz"];
+  const emailsEtudiants = [];
 
   // get emails of related students
   const etudiants = await selectPersonnes(
@@ -54,6 +56,7 @@ export const sendEmail = async (req, res) => {
   etudiants.forEach((etudiant) => {
     emailsEtudiants.push(etudiant.email);
   });
+
   // get emails of related teachers
   const ensD = {};
   const enseignantsD = await getAllEnsEtCreneaux(id_emp).catch((err) => {
@@ -81,10 +84,15 @@ export const sendEmail = async (req, res) => {
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,
-    secure: true, // Use `true` for port 465, `false` for all other ports
+    secure: true,
     auth: {
+      type: "OAuth2",
       user: user_email,
-      pass: user_pass,
+      refreshToken: refresh_token,
+      accessToken: access_token,
+      expires: expires,
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     },
   });
   if (!transporter) {
@@ -93,6 +101,7 @@ export const sendEmail = async (req, res) => {
       message: "Failed to create email transporter",
     });
   }
+
   const mailHTML = `
     <h1>Emplois du temps</h1>
     <p>Ajoute ou Modification de l'emplois du temps du groupe : <span style="color:red"> ${emp.code_specialite} ${emp.code_section} ${emp.code_groupe} </span> </p>
@@ -105,21 +114,22 @@ export const sendEmail = async (req, res) => {
 
   const filename = "EDT-" + uuidV4() + ".xlsx";
 
-  const created = await getEmpGroupeFile(
+  const created_groupe_emp = await getEmpGroupeFile(
     emp.id_groupe,
     emp.semestre,
     emp.annee,
     filename
   );
-  if (!created) {
+  if (!created_groupe_emp) {
     return res.status(500).json({
       status: "Error",
       message: "Failed to create transporter",
     });
   }
+  const mailOptions = [];
   // add Email of students
-  const mailOptions = [
-    {
+  if (emailsEtudiants.length > 0){
+    mailOptions.push({
       from: user_email,
       to: emailsEtudiants,
       subject: `Emplois du temps ${emp.code_specialite} ${emp.code_section} ${emp.code_groupe}`,
@@ -130,8 +140,8 @@ export const sendEmail = async (req, res) => {
           path: filename,
         },
       ],
-    },
-  ];
+    })
+  }
   // add an Email for each ens
   const ensEmpFiles = [];
   for (let i = 0; i < enseignants.length; i++) {
@@ -182,6 +192,9 @@ export const sendEmail = async (req, res) => {
     });
 
     if (e) {
+      // remove created files
+      fs.unlinkSync(filename);
+      ensEmpFiles.forEach((f) => fs.unlinkSync(f));
       break;
     }
 
@@ -193,8 +206,13 @@ export const sendEmail = async (req, res) => {
   }
 
   // remove created files
-  fs.unlinkSync(filename);
-  ensEmpFiles.forEach((f) => fs.unlinkSync(f));
+  if(fs.existsSync(filename)){
+    fs.unlinkSync(filename);
+  }
+  ensEmpFiles.forEach((f) => {
+    if(fs.existsSync(f)){
+      fs.unlinkSync(f);
+    }});
 
   if (e) {
     res.status(500).json({
