@@ -10,6 +10,7 @@ import {
   addSpecialiteValidator,
   updateSpecialiteValidator,
 } from "../validators/specialiteValidators.js";
+import { isAdmin } from "../Auth/isAdmin.js";
 
 const router = Router();
 
@@ -22,12 +23,12 @@ router.get("/", getSpecialites);
 router.get("/:code_specialite", getSpecialite);
 
 //? add one
-router.post("/", addSpecialiteValidator, addSpecialite);
+router.post("/", isAdmin, addSpecialiteValidator, addSpecialite);
 
 //? update one
-router.put("/:code_specialite", updateSpecialiteValidator, updateSpecialite);
+router.put("/:code_specialite", isAdmin, updateSpecialiteValidator, updateSpecialite);
 
 //? delete one
-router.delete("/:code_specialite", deleteSpecialite);
+router.delete("/:code_specialite", isAdmin, deleteSpecialite);
 
 export default router;
