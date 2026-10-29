@@ -1,114 +1,83 @@
-# Generateur‑EDT
+# Générateur EDT (AGEMP)
 
-A web application to automatically generate timetables (*emploi du temps*) for educational institutions.  
-
-## Table of Contents
-
-- [Features](#features)  
-- [Tech Stack](#tech-stack)  
-- [Getting Started](#getting-started)  
-- [Project Structure](#project-structure)  
-- [Configuration](#configuration)  
-- [Usage](#usage)  
-- [Contributing](#contributing)  
-- [License](#license)
+Web application that automatically generates university timetables (*emplois du temps*) for a section, from its modules, teachers, rooms and time slots, and lets administrators, teachers and students manage and view them. Built by a team of four as a university project.
 
 ## Features
 
-- Automatically generate timetables based on courses, teachers, rooms, and time slots.  
-- Web-based interface for easy input and visualization.  
-- Modular and extendable architecture for customization.
+- Role-based access (administrator, teacher, student) with JWT cookie authentication
+- CRUD management of specialities, sections, groups, modules, rooms (amphitheatres, TD and TP rooms), sessions and time slots
+- Teacher availability: occupied slots and preferred time slots
+- **Timetable generation** per section and semester, configurable by constraints: start/end time, slot length, break between slots, max consecutive sessions, max lectures per day, optional shuffling
+- Export of timetables to Excel (`exceljs`) and sending by email
+- CLI script to create the first administrator account
 
-## Tech Stack
+## Tech stack
 
-- Frontend: HTML, CSS, JavaScript  
-- Backend: Node.js + Express  
-- Database: (Specify if used, e.g., MongoDB, MySQL)  
-- Package manager: npm
+| Layer | Technologies |
+| --- | --- |
+| Backend | Node.js, Express, PostgreSQL (`pg-promise`), JWT, bcrypt, Nodemailer, ExcelJS |
+| Frontend | React 18, Vite, DaisyUI, Axios, React Router |
 
-## Getting Started
+## Project structure
+
+```
+backend/     Express API (routers, controllers, validators, DB access, generation/)
+frontend/    React application (Admin, teacher/student and login pages)
+autres/      Design documents: SQL schema and seed data, UML class diagram, specification, Postman/Thunder collections
+constants.js Shared enums (roles, room types, session types, weekdays)
+```
+
+The relational model, use-case diagram and specification are in [autres/pdf](autres/pdf).
+
+## Getting started
 
 ### Prerequisites
 
-- Node.js and npm installed  
-- Git installed  
-- (If applicable) A running database server
+Node.js 18+, PostgreSQL.
 
-### Installation
+### 1. Database
 
 ```bash
-# Clone the repository
-git clone https://github.com/lyesrabhi16/generateur-edt.git
-cd generateur-edt
-
-# Install backend dependencies
-npm install --prefix backend
-
-# Install frontend dependencies
-npm install --prefix frontend
+createdb agemp
+psql agemp -f autres/DB/creation_agemp_db.sql
+psql agemp -f autres/DB/data_agemp_db.sql     # optional sample data
 ```
 
-### Run
+### 2. Configure the backend
 
-Start backend and frontend servers in separate terminals:
+Copy `backend/.env.txt` to `backend/.env` and fill in:
+
+```
+ServerPort = 3000
+DBHost = localhost
+DBPort = 5432
+DBName = agemp
+DBUser = <user>
+DBPass = <password>
+```
+
+The JWT and Gmail settings used for email sending are described in the comments of `backend/email/sendEmail.js`.
+
+### 3. Run
 
 ```bash
-# Backend server
-npm run --prefix backend start
-
-# Frontend server
-npm run --prefix frontend start
+npm run createAdmin     # interactive: creates the first administrator
+npm run backend         # API on http://localhost:3000
+npm run frontend        # app on http://localhost:5000
 ```
 
-The frontend is usually available at `http://localhost:3000`.  
+> The frontend currently calls the API at `http://localhost:3000`. Keep the backend on that port.
 
-## Project Structure
+## API
 
-```
-generateur-edt/
-│
-├── backend/         # Backend application
-│   ├── src/
-│   ├── package.json
-│   └── …
-│
-├── frontend/        # Frontend application
-│   ├── src/
-│   ├── package.json
-│   └── …
-│
-├── .gitignore
-└── README.md
-```
+Every route except authentication requires a valid JWT cookie, and administrator-only routes are additionally protected. Request collections for testing are in [autres/backend_requetes_test](autres/backend_requetes_test).
 
-## Configuration
+## Known limitations
 
-- Use `.env` files to set environment variables for backend:
-  - `PORT` for backend server  
-  - `DATABASE_URL` if using a database  
-  - Any API keys if needed  
+- The API base URL is hardcoded in the frontend and should move to an environment variable.
+- No automated tests yet.
+- No license file has been added.
 
-- Update frontend configuration if necessary (API base URL, etc.).  
+## Authors
 
-## Usage
-
-1. Open your browser at the frontend URL.  
-2. Enter your data: courses, rooms, teachers, and time slots.  
-3. Click **Generate Timetable**.  
-4. Export or download the timetable (PDF/Excel) if supported.
-
-## Contributing
-
-Contributions are welcome:
-
-1. Fork the repository  
-2. Create a new branch (`git checkout -b feature/my-feature`)  
-3. Commit your changes (`git commit -m "Add awesome feature"`)  
-4. Push to the branch (`git push origin feature/my-feature`)  
-5. Open a Pull Request
-
-Please follow the coding style and include tests when possible.
-
-## License
-
-This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
+Lyes Rabhi, Massin S., Kenza Tikherbatine and a fourth contributor.
