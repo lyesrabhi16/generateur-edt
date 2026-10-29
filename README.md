@@ -80,4 +80,4 @@ Every route except authentication requires a valid JWT cookie, and administrator
 
 ## Authors
 
-Lyes Rabhi, Massin S., Kenza Tikherbatine and a fourth contributor.
+[Lyes Rabhi](https://github.com/lyesrabhi16), [Massin Sadi](https://github.com/MassinS), [Aksil Sadi](https://github.com/AksilSadi) and [Kenza Tikherbatine](https://github.com/Zouzatikher).
