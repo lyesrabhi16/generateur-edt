@@ -10,6 +10,7 @@ import axios from '../axiosConfig.js';
 import img from '../assets/360_F_134863241_QNHFFoMB6co8VdC1XY2VcDUPVWl9a3or.jpg'
 import toast from 'react-hot-toast';
 import './emp.css'
+import { moduleStyle } from '../moduleColors.js';
 function MainSection({page}){
     const [reverse,setReverse]=useState(false);
     const [reverse2,setReverse2]=useState(false);
@@ -83,7 +84,7 @@ function MainSection({page}){
                 axios.get(API_URL+'/groupe',{
                     withCredentials: true
                   }).then((res)=>{                                                             
-                    const grouprfilter=res.data.groupes.filter((gr)=> gr.code_section===section.code_section);
+                    const grouprfilter=res.data.groupes.filter((gr)=> gr.id_section===section.id_section);
                     grouprfilter.map((gr)=>{
                        const id_groupe=parseInt(gr.id_groupe);
                         axios.get(API_URL+'/EmploisTemps/groupes/'+id_groupe+"/"+selected2+"/"+selected+"/"+page,{
@@ -215,7 +216,7 @@ function MainSection({page}){
                         if(emp[jour][heure].info){
                             const innerseance=emp[jour][heure].info;
                             return(
-                                <td key={ind}>
+                                <td key={ind} style={moduleStyle(innerseance && innerseance.seance && innerseance.seance.code_module)}>
                                 {innerseance && innerseance.seance && innerseance.locale ? 
                                     `${innerseance.seance.type} ${innerseance.seance.code_module} (${innerseance.locale.code_local} ${innerseance.seance.niveau}${innerseance.seance.code_specialite})` 
                                     : null}

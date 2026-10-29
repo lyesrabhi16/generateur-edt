@@ -219,7 +219,7 @@ function Emploi(){
                     withCredentials: true
                   }).then((res)=>{           
                     console.log(res);                                                  
-                    const grouprfilter=res.data.groupes.filter((gr)=> gr.code_section===section.code_section);
+                    const grouprfilter=res.data.groupes.filter((gr)=> gr.id_section===section.id_section);
                     setGroupes(grouprfilter.length);
                     grouprfilter.map((gr)=>{
                        const id_groupe=parseInt(gr.id_groupe);
@@ -622,7 +622,7 @@ function Emploi(){
                     withCredentials: true
                   }).then((res)=>{
                     let success=false;
-                    const grouprfilter=res.data.groupes.filter((gr)=> gr.code_section===section.code_section);
+                    const grouprfilter=res.data.groupes.filter((gr)=> gr.id_section===section.id_section);
                     grouprfilter.map((gr)=>{
                         const id_groupe=parseInt(gr.id_groupe);
                         const seme=semestre[semestre.length-1];
