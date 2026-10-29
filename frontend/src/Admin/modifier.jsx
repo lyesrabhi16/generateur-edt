@@ -1,3 +1,4 @@
+import { API_URL } from "../config.js";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from "react";
@@ -70,7 +71,7 @@ function Modifier({onAdd,emploie,an,section,semes}){
         }
         
         console.log(data)
-       axios.post("http://localhost:3000/creneau/verification",data,{
+       axios.post(API_URL+"/creneau/verification",data,{
         withCredentials: true
       }
        ).then((res)=>{
@@ -131,7 +132,7 @@ function Modifier({onAdd,emploie,an,section,semes}){
      });
     }
         console.log(data2)
-        axios.post("http://localhost:3000/creneau/verification",data2,{
+        axios.post(API_URL+"/creneau/verification",data2,{
             withCredentials: true
           }
            ).then((res)=>{
@@ -157,7 +158,7 @@ function Modifier({onAdd,emploie,an,section,semes}){
             annee:an,
             override:"true"
         }
-        axios.post("http://localhost:3000/generate/save/"+section,info,{
+        axios.post(API_URL+"/generate/save/"+section,info,{
             withCredentials: true
           }).then(()=>{
             toast.success('emploi du temps enregistré');
@@ -201,7 +202,7 @@ function Modifier({onAdd,emploie,an,section,semes}){
             semestre:sm,
             matricule:mat
         }
-        axios.post("http://localhost:3000/creneau/verification",data,{
+        axios.post(API_URL+"/creneau/verification",data,{
             withCredentials: true
           }
            ).then((res)=>{
@@ -227,7 +228,7 @@ function Modifier({onAdd,emploie,an,section,semes}){
             annee:an,
             override:"true"
         }
-        axios.post("http://localhost:3000/generate/save/"+section,info,{
+        axios.post(API_URL+"/generate/save/"+section,info,{
             withCredentials: true
           }).then(()=>{
             toast.success('emploi du temps enregistré');

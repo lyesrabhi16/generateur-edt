@@ -1,3 +1,4 @@
+import { API_URL } from "../config.js";
 import Cookies from 'js-cookie';
 import { useState, useEffect } from "react";
 import axios from '../axiosConfig.js';
@@ -28,7 +29,7 @@ function Occupation({page}){
     const role=user?user.role : '';
 
     useEffect(()=>{
-        axios.get("http://localhost:3000/EnsEtOccup/"+user.matricule, {
+        axios.get(API_URL+"/EnsEtOccup/"+user.matricule, {
         withCredentials: true
       }).then((res)=>{
         setOccupation(res.data.EnsEtOccup);
@@ -113,7 +114,7 @@ function Occupation({page}){
                       setShow(!Show)
                     }}/>
                     <FontAwesomeIcon icon={faTrash} className='ml-4 text-red-600 cursor-pointer' onClick={()=>{
-                        axios.delete('http://localhost:3000/EnsEtOccup/'+occ.matricule+"/Occupations/"+occ.id_occup,{
+                        axios.delete(API_URL+'/EnsEtOccup/'+occ.matricule+"/Occupations/"+occ.id_occup,{
                           withCredentials: true
                         }).then(()=>{
                           setSupprime(!supprime);

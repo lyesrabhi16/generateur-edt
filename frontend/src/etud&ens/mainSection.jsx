@@ -1,3 +1,4 @@
+import { API_URL } from "../config.js";
 import Cookies from 'js-cookie';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
@@ -27,7 +28,7 @@ function MainSection({page}){
   const np=user?user.nom+' '+user.prenom:'';
   const role=user?user.role : '';
     useEffect(() => {
-        axios.get("http://localhost:3000/Specialite/",{
+        axios.get(API_URL+"/Specialite/",{
             withCredentials: true
           }).then(respo =>{
           setSpecialites(respo.data.specialites)
@@ -39,7 +40,7 @@ function MainSection({page}){
     useEffect(() => {
         if(selected!="Selectionner une annee" && selected2!="Choisir semestre" && page=="Mon emploi"){
             const matricule=user?user.matricule:0;
-            axios.get("http://localhost:3000/Creneau/enseignant/"+matricule+"/"+selected2+"/"+selected,{
+            axios.get(API_URL+"/Creneau/enseignant/"+matricule+"/"+selected2+"/"+selected,{
                 withCredentials: true
               }).then(respo =>{
               setEmp(respo.data.Creneaux);
@@ -60,7 +61,7 @@ function MainSection({page}){
 
     useEffect(() => {
         if(page!="Mon emploi" && page!="Occupation"){
-            axios.get("http://localhost:3000/section",{
+            axios.get(API_URL+"/section",{
                 withCredentials: true
               }).then(respo =>{
                 const sectionsFiltres = respo.data.sections.filter(section => section.niveau === page && section.code_specialite===code_specialite);
@@ -79,13 +80,13 @@ function MainSection({page}){
         if(sections.length>0){
             sections.map((section,index)=>{
             
-                axios.get('http://localhost:3000/groupe',{
+                axios.get(API_URL+'/groupe',{
                     withCredentials: true
                   }).then((res)=>{                                                             
                     const grouprfilter=res.data.groupes.filter((gr)=> gr.code_section===section.code_section);
                     grouprfilter.map((gr)=>{
                        const id_groupe=parseInt(gr.id_groupe);
-                        axios.get('http://localhost:3000/EmploisTemps/groupes/'+id_groupe+"/"+selected2+"/"+selected+"/"+page,{
+                        axios.get(API_URL+'/EmploisTemps/groupes/'+id_groupe+"/"+selected2+"/"+selected+"/"+page,{
                     withCredentials: true
                   }).then(()=>{
                     updateSection[index].generated=true;
@@ -237,7 +238,7 @@ function MainSection({page}){
     <div className='w-full flex justify-center mt-4'>
     <button type="submit" className='flex w-48 py-1 px-2 rounded-xl justify-center text-white bg-blue-700' onClick={()=>{
         const matricule=user?user.matricule:0;
-        window.location.href="http://localhost:3000/EmploisTemps/enseignant/"+matricule+"/"+selected2+"/"+selected+"/xlsx";
+        window.location.href=API_URL+"/EmploisTemps/enseignant/"+matricule+"/"+selected2+"/"+selected+"/xlsx";
         
     }}>
              Telecharger
@@ -257,7 +258,7 @@ function MainSection({page}){
                     <div className="w-full flex justify-between mt-8">
                         <p className="font-bold">Section {section.code_section}</p>
                         <button type="submit" className='flex w-48 py-1 px-2 rounded-xl justify-center text-white bg-blue-700' onClick={()=>{
-                         window.location.href="http://localhost:3000/EmploisTemps/section/"+section.id_section+"/"+selected2+"/"+selected+"/xlsx";
+                         window.location.href=API_URL+"/EmploisTemps/section/"+section.id_section+"/"+selected2+"/"+selected+"/xlsx";
         
     }}>
              Telecharger
