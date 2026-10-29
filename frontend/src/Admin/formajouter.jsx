@@ -1,3 +1,4 @@
+import { API_URL } from "../config.js";
 
 import '../Admin/Formajout.css'
 import { useState, useEffect } from "react";
@@ -61,7 +62,7 @@ function Ajouter({onAdd,typep,modify}){
     const [typeS, setTypeS] = useState(options);
 
     useEffect(() => {
-        axios.get("http://localhost:3000/module/",{
+        axios.get(API_URL+"/module/",{
             withCredentials: true
           }).then(respo =>{
           setModule(respo.data.Modules);
@@ -69,7 +70,7 @@ function Ajouter({onAdd,typep,modify}){
             return { ...module, checked: false };
         });
         setensMod(modul);
-        axios.get("http://localhost:3000/moduleens",{
+        axios.get(API_URL+"/moduleens",{
             withCredentials: true
           }).then(respo =>{
             const moduleens = respo.data.ModuleEns.filter((mdl) => mdl.matricule == matricule );
@@ -137,7 +138,7 @@ function Ajouter({onAdd,typep,modify}){
     
 
     useEffect(() => {
-        axios.get("http://localhost:3000/Specialite/",{
+        axios.get(API_URL+"/Specialite/",{
             withCredentials: true
           }).then(respo =>{
           setSpecialite(respo.data.specialites)
@@ -147,7 +148,7 @@ function Ajouter({onAdd,typep,modify}){
     },[]);
 
     useEffect(() => {
-        axios.get("http://localhost:3000/section",{
+        axios.get(API_URL+"/section",{
             withCredentials: true
           }).then(respo =>{
             const sectionsFiltres = respo.data.sections.filter(section => section.niveau === niveau && section.code_specialite===code_specialite);
@@ -158,7 +159,7 @@ function Ajouter({onAdd,typep,modify}){
     },[code_specialite,niveau]);
     
     useEffect(() => {
-        axios.get("http://localhost:3000/groupe/",{
+        axios.get(API_URL+"/groupe/",{
             withCredentials: true
           }).then(respo =>{
             const groupes = respo.data.groupes.filter((gr) => (gr.code_specialite === code_specialite && gr.id_section==Id_section) );
@@ -171,7 +172,7 @@ function Ajouter({onAdd,typep,modify}){
 
     
         useEffect(() => {
-        axios.get("http://localhost:3000/seance/",{
+        axios.get(API_URL+"/seance/",{
             withCredentials: true
           }).then(respo =>{
             const seances = respo.data.Seances.filter((sc) => sc.code_module === code_module );
@@ -204,7 +205,7 @@ function Ajouter({onAdd,typep,modify}){
         if (password.length > 8 && nom !== '' && prenom !== '' && email !== '' && typep==='Etudiant'?anneeBac:role !== '' && typep==='Etudiant'?code_specialite !== '':typep==='Enseignant'?charges !== '':true && typep==='Etudiant'?niveau !== '':true) {
             if(modify==''){
                 
-                axios.post('http://localhost:3000/personne',personnes,{
+                axios.post(API_URL+'/personne',personnes,{
                     withCredentials: true
                   }).then(()=> {
                     
@@ -213,7 +214,7 @@ function Ajouter({onAdd,typep,modify}){
                             const code_module=module.code_module;
                             const modules={matricule:parseInt(matricule),code_module,priorite:priorite};
                             if(module.checked){
-                                axios.post('http://localhost:3000/moduleens',modules,{
+                                axios.post(API_URL+'/moduleens',modules,{
                               withCredentials: true
                         }).then(()=>{onAdd();toast.success("ajout avec succes");});
                             }
@@ -231,17 +232,17 @@ function Ajouter({onAdd,typep,modify}){
                 console.log(err)
             });
             }else{
-                axios.put('http://localhost:3000/personne/'+modify.matricule,personnes,{
+                axios.put(API_URL+'/personne/'+modify.matricule,personnes,{
                     withCredentials: true
                   }).then(()=> {
                     if(typep==='Enseignant'){
-                    axios.delete('http://localhost:3000/moduleens/'+modify.matricule,{
+                    axios.delete(API_URL+'/moduleens/'+modify.matricule,{
                         withCredentials: true
                       }).then(()=>{
                         ensModules.forEach((module) => {
                             if (module.checked) {
                                 const mod = { code_module:module.code_module, matricule,priorite:1 };
-                                axios.post("http://localhost:3000/moduleens",mod,{
+                                axios.post(API_URL+"/moduleens",mod,{
                                     withCredentials: true
                                   }).then(()=>{onAdd();toast.success("modification réussie");})
                                     .catch(err => {console.log(err);toast.error("modification echoué");});
@@ -263,14 +264,14 @@ function Ajouter({onAdd,typep,modify}){
         }
     }else if(typep==='Modules') {
         if(modify===''){
-            axios.post('http://localhost:3000/module/',module,{
+            axios.post(API_URL+'/module/',module,{
                 withCredentials: true
               }).then(() => {
             typeS.forEach((option) => {
                 if (option.checked) {
                     let type=option.label;
                     const seance = { code_module, code_specialite,type,niveau,semestre };
-                    axios.post("http://localhost:3000/seance/",seance,{
+                    axios.post(API_URL+"/seance/",seance,{
                         withCredentials: true
                       }).then(()=>{onAdd();})
                         .catch(err => {console.log(err);toast.error("ajout echoué")});
@@ -279,10 +280,10 @@ function Ajouter({onAdd,typep,modify}){
         }).then(()=>toast.success("ajout avec succes")).catch(err =>{ console.log(err);toast.error("ajout echoué");});
         }else{
            let module={code_module_new:code_module, nom_module}
-            axios.put('http://localhost:3000/module/'+modify.code_module,module,{
+            axios.put(API_URL+'/module/'+modify.code_module,module,{
                 withCredentials: true
               }).then(()=>{
-               axios.delete('http://localhost:3000/seance/modules/'+code_module,{
+               axios.delete(API_URL+'/seance/modules/'+code_module,{
                 withCredentials: true
               }).then(()=>{
                 typeS.forEach((option) => {
@@ -290,7 +291,7 @@ function Ajouter({onAdd,typep,modify}){
                         let type=option.label;
                         const seance = { code_module, code_specialite,type,niveau,semestre };
                         
-                        axios.post("http://localhost:3000/seance/",seance,{
+                        axios.post(API_URL+"/seance/",seance,{
                             withCredentials: true
                           }).then(()=>{onAdd();})
                             .catch(err => {console.log(err);toast.error("modification echoué")});
@@ -309,7 +310,7 @@ function Ajouter({onAdd,typep,modify}){
 
     }else if(typep==='Local'){
         if(modify===''){//pour savoir s'il s'agit d'une modification ou un ajout
-            axios.post('http://localhost:3000/local/',local,{
+            axios.post(API_URL+'/local/',local,{
                 withCredentials: true
               }).then(()=> {onAdd();toast.success("ajout avec succés")})
             .catch(err=>{
@@ -319,7 +320,7 @@ function Ajouter({onAdd,typep,modify}){
         }else{
             const code_local_new=code_local
             const lc={code_local_new,capacite,type};
-            axios.put('http://localhost:3000/local/'+modify.code_local,lc,{
+            axios.put(API_URL+'/local/'+modify.code_local,lc,{
                 withCredentials: true
               }).then(()=>{onAdd();toast.success("modification réussie")})
             .catch(err=>{
@@ -331,7 +332,7 @@ function Ajouter({onAdd,typep,modify}){
     }else if(typep==='Specialite'){
         if(modify===''){
             
-            axios.post('http://localhost:3000/specialite/',specialites,{
+            axios.post(API_URL+'/specialite/',specialites,{
                 withCredentials: true
               }).then(()=> {onAdd();toast.success("ajout avec succés")})
             .catch(err=>{
@@ -340,7 +341,7 @@ function Ajouter({onAdd,typep,modify}){
             });
         }else{
             const specia={code_specialite_new:code_specialite,nom_specialite}
-            axios.put('http://localhost:3000/specialite/'+modify.code_specialite,specia,{
+            axios.put(API_URL+'/specialite/'+modify.code_specialite,specia,{
                 withCredentials: true
               }).then(()=>{onAdd();toast.success("modification réussie")})
             .catch(err=>{
@@ -351,7 +352,7 @@ function Ajouter({onAdd,typep,modify}){
     }else if(typep==='Section'){
         if(modify===''){
             
-            axios.post('http://localhost:3000/section/',section,{
+            axios.post(API_URL+'/section/',section,{
                 withCredentials: true
               }).then(()=> {onAdd();toast.success("ajout avec succés")})
             .catch(err=>{
@@ -359,7 +360,7 @@ function Ajouter({onAdd,typep,modify}){
                 console.log(err)
             });
         }else{
-            axios.put('http://localhost:3000/section/'+modify.id_section,section,{
+            axios.put(API_URL+'/section/'+modify.id_section,section,{
                 withCredentials: true
               }).then(()=>{onAdd();toast.success("modification réussie")})
             .catch(err=>{
@@ -369,12 +370,12 @@ function Ajouter({onAdd,typep,modify}){
         }
     }else if(typep==='Groupe'){
         if(modify===''){
-            axios.get("http://localhost:3000/section",{
+            axios.get(API_URL+"/section",{
             withCredentials: true
           }).then(respo =>{
             const sectionsFiltres = respo.data.sections.filter(section => section.niveau === niveau && section.code_section===code_section && section.code_specialite===code_specialite);
             const groupe={code_groupe,id_section:sectionsFiltres[0].id_section}
-            axios.post('http://localhost:3000/groupe',groupe,{
+            axios.post(API_URL+'/groupe',groupe,{
                 withCredentials: true
               }).then(()=> {onAdd();toast.success("ajout avec succés")})
             .catch(err=>{

@@ -1,0 +1,9 @@
+**/node_modules
+**/dist
+.git
+.qodo
+.env
+**/.env
+autres
+flake.nix
+flake.lock

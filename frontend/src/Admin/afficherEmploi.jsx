@@ -1,3 +1,4 @@
+import { API_URL } from "../config.js";
 import './afficherEmploi.css'
 import Modify from './modifierEmp'
 import './modifierEmp.css'
@@ -6,6 +7,7 @@ import axios from '../axiosConfig.js';
 import toast from 'react-hot-toast';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { moduleStyle } from '../moduleColors.js';
 function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
     const [Show, setShow] = useState(false);
     const [emploi, setEmploi] = useState(data.data.creneaux);
@@ -35,7 +37,7 @@ function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
                     if(emploi.Dimanche[element].G1){
                         if(emploi.Dimanche[element].G1.seance.type=='Cours'){
                             return(
-                                <td key={index} >Cours {emploi.Dimanche[element].G1.enseignant.code_module}({emploi.Dimanche[element].G1.enseignant.nom} {emploi.Dimanche[element].G1.locale.code_local})</td>
+                                <td key={index} style={moduleStyle(emploi.Dimanche[element].G1.enseignant.code_module)}>Cours {emploi.Dimanche[element].G1.enseignant.code_module}({emploi.Dimanche[element].G1.enseignant.nom} {emploi.Dimanche[element].G1.locale.code_local})</td>
     
                              )
                         }else{
@@ -46,7 +48,7 @@ function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
                                      const groupe = 'G' + (i+1);
                                      if (emploi.Dimanche[element][groupe]) {
                                      return (
-                                     <tr key={i} className='h-10'>
+                                     <tr key={i} className='h-10' style={moduleStyle(emploi.Dimanche[element][groupe].enseignant.code_module)}>
                                       <td>{groupe}</td>
                                       <td>{emploi.Dimanche[element][groupe].seance.type} {emploi.Dimanche[element][groupe].enseignant.code_module}({emploi.Dimanche[element][groupe].enseignant.nom})</td>
                                       <td>{emploi.Dimanche[element][groupe].locale.code_local}</td>
@@ -73,7 +75,7 @@ function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
                              const groupe = 'G' + (i+1);
                              if (emploi.Dimanche[element][groupe]) {
                              return (
-                             <tr key={i} className='h-10'>
+                             <tr key={i} className='h-10' style={moduleStyle(emploi.Dimanche[element][groupe].enseignant.code_module)}>
                               <td>{groupe}</td>
                               <td>{emploi.Dimanche[element][groupe].seance.type} {emploi.Dimanche[element][groupe].enseignant.code_module}({emploi.Dimanche[element][groupe].enseignant.nom})</td>
                               <td>{emploi.Dimanche[element][groupe].locale.code_local}</td>
@@ -103,7 +105,7 @@ function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
                     if(emploi.Lundi[element].G1){
                         if(emploi.Lundi[element].G1.seance.type=='Cours'){
                             return(
-                                <td key={index} >Cours {emploi.Lundi[element].G1.enseignant.code_module}({emploi.Lundi[element].G1.enseignant.nom} {emploi.Lundi[element].G1.locale.code_local})</td>
+                                <td key={index} style={moduleStyle(emploi.Lundi[element].G1.enseignant.code_module)}>Cours {emploi.Lundi[element].G1.enseignant.code_module}({emploi.Lundi[element].G1.enseignant.nom} {emploi.Lundi[element].G1.locale.code_local})</td>
     
                              )
                         }else{
@@ -114,7 +116,7 @@ function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
                                      const groupe = 'G' + (i+1);
                                      if (emploi.Lundi[element][groupe]) {
                                      return (
-                                     <tr key={i} className='h-10'>
+                                     <tr key={i} className='h-10' style={moduleStyle(emploi.Lundi[element][groupe].enseignant.code_module)}>
                                       <td>{groupe}</td>
                                       <td>{emploi.Lundi[element][groupe].seance.type} {emploi.Lundi[element][groupe].enseignant.code_module}({emploi.Lundi[element][groupe].enseignant.nom})</td>
                                       <td>{emploi.Lundi[element][groupe].locale.code_local}</td>
@@ -141,7 +143,7 @@ function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
                              const groupe = 'G' + (i+1);
                              if (emploi.Lundi[element][groupe]) {
                              return (
-                             <tr key={i} className='h-10'>
+                             <tr key={i} className='h-10' style={moduleStyle(emploi.Lundi[element][groupe].enseignant.code_module)}>
                               <td>{groupe}</td>
                               <td>{emploi.Lundi[element][groupe].seance.type} {emploi.Lundi[element][groupe].enseignant.code_module}({emploi.Lundi[element][groupe].enseignant.nom})</td>
                               <td>{emploi.Lundi[element][groupe].locale.code_local}</td>
@@ -171,7 +173,7 @@ function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
                     if(emploi.Mardi[element].G1){
                         if(emploi.Mardi[element].G1.seance.type=='Cours'){
                             return(
-                                <td key={index} >Cours {emploi.Mardi[element].G1.enseignant.code_module}({emploi.Mardi[element].G1.enseignant.nom} {emploi.Mardi[element].G1.locale.code_local})</td>
+                                <td key={index} style={moduleStyle(emploi.Mardi[element].G1.enseignant.code_module)}>Cours {emploi.Mardi[element].G1.enseignant.code_module}({emploi.Mardi[element].G1.enseignant.nom} {emploi.Mardi[element].G1.locale.code_local})</td>
     
                              )
                         }else{
@@ -182,7 +184,7 @@ function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
                                      const groupe = 'G' + (i+1);
                                      if (emploi.Mardi[element][groupe]) {
                                      return (
-                                     <tr key={i} className='h-10'>
+                                     <tr key={i} className='h-10' style={moduleStyle(emploi.Mardi[element][groupe].enseignant.code_module)}>
                                       <td>{groupe}</td>
                                       <td>{emploi.Mardi[element][groupe].seance.type} {emploi.Mardi[element][groupe].enseignant.code_module}({emploi.Mardi[element][groupe].enseignant.nom})</td>
                                       <td>{emploi.Mardi[element][groupe].locale.code_local}</td>
@@ -209,7 +211,7 @@ function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
                              const groupe = 'G' + (i+1);
                              if (emploi.Mardi[element][groupe]) {
                              return (
-                             <tr key={i} className='h-10'>
+                             <tr key={i} className='h-10' style={moduleStyle(emploi.Mardi[element][groupe].enseignant.code_module)}>
                               <td>{groupe}</td>
                               <td>{emploi.Mardi[element][groupe].seance.type} {emploi.Mardi[element][groupe].enseignant.code_module}({emploi.Mardi[element][groupe].enseignant.nom})</td>
                               <td>{emploi.Mardi[element][groupe].locale.code_local}</td>
@@ -239,7 +241,7 @@ function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
                     if(emploi.Mercredi[element].G1){
                         if(emploi.Mercredi[element].G1.seance.type=='Cours'){
                             return(
-                                <td key={index} >Cours {emploi.Mercredi[element].G1.enseignant.code_module}({emploi.Mercredi[element].G1.enseignant.nom} {emploi.Mercredi[element].G1.locale.code_local})</td>
+                                <td key={index} style={moduleStyle(emploi.Mercredi[element].G1.enseignant.code_module)}>Cours {emploi.Mercredi[element].G1.enseignant.code_module}({emploi.Mercredi[element].G1.enseignant.nom} {emploi.Mercredi[element].G1.locale.code_local})</td>
     
                              )
                         }else{
@@ -250,7 +252,7 @@ function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
                                      const groupe = 'G' + (i+1);
                                      if (emploi.Mercredi[element][groupe]) {
                                      return (
-                                     <tr key={i} className='h-10'>
+                                     <tr key={i} className='h-10' style={moduleStyle(emploi.Mercredi[element][groupe].enseignant.code_module)}>
                                       <td>{groupe}</td>
                                       <td>{emploi.Mercredi[element][groupe].seance.type} {emploi.Mercredi[element][groupe].enseignant.code_module}({emploi.Mercredi[element][groupe].enseignant.nom})</td>
                                       <td>{emploi.Mercredi[element][groupe].locale.code_local}</td>
@@ -277,7 +279,7 @@ function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
                              const groupe = 'G' + (i+1);
                              if (emploi.Mercredi[element][groupe]) {
                              return (
-                             <tr key={i} className='h-10'>
+                             <tr key={i} className='h-10' style={moduleStyle(emploi.Mercredi[element][groupe].enseignant.code_module)}>
                               <td>{groupe}</td>
                               <td>{emploi.Mercredi[element][groupe].seance.type} {emploi.Mercredi[element][groupe].enseignant.code_module}({emploi.Mercredi[element][groupe].enseignant.nom})</td>
                               <td>{emploi.Mercredi[element][groupe].locale.code_local}</td>
@@ -307,7 +309,7 @@ function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
                     if(emploi.Jeudi[element].G1){
                         if(emploi.Jeudi[element].G1.seance.type=='Cours'){
                             return(
-                                <td key={index}>Cours {emploi.Jeudi[element].G1.enseignant.code_module}({emploi.Jeudi[element].G1.enseignant.nom} {emploi.Jeudi[element].G1.locale.code_local})</td>
+                                <td key={index} style={moduleStyle(emploi.Jeudi[element].G1.enseignant.code_module)}>Cours {emploi.Jeudi[element].G1.enseignant.code_module}({emploi.Jeudi[element].G1.enseignant.nom} {emploi.Jeudi[element].G1.locale.code_local})</td>
     
                              )
                         }else{
@@ -318,7 +320,7 @@ function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
                                      const groupe = 'G' + (i+1);
                                      if (emploi.Jeudi[element][groupe]) {
                                      return (
-                                     <tr key={i} className='h-10'>
+                                     <tr key={i} className='h-10' style={moduleStyle(emploi.Jeudi[element][groupe].enseignant.code_module)}>
                                       <td>{groupe}</td>
                                       <td>{emploi.Jeudi[element][groupe].seance.type} {emploi.Jeudi[element][groupe].enseignant.code_module}({emploi.Jeudi[element][groupe].enseignant.nom})</td>
                                       <td>{emploi.Jeudi[element][groupe].locale.code_local}</td>
@@ -344,7 +346,7 @@ function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
                              const groupe = 'G' + (i+1);
                              if (emploi.Jeudi[element][groupe]) {
                              return (
-                             <tr key={i} className='h-10'>
+                             <tr key={i} className='h-10' style={moduleStyle(emploi.Jeudi[element][groupe].enseignant.code_module)}>
                               <td>{groupe}</td>
                               <td>{emploi.Jeudi[element][groupe].seance.type} {emploi.Jeudi[element][groupe].enseignant.code_module}({emploi.Jeudi[element][groupe].enseignant.nom})</td>
                               <td>{emploi.Jeudi[element][groupe].locale.code_local}</td>
@@ -379,7 +381,7 @@ function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
                         semestre:sm[sm.length-1],
                         annee:an,
                     }
-                    axios.post("http://localhost:3000/generate/save/"+section,info,{
+                    axios.post(API_URL+"/generate/save/"+section,info,{
                         withCredentials: true
                       }).then(()=>{
                         toast.success('emploi du temps enregistré');

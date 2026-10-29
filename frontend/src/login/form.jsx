@@ -1,3 +1,4 @@
+import { API_URL } from "../config.js";
 import axios from '../axiosConfig.js';
 import { useState } from "react"
 import { Navigate } from "react-router-dom";
@@ -13,7 +14,7 @@ function Form() {
  const[erreur,setErreur]=useState(false);
  const changer=(e)=>{
   e.preventDefault();
-  axios.post('http://localhost:3000/login/',personne).then((res)=>{
+  axios.post(API_URL+'/login/',personne).then((res)=>{
     toast.success('connexion avec succes');
     if(res.data.personne.type==='Administrateur'){
       setAdmin('Administrateur');
