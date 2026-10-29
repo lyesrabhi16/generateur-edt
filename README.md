@@ -33,7 +33,7 @@ The relational model, use-case diagram and specification are in [autres/pdf](aut
 
 ### Prerequisites
 
-Node.js 18+, PostgreSQL.
+Node.js 18+ and PostgreSQL, or just run `nix develop` (see `flake.nix`) to get Node 22 and PostgreSQL.
 
 ### 1. Database
 
