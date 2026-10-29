@@ -8,5 +8,11 @@ export default {
     extend: {},
   },
   plugins: [require("daisyui")],
+  // the app is designed for the light theme only; without this daisyUI
+  // follows the browser's dark mode and turns inputs/backgrounds black
+  daisyui: {
+    themes: ["light"],
+    darkTheme: "light",
+  },
 }
 
