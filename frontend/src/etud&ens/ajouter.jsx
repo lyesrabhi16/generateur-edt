@@ -1,3 +1,4 @@
+import { API_URL } from "../config.js";
 import '../Admin/Formajout.css'
 import { useState, useEffect } from "react";
 import axios from '../axiosConfig.js';
@@ -20,13 +21,13 @@ const [heure_fin, setFin] = useState(modify.heur_fin ? modify.heur_fin.split(':'
         e.preventDefault();
         const occup={jour,heur_debut:heure_deb,heur_fin:heure_fin};
         if(modify==''){
-            axios.post("http://localhost:3000/Occupation/DayHDHf/getDayHdHf",occup,{
+            axios.post(API_URL+"/Occupation/DayHDHf/getDayHdHf",occup,{
                 withCredentials: true
               }).then((res)=>{
                 
                 
                     const id_occup=parseInt(res.data.Occupation.id_occup);
-                    axios.post("http://localhost:3000/EnsEtOccup/",{matricule:parseInt(user.matricule),id_occup},{
+                    axios.post(API_URL+"/EnsEtOccup/",{matricule:parseInt(user.matricule),id_occup},{
                     withCredentials: true
                   }).then(()=>{
                     onAdd();
@@ -38,14 +39,14 @@ const [heure_fin, setFin] = useState(modify.heur_fin ? modify.heur_fin.split(':'
               }).catch((res)=>{
                 console.log(res)
                 if(res.response.data.Occupation==null){  //si l'occupation n'existe pas on doit la cree sinon on affecte directement l'occupation au prof concerne
-                  axios.post("http://localhost:3000/Occupation",occup,{
+                  axios.post(API_URL+"/Occupation",occup,{
       withCredentials: true
     }).then(()=>{
-      axios.post("http://localhost:3000/Occupation/DayHDHf/getDayHdHf",occup,{
+      axios.post(API_URL+"/Occupation/DayHDHf/getDayHdHf",occup,{
       withCredentials: true
     }).then((res)=>{
       const id_occup=parseInt(res.data.Occupation.id_occup);
-      axios.post("http://localhost:3000/EnsEtOccup/",{matricule:parseInt(user.matricule),id_occup},{
+      axios.post(API_URL+"/EnsEtOccup/",{matricule:parseInt(user.matricule),id_occup},{
       withCredentials: true
     }).then(()=>{
       onAdd();
@@ -62,7 +63,7 @@ const [heure_fin, setFin] = useState(modify.heur_fin ? modify.heur_fin.split(':'
             
         }else{
             const id_occup=modify.id_occup;
-            axios.put("http://localhost:3000/Occupation/"+id_occup,occup,{
+            axios.put(API_URL+"/Occupation/"+id_occup,occup,{
         withCredentials: true
       }).then(()=>{
         onAdd();

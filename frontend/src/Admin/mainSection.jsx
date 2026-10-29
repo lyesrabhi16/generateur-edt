@@ -1,3 +1,4 @@
+import { API_URL } from "../config.js";
 import image from '../assets/download.png'
 import './mainsection.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -40,7 +41,7 @@ function Section({page}){
   }
   useEffect(() => {
     if(page ==='Modules'){
-      axios.get("http://localhost:3000/module/", {
+      axios.get(API_URL+"/module/", {
         withCredentials: true
       })
 .then(res => {
@@ -48,7 +49,7 @@ function Section({page}){
 })
 .catch(err => console.log(err));
     }else if(page==='Local'){
-      axios.get("http://localhost:3000/local/", {
+      axios.get(API_URL+"/local/", {
         withCredentials: true
       }).then(respo =>{
         
@@ -56,7 +57,7 @@ function Section({page}){
      })
      .catch(err => console.log(err));
     }else if(page==='Specialite'){
-      axios.get("http://localhost:3000/Specialite/", {
+      axios.get(API_URL+"/Specialite/", {
         withCredentials: true
       }).then(respo =>{
         
@@ -65,7 +66,7 @@ function Section({page}){
      .catch(err => console.log(err));
 
     }else if(page==='Section'){
-      axios.get("http://localhost:3000/section", {
+      axios.get(API_URL+"/section", {
         withCredentials: true
       }).then(respo =>{
         
@@ -73,7 +74,7 @@ function Section({page}){
      })
      .catch(err => console.log(err));
     }else if(page==='Groupe'){
-      axios.get("http://localhost:3000/groupe", {
+      axios.get(API_URL+"/groupe", {
         withCredentials: true
       }).then(respo =>{
         
@@ -83,7 +84,7 @@ function Section({page}){
     }
     
     else{
-      axios.get("http://localhost:3000/personne/", {
+      axios.get(API_URL+"/personne/", {
         withCredentials: true
       }).then(respo =>{
         const etudiantsFiltres = respo.data.personnes.filter(personne => personne.type === page);
@@ -230,7 +231,7 @@ page==='Groupe'?<tr className='head'>
                   setShow(!Show)
                 }}/>
                 <FontAwesomeIcon icon={faTrash} className='ml-4 text-red-600 cursor-pointer' onClick={()=>{
-                    axios.delete('http://localhost:3000/module/'+etud.code_module,{
+                    axios.delete(API_URL+'/module/'+etud.code_module,{
                       withCredentials: true
                     }).then(()=>{
                       setSupprime(!supprime);
@@ -261,7 +262,7 @@ page==='Groupe'?<tr className='head'>
                   setShow(!Show)
                 }}/>
                 <FontAwesomeIcon icon={faTrash} className='ml-4 text-red-600 cursor-pointer' onClick={()=>{
-                    axios.delete('http://localhost:3000/local/'+etud.code_local,{
+                    axios.delete(API_URL+'/local/'+etud.code_local,{
                       withCredentials: true
                     }).then(()=>{
                       setSupprime(!supprime);
@@ -290,7 +291,7 @@ page==='Groupe'?<tr className='head'>
                 setShow(!Show)
               }}/>
               <FontAwesomeIcon icon={faTrash} className='ml-4 text-red-600 cursor-pointer' onClick={()=>{
-                axios.delete('http://localhost:3000/specialite/'+etud.code_specialite,{
+                axios.delete(API_URL+'/specialite/'+etud.code_specialite,{
                   withCredentials: true
                 }).then(()=>{
                   setSupprime(!supprime);
@@ -317,7 +318,7 @@ page==='Groupe'?<tr className='head'>
                  setShow(!Show)
                }}/>
                <FontAwesomeIcon icon={faTrash} className='ml-4 text-red-600 cursor-pointer' onClick={()=>{
-                 axios.delete('http://localhost:3000/section/'+etud.id_section,{
+                 axios.delete(API_URL+'/section/'+etud.id_section,{
                    withCredentials: true
                  }).then(()=>{
                    setSupprime(!supprime);
@@ -346,7 +347,7 @@ page==='Groupe'?<tr className='head'>
 
                 }}/>
                <FontAwesomeIcon icon={faTrash} className='ml-4 text-red-600 cursor-pointer' onClick={()=>{
-                 axios.delete('http://localhost:3000/groupe/'+etud.id_groupe,{
+                 axios.delete(API_URL+'/groupe/'+etud.id_groupe,{
                    withCredentials: true
                  }).then(()=>{
                    setSupprime(!supprime);
@@ -382,7 +383,7 @@ page==='Groupe'?<tr className='head'>
                   setShow(!Show)
                 }}/>
                 <FontAwesomeIcon icon={faTrash} className='ml-4 text-red-600 cursor-pointer' onClick={()=>{
-                  axios.delete('http://localhost:3000/personne/'+etud.matricule,{
+                  axios.delete(API_URL+'/personne/'+etud.matricule,{
                     withCredentials: true
                   }).then(()=>{
                     setSupprime(!supprime);
@@ -457,7 +458,7 @@ page==='Groupe'?<tr className='head'>
       </form>
       <button className="btn bg-blue-700 text-white" onClick={(e) => {
           e.preventDefault();
-          window.location.href = `http://localhost:3000/emploistemps/enseignant/${ens.matricule}/${semestre}/${annee}/xlsx`
+          window.location.href = `${API_URL}/emploistemps/enseignant/${ens.matricule}/${semestre}/${annee}/xlsx`
           document.getElementById('download_ens_emp_form_modal').close();
       }}>Télécharger</button>
     </div>
@@ -508,7 +509,7 @@ page==='Groupe'?<tr className='head'>
       </form>
       <button className="btn bg-blue-700 text-white" onClick={(e) => {
           e.preventDefault();
-          window.location.href = `http://localhost:3000/emploistemps/groupe/${grp.id_groupe}/${semestre}/${annee}/xlsx`
+          window.location.href = `${API_URL}/emploistemps/groupe/${grp.id_groupe}/${semestre}/${annee}/xlsx`
           document.getElementById('download_groupe_emp_form_modal').close();
       }}>Télécharger</button>
     </div>

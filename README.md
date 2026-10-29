@@ -66,7 +66,7 @@ npm run backend         # API on http://localhost:3000
 npm run frontend        # app on http://localhost:5000
 ```
 
-> The frontend currently calls the API at `http://localhost:3000`. Keep the backend on that port.
+> By default the frontend calls the API at `http://localhost:3000`. To change it, copy `frontend/.env.example` to `frontend/.env` and set `VITE_API_URL` (and `VITE_APP_URL` for the frontend origin).
 
 ## API
 
@@ -74,7 +74,6 @@ Every route except authentication requires a valid JWT cookie, and administrator
 
 ## Known limitations
 
-- The API base URL is hardcoded in the frontend and should move to an environment variable.
 - No automated tests yet.
 - No license file has been added.
 

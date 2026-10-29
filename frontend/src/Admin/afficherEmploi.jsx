@@ -1,3 +1,4 @@
+import { API_URL } from "../config.js";
 import './afficherEmploi.css'
 import Modify from './modifierEmp'
 import './modifierEmp.css'
@@ -379,7 +380,7 @@ function Afficher({onAdd,data,taille,db,dr,fn,ps,sm,an,section}){
                         semestre:sm[sm.length-1],
                         annee:an,
                     }
-                    axios.post("http://localhost:3000/generate/save/"+section,info,{
+                    axios.post(API_URL+"/generate/save/"+section,info,{
                         withCredentials: true
                       }).then(()=>{
                         toast.success('emploi du temps enregistré');
