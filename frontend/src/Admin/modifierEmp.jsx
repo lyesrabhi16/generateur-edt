@@ -1,3 +1,4 @@
+import { API_URL } from "../config.js";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from "react";
@@ -72,7 +73,7 @@ function modifierEmp({emploie,groupes,debut,duree,fin,pose,onAdd,an}){
         }
         
         console.log(data)
-       axios.post("http://localhost:3000/creneau/verification",data,{
+       axios.post(API_URL+"/creneau/verification",data,{
         withCredentials: true
       }
        ).then((res)=>{
@@ -116,7 +117,7 @@ function modifierEmp({emploie,groupes,debut,duree,fin,pose,onAdd,an}){
            
     }
         console.log(data2)
-        axios.post("http://localhost:3000/creneau/verification",data2,{
+        axios.post(API_URL+"/creneau/verification",data2,{
             withCredentials: true
           }
            ).then((res)=>{
@@ -172,7 +173,7 @@ function modifierEmp({emploie,groupes,debut,duree,fin,pose,onAdd,an}){
             semestre:sm,
             matricule:mat
         }
-        axios.post("http://localhost:3000/creneau/verification",data,{
+        axios.post(API_URL+"/creneau/verification",data,{
             withCredentials: true
           }
            ).then((res)=>{

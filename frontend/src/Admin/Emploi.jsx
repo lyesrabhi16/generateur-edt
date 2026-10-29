@@ -1,3 +1,4 @@
+import { API_URL, APP_URL } from "../config.js";
 import Cookies from 'js-cookie';
 import image from '../assets/download.png'
 import './Emploi.css'
@@ -49,7 +50,7 @@ function Emploi(){
     const [ignorer,setIgnorer]=useState('ignorer la charge');
 
     const GOOGLE_CLIENT_ID = "148373478842-lab6hq5l2piurkludiu36158p6tm0mah.apps.googleusercontent.com"; 
-    const GOOGLE_REDIRECT_URI = "http://localhost:5000/email/send/callback";
+    const GOOGLE_REDIRECT_URI = APP_URL+"/email/send/callback";
     const sendEmail = (emps) => {
         const googleParams_s = Cookies.get("google_params");
         if (googleParams_s) {
@@ -65,7 +66,7 @@ function Emploi(){
             .then((res) => {
                 axios
                 .post(
-                    "http://localhost:3000/email/send",
+                    API_URL+"/email/send",
                     {
                     id_emp: emp.id_emp,
                     user_email: res.data.email,
@@ -185,7 +186,7 @@ function Emploi(){
 
 
     useEffect(() => {
-        axios.get("http://localhost:3000/Specialite/",{
+        axios.get(API_URL+"/Specialite/",{
             withCredentials: true
           }).then(respo =>{
           setSpecialites(respo.data.specialites)
@@ -195,7 +196,7 @@ function Emploi(){
     },[]);
 
     useEffect(() => {
-        axios.get("http://localhost:3000/section",{
+        axios.get(API_URL+"/section",{
             withCredentials: true
           }).then(respo =>{
             const sectionsFiltres = respo.data.sections.filter(section => section.niveau === niveau && section.code_specialite===code_specialite);
@@ -214,16 +215,16 @@ function Emploi(){
         if(sections.length>0){
             sections.map((section,index)=>{
             
-                axios.get('http://localhost:3000/groupe',{
+                axios.get(API_URL+'/groupe',{
                     withCredentials: true
                   }).then((res)=>{           
                     console.log(res);                                                  
-                    const grouprfilter=res.data.groupes.filter((gr)=> gr.code_section===section.code_section);
+                    const grouprfilter=res.data.groupes.filter((gr)=> gr.id_section===section.id_section);
                     setGroupes(grouprfilter.length);
                     grouprfilter.map((gr)=>{
                        const id_groupe=parseInt(gr.id_groupe);
                        const sem=semestre[semestre.length-1]
-                        axios.get('http://localhost:3000/EmploisTemps/groupes/'+id_groupe+"/"+sem+"/"+annee+"/"+niveau,{
+                        axios.get(API_URL+'/EmploisTemps/groupes/'+id_groupe+"/"+sem+"/"+annee+"/"+niveau,{
                     withCredentials: true
                   }).then((res)=>{
                     updateSection[index].generated=true;
@@ -290,12 +291,12 @@ function Emploi(){
             ignore_charges:ignor
             
         }
-        axios.get('http://localhost:3000/groupe',{
+        axios.get(API_URL+'/groupe',{
             withCredentials: true
           }).then((res)=>{           
             const grouprfilter=res.data.groupes.filter((gr)=> gr.id_section===id_section);
             setGroupes(grouprfilter.length);
-            axios.post("http://localhost:3000/generate/"+id_section,data,{
+            axios.post(API_URL+"/generate/"+id_section,data,{
                 withCredentials: true
               }).then((res)=>{
                 setEmploi(res);
@@ -327,7 +328,7 @@ function Emploi(){
   }
   const affiche=(id_section,respo)=>{
                 const sem=semestre[semestre.length-1];
-                axios.get("http://localhost:3000/creneau/section/"+id_section+'/'+sem+'/'+annee,{
+                axios.get(API_URL+"/creneau/section/"+id_section+'/'+sem+'/'+annee,{
                     withCredentials: true
                   }).then((res)=>{
                     setEmploi2(res.data.Creneaux);
@@ -617,15 +618,15 @@ function Emploi(){
                 setIdsec(section.id_section);
                 }}/>
                 <FontAwesomeIcon icon={faTrash} className='ml-8 text-red-600 cursor-pointer' onClick={()=>{
-                 axios.get('http://localhost:3000/groupe',{
+                 axios.get(API_URL+'/groupe',{
                     withCredentials: true
                   }).then((res)=>{
                     let success=false;
-                    const grouprfilter=res.data.groupes.filter((gr)=> gr.code_section===section.code_section);
+                    const grouprfilter=res.data.groupes.filter((gr)=> gr.id_section===section.id_section);
                     grouprfilter.map((gr)=>{
                         const id_groupe=parseInt(gr.id_groupe);
                         const seme=semestre[semestre.length-1];
-                        axios.delete('http://localhost:3000/EmploisTemps/groupes/'+id_groupe+"/"+seme+"/"+annee,{
+                        axios.delete(API_URL+'/EmploisTemps/groupes/'+id_groupe+"/"+seme+"/"+annee,{
                             withCredentials: true
                           }).then((rr)=>{
                             if(success==false){
@@ -645,7 +646,7 @@ function Emploi(){
                }}/>
                 <FontAwesomeIcon icon={faDownload} className='ml-4 text-green-600 cursor-pointer hv' onClick={()=>{
                     const seme=semestre[semestre.length-1];
-                    window.location.href="http://localhost:3000/EmploisTemps/section/"+section.id_section+"/"+seme+"/"+annee+"/xlsx";
+                    window.location.href=API_URL+"/EmploisTemps/section/"+section.id_section+"/"+seme+"/"+annee+"/xlsx";
             }}/>
             <FontAwesomeIcon icon={faEnvelope} className='ml-4 text-blue-700 group-hover:text-white cursor-pointer' onClick={() => {
                     sendEmail(Object.values(section.emps));

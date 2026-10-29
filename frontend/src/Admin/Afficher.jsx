@@ -1,5 +1,6 @@
 import React from 'react';
 import './afficherEmploi.css';
+import { moduleStyle } from '../moduleColors.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 function AfficherEmp({onAdd, emploie }) {
@@ -30,7 +31,7 @@ function AfficherEmp({onAdd, emploie }) {
                 if (seance) {
                   if (seance.type === 'Cours') {
                     return (
-                      <td key={ind}>
+                      <td key={ind} style={moduleStyle(seance.code_module)}>
                         Cours {seance.code_module}({emploie[jour][horaire].G1.enseignant.nom} {emploie[jour][horaire].G1.locale.code_local})
                       </td>
                       
@@ -44,7 +45,7 @@ function AfficherEmp({onAdd, emploie }) {
                             if(element!='debut' && element!='fin'){
                               if (innerSeance) {
                               return (
-                                <tr key={inx} >
+                                <tr key={inx} style={moduleStyle(innerSeance.code_module)}>
                                   <td>{element}</td>
                                   <td>
                                     {innerSeance.type} {innerSeance.code_module}({emploie[jour][horaire][element].enseignant.nom})
@@ -71,7 +72,7 @@ function AfficherEmp({onAdd, emploie }) {
                           if(element!='debut' && element!='fin'){
                             if (innerSeance) {
                             return (
-                              <tr key={inx} >
+                              <tr key={inx} style={moduleStyle(innerSeance.code_module)}>
                                 <td>{element}</td>
                                 <td>
                                   {innerSeance.type} {innerSeance.code_module} ({emploie[jour][horaire][element].enseignant.nom})
